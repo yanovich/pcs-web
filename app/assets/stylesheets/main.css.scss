@@ -73,7 +73,6 @@ body {
   height: 48px;
   line-height: 48px;
   width: 48px;
-  min-width: 48px;
   background: #fff;
   border:1px solid #cdcdcd;
   display: inline-block;
@@ -83,13 +82,10 @@ body {
 
 .top .user .name {
   margin-left: 10px;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .top .logo {
   width: 202px;
-  min-width: 202px;
   height: 60px;
   line-height: 58px;
   display: inline-block;
@@ -308,28 +304,19 @@ body {
   position: relative;
 }
 
-.menu > div {
-  position: absolute;
-  right: 0px;
-  display: block;
-}
-
-.menu > div:hover {
-  z-index: 1000;
-}
-
 .menu .dropdown {
   display: none;
+  position: absolute;
+  min-width: 70px;
+  right: 0px;
+  top: 100%;
   border:1px solid #d7d7d7;
   background: white;
 }
 
-div:hover > .dropdown {
+.menu:hover .dropdown {
   display: block;
-}
-
-.menu .button {
-  float: none;
+  z-index: 1000;
 }
 
 .tools > .pager {
