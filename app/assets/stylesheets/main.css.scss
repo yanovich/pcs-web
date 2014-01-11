@@ -73,6 +73,8 @@ body {
   height: 48px;
   line-height: 48px;
   width: 48px;
+  min-width: 48px;
+  margin-left: 4px;
   background: #fff;
   border:1px solid #cdcdcd;
   display: inline-block;
@@ -82,10 +84,13 @@ body {
 
 .top .user .name {
   margin-left: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .top .logo {
   width: 202px;
+  min-width: 202px;
   height: 60px;
   line-height: 58px;
   display: inline-block;
