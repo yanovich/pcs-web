@@ -13,6 +13,10 @@ body {
   font-family: arial,sans-serif;
 }
 
+.hide {
+  visibility: hidden;
+}
+
 .rel {
   position: relative;
   width: 100%;
@@ -322,7 +326,7 @@ body {
   background: white;
 }
 
-.menu:hover .dropdown {
+.menu:focus .dropdown, .menu:hover .dropdown {
   display: block;
   z-index: 1000;
 }
@@ -544,6 +548,10 @@ table.data td.date {
 
 .footer .right {
   text-align: right;
+}
+
+.none {
+  display: none;
 }
 
 /* vim:set sw=2 sts=2 ts=2 et: */
