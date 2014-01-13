@@ -35,6 +35,21 @@ describe "Authentication" do
       end
     end
   end
+
+  describe "authorization" do
+
+    describe "for non-signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+
+      describe "in the Users controller" do
+
+        describe "visiting the root page" do
+          before { visit root_path }
+          it { should have_title('регистрация') }
+        end
+      end
+    end
+  end
 end
 
 # vim:ts=2 sts=2 sw=2 et:
