@@ -34,7 +34,6 @@ body.user {
 
 header {
   height: 50px;
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -49,6 +48,18 @@ header.navbar {
 
 header .nav {
   font-size: 13px;
+}
+
+#user .dropdown-menu {
+  min-width: 210px;
+  right: 15px;
+  font-size: 13px;
+  leni-height: 18px;
+}
+
+.dropdown-menu > li > a {
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 
 .banner-signin {

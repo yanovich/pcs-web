@@ -4,8 +4,8 @@
   </div>
   <nav class="collapse navbar-collapse">
     <ul class="nav navbar-nav navbar-right">
-      <li class="dropdown">
-      <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"><%= current_user.name %><span class="caret"></span></button>
+      <li id="user" class="dropdown">
+      <a class="dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown"><%= current_user.name %><span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
           <li role="presentation"><%= link_to 'Досье', current_user,
             role: "menuitem", tabindex: "-1" %></li>
