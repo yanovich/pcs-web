@@ -1,3 +1,4 @@
+<% if signed_in? %>
 <div class="row tp-main">
   <div class="col-xs-4 col-md-2 col-xl-1 tp-sidebar">
     <ul class="nav">
@@ -22,4 +23,8 @@
     <%= debug(params) if Rails.env.development? %>
   </div>
 </div>
-<!-- vim:set ts=2 sts=2 sw=2 ft=xml et: -->
+<% else %>
+  <%= yield %>
+  <%= debug(params) if Rails.env.development? %>
+<% end %>
+<!-- vim:set ts=2 sts=2 sw=2 et: -->
