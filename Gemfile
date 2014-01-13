@@ -52,10 +52,13 @@ end
 # gem 'debugger', group: [:development, :test]
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', "~> 2.14.1"
+  gem 'guard-rspec', "~> 4.2.4"
+  gem 'guard-spork', "~> 1.5.1"
+  gem "spork-rails", "~> 4.0.0"
 end
 
 group :test do
   gem 'selenium-webdriver', "~> 2.39.0"
-  gem 'capybara', '>= 2.2'
+  gem 'capybara', "~> 2.2.1"
 end
