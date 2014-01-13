@@ -7,8 +7,15 @@ describe "Authentication" do
   describe "signin page" do
     before { visit signin_path }
 
-    it { should have_content('Регистрация') }
-    it { should have_title('Регистрация') }
+    it { should have_content('регистрация') }
+    it { should have_title('регистрация') }
+
+    describe "with invalid information" do
+      before { click_button "Регистрация" }
+
+      it { should have_title('регистрация') }
+      it { should have_selector('div.form-group.has-error') }
+    end
   end
 end
 
