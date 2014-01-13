@@ -29,9 +29,15 @@ body {
   font-family: arial,sans-serif;
 }
 
-header {
+header.navbar {
+  height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   padding: 0px 15px;
   background: #f1f1f1;
+  border: 0px solid #e5e5e5;
+  border-radius: 0px;
   border-bottom: 1px solid #e5e5e5;
 }
 
@@ -47,7 +53,11 @@ header .nav {
 }
 
 .tp-main {
-  height: 100%;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  top: 94px;
   overflow-y: scroll;
   border-top: 1px solid #e5e5e5;
 }
