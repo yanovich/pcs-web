@@ -16,8 +16,8 @@ describe "User pages" do
       visit user_path(user)
     end
 
-    it { should have_content(user.name) }
-    it { should have_content(user.email) }
+    it { should have_selector("input[value=\'#{user.name}\']") }
+    it { should have_selector("input[value=\'#{user.email}\']") }
   end
 end
 

@@ -4,7 +4,7 @@
   <h2 class="form-signin-heading text-center">Для работы в системе необходима регистрация</h2>
   <%= form_for(:session, url: sessions_path, :html => { class: "form-signin" }) do |f| %>
 
-    <%= f.label :email, class: "hidden" %>
+    <%= f.label :email, "Эл.почта", class: "hidden" %>
     <%= f.text_field :email, class: "form-control", placeholder: "Эл.почта",
       :required => "true", autofocus: "true" %>
 
