@@ -59,6 +59,10 @@ group :development, :test do
 end
 
 group :test do
+  # For UI testing with RSpec
   gem 'selenium-webdriver', "~> 2.39.0"
   gem 'capybara', "~> 2.2.1"
+
+  # For test object generation
+  gem "factory_girl_rails", "~> 4.3.0"
 end
