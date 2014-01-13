@@ -1,3 +1,9 @@
+# app/helpers/application_helper.rb
+# Copyright 2014 Sergei Ianovich
+#
+# Licensed under AGPLv3 or later
+# Process Control Service Web Interface
+
 module ApplicationHelper
   include SessionsHelper
 

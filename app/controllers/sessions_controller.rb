@@ -1,3 +1,9 @@
+# app/controllers/sessions_controller.rb
+# Copyright 2014 Sergei Ianovich
+#
+# Licensed under AGPLv3 or later
+# Process Control Service Web Interface
+
 class SessionsController < ApplicationController
   skip_before_filter :signed_in_user, only: [:new, :create]
 

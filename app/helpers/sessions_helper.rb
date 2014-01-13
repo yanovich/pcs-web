@@ -1,3 +1,9 @@
+# app/helpers/sessions_helper.rb
+# Copyright 2014 Sergei Ianovich
+#
+# Licensed under AGPLv3 or later
+# Process Control Service Web Interface
+
 module SessionsHelper
   def sign_in(user)
     remember_token = User.new_remember_token
