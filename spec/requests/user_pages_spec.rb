@@ -21,12 +21,29 @@ describe "User pages" do
       it { should have_selector("input[value=\'#{user.email}\']") }
     end
 
-    describe "with invalid information" do
+    describe "edit with invalid information" do
       before { click_button "Изменить" }
 
       it { should have_selector('div.alert.alert-danger') }
     end
 
+    describe "edit with valid information" do
+      let(:new_name)  { "New Name" }
+      let(:new_email) { "new@example.com" }
+      before do
+        fill_in "Полное имя",             with: new_name
+        fill_in "Эл.почта",            with: new_email
+        fill_in "Пароль",         with: user.password
+        fill_in "Подтверждение", with: user.password
+        click_button "Изменить"
+      end
+
+      it { should have_title(new_name) }
+      it { should have_selector('div.alert.alert-success') }
+      it { should have_link('Выход', href: signout_path) }
+      specify { expect(user.reload.name).to  eq new_name }
+      specify { expect(user.reload.email).to eq new_email }
+    end
   end
 end
 
