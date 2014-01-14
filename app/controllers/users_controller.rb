@@ -5,7 +5,6 @@
 # Process Control Service Web Interface
 
 class UsersController < ApplicationController
-  include ActionView::Helpers::TextHelper
 
   def show
     @user = User.find(params[:id])
@@ -20,7 +19,7 @@ class UsersController < ApplicationController
       flash[:success] = "Изменено успешно"
       redirect_to @user
     else
-      flash.now[:danger] = "Присутствует #{pluralize(@user.errors.count, "ошибка")}"
+      flash.now[:danger] = "#{I18n.t :error_msg, count:@user.errors.count}"
       render 'show'
     end
   end
