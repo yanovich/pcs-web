@@ -26,8 +26,9 @@ describe "Authentication" do
       end
 
       it { should have_title(user.name) }
-      it { should have_link('Досье', href: user_path(user)) }
-      it { should have_link('Выход',     href: signout_path) }
+      it { should have_link('Пользователи', href: users_path) }
+      it { should have_link('Досье',        href: user_path(user)) }
+      it { should have_link('Выход',        href: signout_path) }
 
       describe "followed by signout" do
         before { click_link "Выход" }
