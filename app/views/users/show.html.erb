@@ -14,14 +14,39 @@
     <%= f.label :name, "Полное имя", class: "control-label hidden" %>
     <div class="col-sm-9">
       <%= f.text_field :name, class: "form-control input-lg" %>
+      <% f.object.errors.messages[:name].each do |m| %>
+        <%= f.label :name, m, class: "help-block" %>
+      <% end %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :email, "Эл.почта", class: "control-label col-sm-3" %>
     <div class="col-sm-9">
       <%= f.text_field :email, class: "form-control input-sm" %>
+      <% f.object.errors.messages[:email].each do |m| %>
+        <%= f.label :email, m, class: "help-block" %>
+      <% end %>
     </div>
   </div>
+  <div class="form-group">
+    <%= f.label :password, "Пароль", class: "control-label col-sm-3" %>
+    <div class="col-sm-9">
+      <%= f.password_field :password, class: "form-control input-sm" %>
+      <% f.object.errors.messages[:password].each do |m| %>
+        <%= f.label :password, m, class: "help-block" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :password_confirmation, "Подтверждение", class: "control-label col-sm-3" %>
+    <div class="col-sm-9">
+      <%= f.password_field :password_confirmation, class: "form-control input-sm" %>
+      <% f.object.errors.messages[:password_confirmation].each do |m| %>
+        <%= f.label :password_confirmation, m, class: "help-block" %>
+      <% end %>
+    </div>
+  </div>
+  <%= f.submit "Изменить", class: "btn btn-sm btn-primary" %>
 <% end %>
 </div></div>
 
