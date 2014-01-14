@@ -14,6 +14,9 @@ class ApplicationController < ActionController::Base
   # Before filters
 
   def signed_in_user
+    store_location
     redirect_to signin_url, notice: "Please sign in." unless signed_in?
   end
 end
+
+# vim:ts=2 sts=2 sw=2 et:
