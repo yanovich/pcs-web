@@ -7,6 +7,10 @@
 class UsersController < ApplicationController
   before_action :correct_user,   only: [:update]
 
+  def index
+    @users = User.all
+  end
+
   def show
     @user = User.find(params[:id])
   end
