@@ -9,7 +9,7 @@
       :required => "true", autofocus: "true" %>
 
     <% if flash[:error].nil? %>
-      <%= f.label :password, class: "hidden" %>
+      <%= f.label :password, "Пароль", class: "hidden" %>
       <%= f.password_field :password, class: "form-control", placeholder: "Пароль",
         :required => "true" %>
     <% else %>
