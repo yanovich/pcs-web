@@ -5,6 +5,7 @@
 # Process Control Service Web Interface
 
 class UsersController < ApplicationController
+  before_action :correct_user,   only: [:update]
 
   def show
     @user = User.find(params[:id])
@@ -28,6 +29,14 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      unless current_user?(@user)
+        sign_out
+        redirect_to(signin_path)
+      end
     end
 end
 

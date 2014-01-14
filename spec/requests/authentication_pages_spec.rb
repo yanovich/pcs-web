@@ -36,7 +36,7 @@ describe "Authentication" do
     end
   end
 
-  describe "authorization" do
+  describe "and authorization" do
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
@@ -47,6 +47,16 @@ describe "Authentication" do
           before { visit root_path }
           it { should have_title('регистрация') }
         end
+      end
+    end
+    describe "as a wrong user" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+      before { sign_in user, no_capybara: true }
+
+      describe "submitting a PATCH request to the Users#update action" do
+        before { patch user_path(wrong_user) }
+        specify { expect(response).to redirect_to(signin_path) }
       end
     end
   end
