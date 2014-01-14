@@ -222,6 +222,27 @@ table.tp-data td.tp-date {
   text-align: right;
 }
 
+.tp-user {
+  margin-top: 10px;
+  font-size: 80%;
+}
+
+.tp-user .input-lg {
+  font-weight: bold;
+}
+
+.tp-user .tp-photo span {
+  font-size: 96px;
+  line-height: 106px;
+  border: 1px solid #e5e5e5;
+}
+
+@media (min-width: $screen-sm-min) {
+ .tp-user .tp-photo span {
+    float: right;
+ }
+}
+
 .tp-footer {
   padding-bottom: 180px;
   padding-top: 15px;
