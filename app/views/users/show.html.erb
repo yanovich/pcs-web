@@ -5,6 +5,8 @@
 # Process Control Service Web Interface
 -->
 
+<% content_for :user_class, "active" %>
+
 <div class="row tp-user"><div class="col-lg-6">
 <%= form_for(@user, :html => { class: "form-horizontal" }) do |f| %>
   <div class="form-group">
