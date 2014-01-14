@@ -19,6 +19,7 @@ html {
 
 body {
   font-size: 100%;
+  line-height: normal;
   font-family: arial,sans-serif;
 }
 
@@ -78,6 +79,36 @@ header .nav {
   font-weight: bold;
   color: #008000;
   padding: 0px 15px;
+}
+
+.tp-flash-container {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 40px;
+  height: 21px;
+  text-align: center;
+}
+
+.tp-flash {
+  margin: 0px auto;
+  width: 100%;
+  position: relative;
+}
+
+
+.tp-flash > div {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 16px;
+  padding: 1px 30px 1px 10px;
+  margin-bottom: 0px;
+  z-index: 1000;
+}
+
+.tp-flash .alert-dismissable .close {
+  top: 0px;
+  font-size: 16px;
 }
 
 .tp-main {
@@ -223,8 +254,11 @@ table.tp-data td.tp-date {
 }
 
 .tp-user {
-  margin-top: 10px;
   font-size: 80%;
+}
+
+.tp-user form {
+  margin-top: 15px;
 }
 
 .tp-user .input-lg {
@@ -233,8 +267,14 @@ table.tp-data td.tp-date {
 
 .tp-user .tp-photo span {
   font-size: 96px;
+  height: 96px;
+  overflow: hidden;
   line-height: 106px;
   border: 1px solid #e5e5e5;
+}
+
+.tp-user form .btn {
+  float: right;
 }
 
 @media (min-width: $screen-sm-min) {
@@ -334,6 +374,10 @@ table.tp-data td.tp-date {
 
 .debug_dump {
   margin: 15px;
+}
+
+.field_with_errors {
+  @extend .has-error;
 }
 
 /* vim:set sw=2 sts=2 ts=2 et: */

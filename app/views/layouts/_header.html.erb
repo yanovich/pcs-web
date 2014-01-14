@@ -23,4 +23,15 @@
       </li>
     </ul>
   </nav>
+  <div class="tp-flash-container">
+    <div class="clearfix"></div>
+    <div class="tp-flash">
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %> alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <%= value %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </header>

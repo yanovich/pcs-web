@@ -16,8 +16,17 @@ describe "User pages" do
       visit user_path(user)
     end
 
-    it { should have_selector("input[value=\'#{user.name}\']") }
-    it { should have_selector("input[value=\'#{user.email}\']") }
+    describe "visit" do
+      it { should have_selector("input[value=\'#{user.name}\']") }
+      it { should have_selector("input[value=\'#{user.email}\']") }
+    end
+
+    describe "with invalid information" do
+      before { click_button "Изменить" }
+
+      it { should have_selector('div.alert.alert-danger') }
+    end
+
   end
 end
 
