@@ -7,6 +7,11 @@
 
 <% provide(:title, 'Пользователи') %>
 <% content_for :user_class, "active" %>
+<% content_for :toolbar do %>
+<div class="pull-right">
+  <%= will_paginate %>
+</div>
+<% end %>
 
 <div class="tp-data">
   <table class="tp-data">

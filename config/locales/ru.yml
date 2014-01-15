@@ -1,5 +1,16 @@
+# config/locales/ru.yml -- Russian translation
+# Copyright 2014 Sergei Ianovich
+#
+# Licensed under AGPLv3 or later
+# Process Control Service Web Interface
+
 ru:
   error_msg:
     one: 'Присутствует %{count} ошибка'
     few: 'Присутствует %{count} ошибки'
     many: 'Присутствует %{count} ошибок'
+  will_paginate:
+    previous_label: '<'
+    next_label: '>'
+
+# vim:ts=2 sts=2 sw=2 et:

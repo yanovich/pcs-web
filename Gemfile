@@ -52,11 +52,15 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem "will_paginate", "~> 3.0.5"
+gem "bootstrap-will_paginate", "~> 0.0.10"
+
 group :development, :test do
   gem 'rspec-rails', "~> 2.14.1"
   gem 'guard-rspec', "~> 4.2.4"
   gem 'guard-spork', "~> 1.5.1"
   gem "spork-rails", "~> 4.0.0"
+  gem "faker", "~> 1.2.0"
 end
 
 group :test do

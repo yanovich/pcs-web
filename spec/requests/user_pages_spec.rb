@@ -62,6 +62,20 @@ describe "User pages" do
         expect(page).to have_selector('td', text: user.name)
       end
     end
+
+    describe "pagination" do
+
+      before(:all) { 30.times { FactoryGirl.create(:user) } }
+      after(:all)  { User.delete_all }
+
+      it { should have_selector('div.pagination') }
+
+      it "should list each user" do
+        User.paginate(page: 1).each do |user|
+          expect(page).to have_selector('td', text: user.name)
+        end
+      end
+    end
   end
 end
 

@@ -9,6 +9,11 @@
 <body class="user">
 
 <%= render 'layouts/header' %>
+<div class="row tp-toolbar">
+  <div class="col-xs-12 col-md-10 col-xl-11 pull-right">
+    <%= yield(:toolbar) %>
+  </div>
+</div>
 <div class="row tp-main">
   <div class="col-xs-4 col-md-2 col-xl-1 tp-sidebar">
     <ul class="nav">
