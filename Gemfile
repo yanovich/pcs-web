@@ -61,6 +61,9 @@ group :development, :test do
   gem 'guard-spork', "~> 1.5.1"
   gem "spork-rails", "~> 4.0.0"
   gem "faker", "~> 1.2.0"
+
+  # Workaround "Error: can't modify string; temporarily locked" in spork
+  gem "rb-readline", "~> 0.5.0"
 end
 
 group :test do
