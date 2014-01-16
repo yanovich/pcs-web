@@ -5,7 +5,7 @@
 # Process Control Service Web Interface
 -->
 
-<% provide(:title, @user.name) %>
+<% provide(:title, profile_title(@user.name, (t '.title'))) %>
 <% content_for :user_class, "active" %>
 
 <div class="row tp-user"><div class="col-lg-6">

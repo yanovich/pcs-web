@@ -27,7 +27,7 @@ describe "Authentication" do
 
       it { should have_title(user.name) }
       it { should_not have_link('Пользователи', href: users_path) }
-      it { should have_link('Досье',        href: user_path(user)) }
+      it { should have_link(I18n.t 'users.show.title', href: user_path(user)) }
       it { should have_link('Выход',        href: signout_path) }
 
       describe "followed by signout" do
@@ -55,9 +55,24 @@ describe "Authentication" do
 
       describe "in the Users controller" do
 
-        describe "visiting the root page" do
-          before { visit root_path }
+        describe "visiting the profile page" do
+          before { visit user_path(user) }
           it { should have_title('регистрация') }
+
+          describe "after signing in" do
+            before { sign_in user }
+
+            it { should have_title(I18n.t 'users.show.title') }
+
+            describe "again" do
+              before do
+                delete signout_path
+                sign_in user
+              end
+
+              it { should_not have_title(I18n.t 'users.show.title') }
+            end
+          end
         end
       end
     end

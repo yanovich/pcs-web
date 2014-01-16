@@ -14,7 +14,7 @@
       <li id="user" class="dropdown">
       <a class="dropdown-toggle" href="#" type="button" id="dropdownMenu1" data-toggle="dropdown"><%= current_user.name %><span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-          <li role="presentation"><%= link_to 'Досье', current_user,
+          <li role="presentation"><%= link_to (t 'users.show.title'), current_user,
             role: "menuitem", tabindex: "-1" %></li>
           <li role="presentation" class="divider"></li>
           <li role="presentation"><%= link_to 'Выход', signout_path, method: "delete",

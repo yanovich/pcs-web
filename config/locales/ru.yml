@@ -13,6 +13,9 @@ ru:
         password: Пароль
         password_confirmation: Подтверждение
         admin: Администратор
+  users:
+    show:
+      title: Своё досье
   error_msg:
     one: 'Присутствует %{count} ошибка'
     few: 'Присутствует %{count} ошибки'

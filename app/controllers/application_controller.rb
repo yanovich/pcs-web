@@ -14,8 +14,9 @@ class ApplicationController < ActionController::Base
   # Before filters
 
   def signed_in_user
+    return if signed_in?
     store_location
-    redirect_to signin_url, notice: "Please sign in." unless signed_in?
+    redirect_to signin_url
   end
 end
 
