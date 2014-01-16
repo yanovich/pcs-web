@@ -1,18 +1,12 @@
-<!-- app/views/users/show.html.erb - display and edit user
+<!-- app/views/users/new.html.erb - create a new user
 # Copyright 2014 Sergei Ianovich
 #
 # Licensed under AGPLv3 or later
 # Process Control Service Web Interface
 -->
 
-<% provide(:title, profile_title(@user.name, (t '.title'))) %>
+<% provide(:title, (t '.title')) %>
 <% content_for :user_class, "active" %>
-<% content_for :sidebar do %>
-<li>
-  <%= link_to (t 'users.new.link'), new_user_path,
-  class: "btn btn-sm btn-danger" %>
-</li>
-<% end %>
 
 <div class="row tp-user"><div class="col-lg-6">
 <%= form_for(@user, :html => { class: "form-horizontal" }) do |f| %>
@@ -58,13 +52,13 @@
   <div class="form-group">
     <%= f.label :admin, class: "control-label col-sm-3" %>
     <div class="col-sm-9">
-      <%= f.check_box :admin, class: "form-control input-sm", disabled: (true unless current_user.admin? && !current_user?(@user)) %>
+      <%= f.check_box :admin, class: "form-control input-sm" %>
       <% f.object.errors.messages[:admin].each do |m| %>
         <%= f.label :admin, m, class: "help-block" %>
       <% end %>
     </div>
   </div>
-  <%= f.submit "Изменить", class: "btn btn-sm btn-primary" %>
+  <%= f.submit (t '.link'), class: "btn btn-sm btn-primary" %>
 <% end %>
 </div></div>
 

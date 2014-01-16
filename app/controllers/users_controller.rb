@@ -22,6 +22,18 @@ class UsersController < ApplicationController
   end
 
   def new
+    @user = User.new
+  end
+
+  def create
+    @user = User.new(user_params)
+    if @user.save
+      flash[:success] = t '.success'
+      redirect_to user_path(@user)
+    else
+      flash.now[:danger] = I18n.t :error_msg, count:@user.errors.count
+      render 'new'
+    end
   end
 
   def update

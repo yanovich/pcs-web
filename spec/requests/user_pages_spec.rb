@@ -102,6 +102,32 @@ describe "User pages" do
         specify { expect(user.reload).to  be_admin }
       end
     end
+
+    describe "of new users" do
+      before { visit new_user_path }
+
+      it { should have_title(I18n.t 'users.new.title') }
+      let(:submit) { I18n.t 'users.new.link'}
+
+      describe "with invalid information" do
+        it "should not create user" do
+          expect { click_button submit }.not_to change(User, :count)
+        end
+      end
+
+      describe "with valid information" do
+        before do
+          fill_in User.human_attribute_name(:name),                  with: "Example User"
+          fill_in User.human_attribute_name(:email),                 with: "user@example.com"
+          fill_in User.human_attribute_name(:password),              with: "foobar"
+          fill_in User.human_attribute_name(:password_confirmation), with: "foobar"
+        end
+
+        it "should create a user" do
+          expect { click_button submit }.to change(User, :count).by(1)
+        end
+      end
+    end
   end
 end
 
