@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    unless current_user.id.to_s == params[:id]
+    unless admin_or_self
       redirect_to user_path(current_user)
     end
     @user = User.find(params[:id])
@@ -39,6 +39,10 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+    def admin_or_self
+      current_user.admin? || current_user.id.to_s == params[:id]
     end
 
     def correct_user

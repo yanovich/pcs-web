@@ -46,35 +46,46 @@ describe "User pages" do
     end
   end
 
-  describe "index" do
+  describe "administration" do
+    let(:admin) { FactoryGirl.create(:admin) }
+    let(:user) { FactoryGirl.create(:user, name: "Bob", email: "bob@example.com") }
     before do
-      sign_in FactoryGirl.create(:admin)
-      FactoryGirl.create(:user, name: "Bob", email: "bob@example.com")
+      sign_in admin
       FactoryGirl.create(:user, name: "Ben", email: "ben@example.com")
       visit users_path
     end
 
-    it { should have_title('Пользователи') }
-    it { should have_content('Пользователи') }
-
-    it "should list each user" do
-      User.all.each do |user|
-        expect(page).to have_selector('td', text: user.name)
-      end
-    end
-
-    describe "pagination" do
-
-      before(:all) { 30.times { FactoryGirl.create(:user) } }
-      after(:all)  { User.delete_all }
-
-      it { should have_selector('div.pagination') }
+    describe "of index" do
+      it { should have_title('Пользователи') }
 
       it "should list each user" do
-        User.paginate(page: 1).each do |user|
+        User.all.each do |user|
           expect(page).to have_selector('td', text: user.name)
         end
       end
+
+      describe "pagination" do
+
+        before do
+          30.times { FactoryGirl.create(:user) }
+          visit users_path
+        end
+
+        it { should have_selector('div.pagination') }
+
+        it "should list each user" do
+          User.paginate(page: 1).each do |user|
+            expect(page).to have_selector('td', text: user.name)
+          end
+        end
+      end
+    end
+
+    describe "of profile" do
+      before { visit user_path(user) }
+
+      it { should have_selector("input[value=\'#{user.email}\']") }
+      it { should have_title(user.name) }
     end
   end
 end
