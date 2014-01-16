@@ -10,6 +10,13 @@ $screen-lg-max: ($screen-xl-min - 1);
 
 @media (min-width: $screen-xl-min) {
 @include make-grid($grid-columns, xl, width);
+.col-xl-2 {
+  width: 12.5%;
+}
+
+.col-xl-14 {
+  width: 87.5%;
+}
 }
 
 
@@ -168,7 +175,7 @@ body > .row {
   height: 4.5ex;
   line-height: 4.5ex;
   display: inline-block;
-  min-width: 120px;
+  min-width: 108px;
   padding: 0px 8px;
   white-space: nowrap;
   overflow: hidden;
