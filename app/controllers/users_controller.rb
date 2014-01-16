@@ -15,6 +15,9 @@ class UsersController < ApplicationController
   end
 
   def show
+    unless current_user.id.to_s == params[:id]
+      redirect_to user_path(current_user)
+    end
     @user = User.find(params[:id])
   end
 
@@ -39,8 +42,7 @@ class UsersController < ApplicationController
     end
 
     def correct_user
-      @user = User.find(params[:id])
-      unless current_user?(@user)
+      unless current_user.id.to_s == params[:id]
         sign_out
         redirect_to(signin_path)
       end

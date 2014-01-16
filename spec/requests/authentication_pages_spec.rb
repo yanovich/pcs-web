@@ -82,6 +82,11 @@ describe "Authentication" do
         before { get users_path }
         specify { expect(response).to redirect_to(user_path(non_admin)) }
       end
+
+      describe "visiting another user's profile" do
+        before { get user_path(another_user) }
+        specify { expect(response).to redirect_to(user_path(non_admin)) }
+      end
     end
   end
 end
