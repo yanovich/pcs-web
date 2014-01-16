@@ -16,6 +16,8 @@ ru:
   users:
     show:
       title: Своё досье
+    new:
+      link: Создать
   error_msg:
     one: 'Присутствует %{count} ошибка'
     few: 'Присутствует %{count} ошибки'

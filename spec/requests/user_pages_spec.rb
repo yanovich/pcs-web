@@ -58,6 +58,8 @@ describe "User pages" do
       visit users_path
     end
 
+    it { should have_link('Создать', href: new_user_path) }
+
     describe "of index" do
       it { should have_title('Пользователи') }
 

@@ -141,11 +141,11 @@ body > .row {
 }
 
 .tp-sidebar {
-  padding: 0px;
+  padding: 9px 0px 0px;
   margin-bottom: 15px;
 }
 
-.tp-sidebar .nav > li > a {
+.tp-sidebar .nav.tp-menu-side > li > a {
   height: 2.5ex;
   border-left: 4px solid transparent;
   padding: 1px 4px 1px 27px;
@@ -156,10 +156,31 @@ body > .row {
   font-size: 80%;
 }
 
-.tp-sidebar .nav > .active > a {
+.tp-sidebar .nav.tp-menu-side > li.active > a {
   border-left-color: #dd4b39;
   color: #dd4b39;
   font-weight: bold;
+}
+
+.tp-sidebar .nav.tp-tools-side > li > a.btn,
+.tp-sidebar .nav.tp-tools-side > li > a.btn:hover {
+  margin: 0px 15px 8px 31px;
+  height: 4.5ex;
+  line-height: 4.5ex;
+  display: inline-block;
+  min-width: 120px;
+  padding: 0px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  //color: white;
+  font-size: 80%;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: #dd4b39;
+  background: -moz-linear-gradient(top, #dd4b39, #d14836);
+  background: linear-gradient(top, #dd4b39, #d14836);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#dd4b39,endColorstr=#d14836,GradientType=1);
 }
 
 .tp-content {

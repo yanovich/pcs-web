@@ -7,6 +7,13 @@
 
 <% provide(:title, 'Пользователи') %>
 <% content_for :user_class, "active" %>
+<% content_for :sidebar do %>
+<li>
+  <%= link_to (t 'users.new.link'), new_user_path,
+  class: "btn btn-sm btn-danger" %>
+</li>
+<% end %>
+
 <% content_for :toolbar do %>
 <div class="pull-right">
   <%= will_paginate %>
@@ -18,7 +25,7 @@
     <colgroup>
       <col class="tp-check"/>
       <col class="col-xs-6 col-sm-4 col-xl-2"/>
-      <col class="col-xs-3 col-sm-2 col-xl-2"/>
+      <col class="col-xs-4 col-sm-3 col-xl-2"/>
       <col class="tp-text"/>
     </colgroup>
     <tbody>
@@ -32,10 +39,6 @@
           </td>
           <td>
             <%= link_to user.email, user %>
-          </td>
-          <td>
-          </td>
-          <td>
           </td>
           <td class="tp-info">
             <% if user.admin? %>
