@@ -8,6 +8,9 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:update]
 
   def index
+    unless current_user.admin?
+      redirect_to user_path(current_user)
+    end
     @users = User.paginate(page: params[:page])
   end
 

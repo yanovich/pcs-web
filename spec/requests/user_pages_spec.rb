@@ -48,7 +48,7 @@ describe "User pages" do
 
   describe "index" do
     before do
-      sign_in FactoryGirl.create(:user)
+      sign_in FactoryGirl.create(:admin)
       FactoryGirl.create(:user, name: "Bob", email: "bob@example.com")
       FactoryGirl.create(:user, name: "Ben", email: "ben@example.com")
       visit users_path

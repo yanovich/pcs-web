@@ -26,7 +26,7 @@ describe "Authentication" do
       end
 
       it { should have_title(user.name) }
-      it { should have_link('Пользователи', href: users_path) }
+      it { should_not have_link('Пользователи', href: users_path) }
       it { should have_link('Досье',        href: user_path(user)) }
       it { should have_link('Выход',        href: signout_path) }
 
@@ -34,6 +34,17 @@ describe "Authentication" do
         before { click_link "Выход" }
         it { should have_title('регистрация') }
       end
+    end
+
+    describe "as an admin" do
+      let(:admin) { FactoryGirl.create(:admin) }
+      before do
+        fill_in "Эл.почта",    with: admin.email.upcase
+        fill_in "Пароль", with: admin.password
+        click_button "Регистрация"
+      end
+
+      it { should have_link('Пользователи', href: users_path) }
     end
   end
 
@@ -50,6 +61,7 @@ describe "Authentication" do
         end
       end
     end
+
     describe "as a wrong user" do
       let(:user) { FactoryGirl.create(:user) }
       let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
@@ -58,6 +70,17 @@ describe "Authentication" do
       describe "submitting a PATCH request to the Users#update action" do
         before { patch user_path(wrong_user) }
         specify { expect(response).to redirect_to(signin_path) }
+      end
+    end
+
+    describe "as a non-admin user" do
+      let(:non_admin) { FactoryGirl.create(:user, email: "non_admin@example.com") }
+      let(:another_user) { FactoryGirl.create(:user) }
+      before { sign_in non_admin, no_capybara: true }
+
+      describe "visiting the user index" do
+        before { get users_path }
+        specify { expect(response).to redirect_to(user_path(non_admin)) }
       end
     end
   end
