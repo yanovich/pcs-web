@@ -37,7 +37,12 @@
           </td>
           <td>
           </td>
-          <td class="tp-date">
+          <td class="tp-info">
+            <% if user.admin? %>
+            <span class="label label-danger">
+              <%= User.human_attribute_name("admin") %>
+            </span>
+            <% end %>
           </td>
         </tr>
       <% end %>
