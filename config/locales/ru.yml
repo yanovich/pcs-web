@@ -5,6 +5,14 @@
 # Process Control Service Web Interface
 
 ru:
+  activerecord:
+    attributes:
+      user:
+        name: Полное имя
+        email: Эл.почта
+        password: Пароль
+        password_confirmation: Подтверждение
+        admin: Администратор
   error_msg:
     one: 'Присутствует %{count} ошибка'
     few: 'Присутствует %{count} ошибки'

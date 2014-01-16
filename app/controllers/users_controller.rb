@@ -38,7 +38,14 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      if ( params[:user][:password].empty? &&
+        params[:user][:password_confirmation].empty? )
+        params[:user].delete('password')
+        params[:user].delete('password_confirmation')
+      end
+      list=['name', 'email', 'password', 'password_confirmation']
+      list.push('admin') if current_user.admin? && current_user.id.to_s != params[:id]
+      params.require(:user).permit(list)
     end
 
     def admin_or_self
@@ -46,7 +53,7 @@ class UsersController < ApplicationController
     end
 
     def correct_user
-      unless current_user.id.to_s == params[:id]
+      unless admin_or_self
         sign_out
         redirect_to(signin_path)
       end

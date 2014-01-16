@@ -22,7 +22,10 @@ describe "User pages" do
     end
 
     describe "edit with invalid information" do
-      before { click_button "Изменить" }
+      before do
+        fill_in "Пароль",         with: user.password
+        click_button "Изменить"
+      end
 
       it { should have_selector('div.alert.alert-danger') }
     end
@@ -86,6 +89,16 @@ describe "User pages" do
 
       it { should have_selector("input[value=\'#{user.email}\']") }
       it { should have_title(user.name) }
+
+      describe "to assign new admin" do
+        before do
+          check (I18n.t 'activerecord.attributes.user.admin')
+          click_button "Изменить"
+        end
+
+        it { should have_selector('div.alert.alert-success') }
+        specify { expect(user.reload).to  be_admin }
+      end
     end
   end
 end
