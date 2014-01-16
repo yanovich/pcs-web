@@ -71,6 +71,15 @@ describe "Authentication" do
         before { patch user_path(wrong_user) }
         specify { expect(response).to redirect_to(signin_path) }
       end
+
+      describe "supplying forbidden attributes" do
+        let(:params) { { user: { id: user.id, admin: true } } }
+        before do
+          patch user_path(user), params
+        end
+        specify { expect(user.reload).not_to be_admin }
+        specify { expect(response).to redirect_to(signin_path) }
+      end
     end
 
     describe "as a non-admin user" do
