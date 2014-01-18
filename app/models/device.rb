@@ -5,14 +5,16 @@
 # Process Control Service Web Interface
 
 class Device
-  include MongoMapper::Document
+  include Mongoid::Document
 
   validates :name,  presence: true, length: { maximum: 50 }
   validates :filepath,  presence: true
 
-  key :name,     String
-  key :filepath, String
-  key :enabled,  Boolean
+  has_many :states
+
+  field :name,     type: String
+  field :filepath, type: String
+  field :enabled,  type: Boolean
 end
 
 # vim:ts=2 sts=2 sw=2 et:

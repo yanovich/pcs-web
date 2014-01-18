@@ -5,10 +5,14 @@
 # Process Control Service Web Interface
 
 ru:
-  mongo_mapper:
+  mongoid:
     errors:
       messages:
-        taken: "Уже используется"
+        taken: "уже используется"
+        validations:
+          message: "%{document} не прошел проверку."
+          summary: "Найдены ошибки %{errors}"
+          resolution: "Попробуйте сохранить с корректными данными."
     attributes:
       user:
         name: Полное имя

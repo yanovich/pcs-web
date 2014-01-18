@@ -11,6 +11,11 @@ FactoryGirl.define do
       admin true
     end
   end
+
+  factory :device do
+    sequence(:name)  { |n| "Device #{n}" }
+    sequence(:filepath) { |n| "/tmp/dev#{n}"}   
+  end
 end
 
 # vim:ts=2 sts=2 sw=2 et:

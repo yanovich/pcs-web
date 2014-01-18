@@ -6,8 +6,7 @@ ruby '2.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 gem 'rails-i18n', '~> 4.0.0'
-gem "mongo_mapper", git: 'git@github.com:yanovich/mongomapper.git'
-gem "bson_ext", "~> 1.9.2"
+gem "mongoid", '>=4.0.0.alpha2'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'

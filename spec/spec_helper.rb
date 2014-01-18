@@ -52,9 +52,7 @@ Spork.prefork do
     config.include Capybara::DSL
 
     config.before(:each) do
-      MongoMapper.database.collections.each do |c|
-        c.remove unless c.name =~ /^system/
-      end
+      Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
     end
   end
 end
