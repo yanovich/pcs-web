@@ -1,7 +1,9 @@
 namespace :db do
-  desc "Fill database with sample data"
-  task populate: :environment do
-    make_users
+  namespace :development do
+    desc "Fill database with sample data"
+    task populate: :environment do
+      make_users
+    end
   end
 end
 

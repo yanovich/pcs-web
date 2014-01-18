@@ -94,7 +94,7 @@ describe "User pages" do
 
       describe "to assign new admin" do
         before do
-          check (I18n.t 'activerecord.attributes.user.admin')
+          check (I18n.t 'mongo_mapper.attributes.user.admin')
           click_button "Изменить"
         end
 

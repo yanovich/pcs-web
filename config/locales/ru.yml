@@ -5,7 +5,10 @@
 # Process Control Service Web Interface
 
 ru:
-  activerecord:
+  mongo_mapper:
+    errors:
+      messages:
+        taken: "Уже используется"
     attributes:
       user:
         name: Полное имя

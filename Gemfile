@@ -6,6 +6,8 @@ ruby '2.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 gem 'rails-i18n', '~> 4.0.0'
+gem "mongo_mapper", '>= 0.13.0.beta2'
+gem "bson_ext", "~> 1.9.2"
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
