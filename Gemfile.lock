@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:yanovich/mongomapper.git
-  revision: d3cc527b215d2573369eed3c9f963384305d626d
+  revision: caee5045c1412f56d8d832cae18de67e13cd38c7
   specs:
     mongo_mapper (0.13.0.beta2)
       activemodel (>= 3.0.0)
