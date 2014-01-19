@@ -23,6 +23,7 @@ describe State do
       @file = File.open(device.filepath, 'w')
       @file.write("#{@stamp.strftime("%b %d %H:%M:%S")} ")
       @file.write("#{device.hostname} pcs: Test message\n")
+      @pos = @file.tell
       @file.close
     end
 
@@ -36,12 +37,30 @@ describe State do
         @state = device.states.desc(:c_at).first
       end
 
-      subject { @state }
-
-      its(:device) { should eq device }
       its(:stamp) { should eq @stamp.utc.to_s }
       its(:start) { should eq 0 }
+      its(:size) { should eq @pos }
       its(:content) { should eq "pcs: Test message" }
+
+      describe "appended one" do
+        before do
+          @stamp = DateTime.now.change(usec: 0)
+          @file = File.open(device.filepath, 'a+')
+          @file.write("#{@stamp.strftime("%b %d %H:%M:%S")} ")
+          @file.write("#{device.hostname} pcs: Test message 2\n")
+          @file.close
+          device.read_new_states
+          @state = device.states.desc(:c_at).first
+        end
+
+        it "should appear once" do
+          device.states.count.should eq 2
+        end
+
+        its(:stamp) { should eq @stamp.utc.to_s }
+        its(:start) { should eq @pos }
+        its(:content) { should eq "pcs: Test message 2" }
+      end
     end
 
     after { File.unlink(device.filepath) }

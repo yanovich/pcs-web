@@ -15,7 +15,7 @@ class State
   field :start,   type: Integer
   field :size,    type: Integer
 
-  index({ c_at: -1 })
+  index({ device_id: 1, c_at: -1 })
 end
 
 # vim:ts=2 sts=2 sw=2 et:
