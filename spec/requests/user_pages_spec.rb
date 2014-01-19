@@ -71,7 +71,7 @@ describe "User pages" do
 
       describe "pagination" do
 
-        before do
+        before (:all) do
           30.times { FactoryGirl.create(:user) }
           visit users_path
         end

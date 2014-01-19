@@ -6,13 +6,16 @@
 
 class State
   include Mongoid::Document
+  include Mongoid::Timestamps::Created::Short
 
   belongs_to :device
 
   field :content, type: String
-  field :time,    type: DateTime
+  field :stamp,   type: DateTime
   field :start,   type: Integer
   field :size,    type: Integer
+
+  index({ c_at: -1 })
 end
 
 # vim:ts=2 sts=2 sw=2 et:

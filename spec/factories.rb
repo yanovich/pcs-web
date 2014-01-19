@@ -14,7 +14,8 @@ FactoryGirl.define do
 
   factory :device do
     sequence(:name)  { |n| "Device #{n}" }
-    sequence(:filepath) { |n| "/tmp/dev#{n}"}   
+    sequence(:hostname)  { |n| "testdev#{n}" }
+    sequence(:filepath) { |n| "/tmp/pcs-testdev-#{n}"}
   end
 end
 

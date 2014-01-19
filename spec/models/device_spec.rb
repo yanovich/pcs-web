@@ -16,6 +16,7 @@ describe Device do
   it { should respond_to(:name) }
   it { should respond_to(:filepath) }
   it { should respond_to(:enabled) }
+  it { should respond_to(:read_new_states) }
 
   it { should be_valid }
 
