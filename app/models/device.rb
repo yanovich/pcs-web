@@ -7,6 +7,7 @@
 TIME_REGEXP = /\w{3}\s\d{2}\s\d{2}\:\d{2}\:\d{2}/
 class Device
   include Mongoid::Document
+  include MongoidPaginator
 
   validates :name,  presence: true, length: { maximum: 50 }
   validates :filepath,  presence: true
@@ -18,6 +19,10 @@ class Device
   field :filepath, type: String
   field :offset,   type: Integer, default: 0
   field :enabled,  type: Boolean
+
+  def state
+    self.states.desc(:c_at).first
+  end
 
   def read_new_states
     file = File.open(self.filepath, 'r')

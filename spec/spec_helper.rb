@@ -51,7 +51,7 @@ Spork.prefork do
     config.order = "random"
     config.include Capybara::DSL
 
-    config.before(:each) do
+    config.after(:each) do
       Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
     end
   end

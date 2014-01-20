@@ -16,6 +16,14 @@ class State
   field :size,    type: Integer
 
   index({ device_id: 1, c_at: -1 })
+
+  def time
+    if (DateTime.now - stamp) > 1
+      stamp.strftime('%H:%M')
+    else
+      stamp.strftime('%-d %b')
+    end
+  end
 end
 
 # vim:ts=2 sts=2 sw=2 et:

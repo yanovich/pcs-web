@@ -21,11 +21,13 @@
     </ul>
     <ul class="nav tp-menu-side">
       <li><a href="#">Moниторинг</a></li>
+      <li class="<%= yield(:device_class) %>">
+      <a href="/devices"><%= t 'devices.index.title' %></a>
+      </li>
       <% if current_user.admin? %>
         <li class="<%= yield(:user_class) %>">
         <a href="/users"><%= t 'users.index.title' %></a>
         </li>
-        <li><a href="#">Устройства</a></li>
       <%end %>
     </ul>
   </div>

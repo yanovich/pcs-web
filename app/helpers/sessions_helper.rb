@@ -44,6 +44,13 @@ module SessionsHelper
   def store_location
     session[:return_to] = request.url if request.get?
   end
+
+  def admin_user
+    if !current_user.admin?
+      sign_out
+      redirect_to(signin_path)
+    end
+  end
 end
 
 # vim:ts=2 sts=2 sw=2 et:

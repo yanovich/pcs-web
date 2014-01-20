@@ -2,8 +2,9 @@ PcsWeb::Application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  resources :users, except: [:edit]
+  resources :users, except: [:edit, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
+  resources :devices, except: [:edit, :destroy]
   # You can have the root of your site routed with "root"
   root 'main#index'
   match '/signin',  to: 'sessions#new',         via: 'get'
