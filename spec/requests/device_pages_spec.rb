@@ -53,6 +53,62 @@ describe "Devices pages" do
         end
       end
     end
+
+    describe "profile" do
+      before(:all) do
+        30.times { FactoryGirl.create(:device) }
+        t = DateTime.now.beginning_of_hour
+        Device.all.each do |dev|
+          dev.states.build(content: "#{dev.name} message",
+                           stamp: t.advance(sec: -1)).save
+        end
+        visit device_path(Device.first)
+      end
+
+      it "should list each state" do
+        device = Device.first
+        device.states.paginate(page: 1).each do |state|
+          expect(page).to have_selector('td', text: state.content)
+        end
+      end
+    end
+  end
+
+  describe "administration" do
+    let(:admin) { FactoryGirl.create(:admin) }
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in admin
+      visit devices_path
+    end
+
+    it { should have_link('Создать', href: new_device_path) }
+
+    describe "of new devices" do
+      before { visit new_device_path }
+
+      it { should have_title(I18n.t 'devices.new.title') }
+      let(:submit) { I18n.t 'devices.new.link'}
+
+      describe "with invalid information" do
+        it "should not create device" do
+          expect { click_button submit }.not_to change(Device, :count)
+        end
+      end
+
+      describe "with valid information" do
+        before do
+          fill_in Device.human_attribute_name(:name),     with: "Test Device"
+          fill_in Device.human_attribute_name(:hostname), with: "testdev1"
+          fill_in Device.human_attribute_name(:filepath), with: "/tmp/test-dev-1"
+          check   Device.human_attribute_name(:enabled)
+        end
+
+        it "should create a device" do
+          expect { click_button submit }.to change(Device, :count).by(1)
+        end
+      end
+    end
   end
 end
 

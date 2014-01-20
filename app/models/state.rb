@@ -7,6 +7,7 @@
 class State
   include Mongoid::Document
   include Mongoid::Timestamps::Created::Short
+  include MongoidPaginator
 
   belongs_to :device
 
