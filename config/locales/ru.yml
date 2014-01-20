@@ -20,6 +20,11 @@ ru:
         password: Пароль
         password_confirmation: Подтверждение
         admin: Администратор
+      device:
+        name: Полное имя
+        hostname: Хост
+        filepath: Файл
+        enabled: Обновления
   users:
     show:
       title: Своё досье
