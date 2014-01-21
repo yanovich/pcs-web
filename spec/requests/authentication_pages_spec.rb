@@ -79,7 +79,7 @@ describe "Authentication" do
 
     describe "as a wrong user" do
       let(:user) { FactoryGirl.create(:user) }
-      let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+      let(:wrong_user) { FactoryGirl.create(:user) }
       before { sign_in user, no_capybara: true }
 
       describe "submitting a PATCH request to the Users#update action" do
@@ -98,7 +98,7 @@ describe "Authentication" do
     end
 
     describe "as a non-admin user" do
-      let(:non_admin) { FactoryGirl.create(:user, email: "non_admin@example.com") }
+      let(:non_admin) { FactoryGirl.create(:user) }
       let(:another_user) { FactoryGirl.create(:user) }
       before { sign_in non_admin, no_capybara: true }
 

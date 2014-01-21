@@ -31,8 +31,8 @@ describe "User pages" do
     end
 
     describe "edit with valid information" do
-      let(:new_name)  { "New Name" }
-      let(:new_email) { "new@example.com" }
+      let(:new_name)  { "New #{user.name}" }
+      let(:new_email) { "new_#{user.email}" }
       before do
         fill_in "Полное имя",             with: new_name
         fill_in "Эл.почта",            with: new_email
@@ -51,10 +51,14 @@ describe "User pages" do
 
   describe "administration" do
     let(:admin) { FactoryGirl.create(:admin) }
-    let(:user) { FactoryGirl.create(:user, name: "Bob", email: "bob@example.com") }
+    let(:user) { FactoryGirl.create(:user) }
+    before(:all) do
+      Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
+    end
+
     before do
       sign_in admin
-      FactoryGirl.create(:user, name: "Ben", email: "ben@example.com")
+      FactoryGirl.create(:user)
       visit users_path
     end
 
@@ -71,14 +75,15 @@ describe "User pages" do
 
       describe "pagination" do
 
-        before (:all) do
-          30.times { FactoryGirl.create(:user) }
+        before(:all) do
+          30.times { FactoryGirl.create(:user); p "user count: #{User.count}" }
           visit users_path
         end
 
-        it { should have_selector('div.pagination') }
+        it {p "user count: #{User.count}"; should have_selector('div.pagination') }
 
         it "should list each user" do
+          p "user count: #{User.count}"
           User.paginate(page: 1).each do |user|
             expect(page).to have_selector('td', text: user.name)
           end

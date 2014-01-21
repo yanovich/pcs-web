@@ -31,6 +31,7 @@ require 'spec_helper'
 describe User do
 
   before do
+    Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
     @user = User.new(name: "Example User", email: "user@example.com",
 		     password: "foobar", password_confirmation: "foobar")
   end

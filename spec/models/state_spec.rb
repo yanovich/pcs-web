@@ -8,7 +8,10 @@ require 'spec_helper'
 
 describe State do
   let(:device) { FactoryGirl.create(:device) }
-  before { @state = device.states.build(content: "Message") }
+  before do
+    Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
+    @state = device.states.build(content: "Message")
+  end
 
   subject { @state }
 
