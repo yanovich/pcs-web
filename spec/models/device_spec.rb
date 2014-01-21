@@ -8,6 +8,7 @@ require 'spec_helper'
 
 describe Device do
   before do
+    Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
     @device = Device.new(name: "a device", filepath: "/dev/null")
   end
 

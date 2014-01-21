@@ -50,8 +50,9 @@ ru:
     one: 'Присутствует %{count} ошибка'
     few: 'Присутствует %{count} ошибки'
     many: 'Присутствует %{count} ошибок'
-  will_paginate:
-    previous_label: '<'
-    next_label: '>'
+  views:
+    pagination:
+      previous: '<'
+      next: '>'
 
 # vim:ts=2 sts=2 sw=2 et:

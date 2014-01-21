@@ -8,7 +8,7 @@ class DevicesController < ApplicationController
   before_action :admin_user, only: [:new, :create, :update]
 
   def index
-    @devices = Device.paginate(page: params[:page])
+    @devices = Device.page params[:page]
   end
 
   def show
@@ -42,7 +42,7 @@ class DevicesController < ApplicationController
   end
 
   def history
-    @devices = Device.paginate(page: params[:page])
+    @devices = Device.page params[:page]
   end
 
   private

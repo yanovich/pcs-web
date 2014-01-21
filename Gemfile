@@ -53,9 +53,12 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem "will_paginate", "~> 3.0.5"
-gem "bootstrap-will_paginate", "~> 0.0.10"
+#gem "will_paginate", "~> 3.0.5"
+#gem "bootstrap-will_paginate", "~> 0.0.10"
+gem "kaminari", "~> 0.15.1"
 
+# For logfile change event
+gem "listen", "~> 2.4.0"
 group :development, :test do
   gem 'rspec-rails', "~> 2.14.1"
   gem 'guard-rspec', "~> 4.2.4"

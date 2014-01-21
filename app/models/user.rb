@@ -7,7 +7,6 @@
 class User
   include ActiveModel::SecurePassword
   include Mongoid::Document
-  include MongoidPaginator
 
   before_save { self.email = email.downcase }
   before_create :create_remember_token

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     unless current_user.admin?
       redirect_to user_path(current_user)
     end
-    @users = User.paginate(page: params[:page])
+    @users = User.page params[:page]
   end
 
   def show

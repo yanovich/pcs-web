@@ -28,20 +28,62 @@ running = false
     end
     File.unlink("/tmp/pcs-poller.pid")
   end
-  puts "Retrying"
 end
 
 exit 1 unless running
 
 %w(INT QUIT TERM).each do |signal|
   trap signal do
+    p "Got signal"
     running = false
   end
 end
 
-p "Started"
+puts "#{$0} started"
+
+class DevicePoller
+  def initialize
+    @devices = {}
+  end
+
+  def poll
+    Mongoid::QueryCache.enabled = false
+    Device.all.find_all.each do |device|
+      p " processing #{device.name}"
+      if device.enabled?
+        p "  enabled"
+        next if !File.exist?(device.filepath)
+        next if @devices[device.id]
+        p "   starting"
+        device.read_new_states
+        listener = Listen.to(device.filepath) do |modified, added, removed|
+          device.read_new_states
+        end
+        listener.start
+        @devices[device.id] = listener
+      else
+        p "  disabled"
+        next unless @devices[device.id]
+        p "   stopping"
+        @devices.delete(device.id).stop
+      end
+    end
+  end
+
+  def stop
+    @devices.each do |key, value|
+      @device.delete(key)
+      value.stop
+    end
+  end
+end
+
+devices = {}
+poller = DevicePoller.new
+
 while running do
-  sleep 1
+  poller.poll
+  sleep 2
 end
 File.unlink("/tmp/pcs-poller.pid")
 puts

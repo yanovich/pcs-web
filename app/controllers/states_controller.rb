@@ -8,7 +8,8 @@ class StatesController < ApplicationController
 
   def index
     @device = Device.find(params[:device_id])
-    @states = @device.states.paginate(page: params[:page])
+    @states = State.where(device_id: @device.id).sort(c_at: -1).
+      find_all.all.page params[:page]
   end
 
 end
