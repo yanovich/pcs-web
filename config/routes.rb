@@ -5,10 +5,14 @@ PcsWeb::Application.routes.draw do
   resources :users, except: [:edit, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :devices, except: [:edit, :destroy]
+  resources :devices do
+    resources :states, only: [:index]
+  end
   # You can have the root of your site routed with "root"
   root 'main#index'
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
+  match '/history',  to: 'devices#history',     via: 'get'
 
 end
 

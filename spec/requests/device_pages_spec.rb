@@ -15,10 +15,9 @@ describe "Devices pages" do
       sign_in user
       t = DateTime.now.beginning_of_hour
       3.times { FactoryGirl.create(:device) }
-      Device.all.each do |device|
-        device.states.build(content: "#{device.name} message",
-                            stamp: t.advance(sec: -1)).save
-      end
+      device = Device.first
+      device.states.build(content: "#{device.name} message",
+                          stamp: t.advance(sec: -1)).save
       visit devices_path
     end
 
@@ -27,9 +26,10 @@ describe "Devices pages" do
     it "should list each device" do
       Device.all.each do |device|
         expect(page).to have_selector('td', text: device.name)
-        state = device.states.desc(:c_at).first
-        expect(page).to have_selector('td', text: state.content)
-        expect(page).to have_selector('td', text: state.time)
+        if state = device.state
+          expect(page).to have_selector('td', text: state.content)
+          expect(page).to have_selector('td', text: state.time)
+        end
       end
     end
 
@@ -55,14 +55,15 @@ describe "Devices pages" do
     end
 
     describe "profile" do
-      before(:all) do
-        30.times { FactoryGirl.create(:device) }
-        t = DateTime.now.beginning_of_hour
-        Device.all.each do |dev|
-          dev.states.build(content: "#{dev.name} message",
-                           stamp: t.advance(sec: -1)).save
+      before do
+        t = DateTime.now.change(minutes: -1)
+        dev = Device.first
+        30.times do |i|
+          dev.states.build(content: "#{dev.name} message #{i}",
+                           stamp: t).save
+          t.advance(sec: 1)
         end
-        visit device_path(Device.first)
+        visit device_path(dev)
       end
 
       it "should list each state" do

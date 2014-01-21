@@ -245,6 +245,10 @@ table.tp-data col.tp-date {
   width: 10ex;
 }
 
+table.tp-data col.tp-fulldate {
+  width: 20ex;
+}
+
 table.tp-data tr {
   border-left: 2px solid rgba(243,243,243,.85);
   background:rgba(243,243,243,.85);

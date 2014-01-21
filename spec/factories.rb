@@ -16,6 +16,7 @@ FactoryGirl.define do
     sequence(:name)  { |n| "Device #{n}" }
     sequence(:hostname)  { |n| "testdev#{n}" }
     sequence(:filepath) { |n| "/tmp/pcs-testdev-#{n}"}
+    enabled true
   end
 end
 

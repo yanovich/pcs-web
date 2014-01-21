@@ -1,56 +1,49 @@
-<!-- app/views/users/new.html.erb - create a new user
+<!-- app/views/devices/show.html.erb - display and edit a device
 # Copyright 2014 Sergei Ianovich
 #
 # Licensed under AGPLv3 or later
 # Process Control Service Web Interface
 -->
 
-<% provide(:title, (t '.title')) %>
+<% provide(:title, @device.name) %>
 <% content_for :device_class, "active" %>
-
-<div class="row tp-user"><div class="col-lg-6">
-<%= form_for(@device, :html => { class: "form-horizontal" }) do |f| %>
-  <div class="form-group">
-    <label class="tp-photo conrtol-label col-sm-3">
-      <span class="glyphicon glyphicon-hdd"></span>
-    </label>
-    <%= f.label :name, class: "control-label hidden" %>
-    <div class="col-sm-9">
-      <%= f.text_field :name, class: "form-control input-lg" %>
-      <% f.object.errors.messages[:name].each do |m| %>
-        <%= f.label :name, m, class: "help-block" %>
-      <% end %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :hostname, class: "control-label col-sm-3" %>
-    <div class="col-sm-9">
-      <%= f.text_field :hostname, class: "form-control input-sm" %>
-      <% f.object.errors.messages[:hostname].each do |m| %>
-        <%= f.label :hostname, m, class: "help-block" %>
-      <% end %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :filepath, class: "control-label col-sm-3" %>
-    <div class="col-sm-9">
-      <%= f.text_field :filepath, class: "form-control input-sm" %>
-      <% f.object.errors.messages[:filepath].each do |m| %>
-        <%= f.label :filepath, m, class: "help-block" %>
-      <% end %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :enabled, class: "control-label col-sm-3" %>
-    <div class="col-sm-9">
-      <%= f.check_box :enabled, class: "form-control input-sm", disabled: (true unless current_user.admin?) %>
-      <% f.object.errors.messages[:enabled].each do |m| %>
-        <%= f.label :enabled, m, class: "help-block" %>
-      <% end %>
-    </div>
-  </div>
-  <%= f.submit "Изменить", class: "btn btn-sm btn-primary" %>
+<% content_for :sidebar do %>
+  <% if current_user.admin? %>
+    <li>
+    <%= link_to (t 'devices.new.link'), new_device_path,
+      class: "btn btn-sm btn-danger" %>
+    </li>
+  <% end %>
 <% end %>
-</div></div>
+
+
+<div class="row tp-user">
+  <div class="col-lg-4">
+    <%= render @device %>
+  </div>
+  <div class="col-lg-6">
+    <table class="tp-data">
+      <colgroup>
+        <col class="tp-fulldate"/>
+        <col class="tp-mark"/>
+        <col class="tp-text"/>
+      </colgroup>
+      <tbody>
+      <% @device.states.each do |state| %> 
+        <tr>
+        <td class="tp-fulldate">
+          <%= state.time.to_s('%b %d %H:%M:%S') %>
+        </td>
+        <td>
+        </td>
+        <td>
+          <%= state.content %>
+        </td>
+      </tr>
+    <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <!-- vim:set ts=2 sts=2 sw=2 et: -->

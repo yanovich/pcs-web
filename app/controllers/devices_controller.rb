@@ -1,4 +1,4 @@
-# app/controllers/user_controller.rb
+# app/controllers/device_controller.rb
 # Copyright 2014 Sergei Ianovich
 #
 # Licensed under AGPLv3 or later
@@ -39,6 +39,10 @@ class DevicesController < ApplicationController
       flash.now[:danger] = I18n.t :error_msg, count:@device.errors.count
       render 'show'
     end
+  end
+
+  def history
+    @devices = Device.paginate(page: params[:page])
   end
 
   private

@@ -43,6 +43,9 @@ ru:
       title: Создать устройство
     create:
       success: Устройство создано успешно
+  states:
+    index:
+      title: Архив
   error_msg:
     one: 'Присутствует %{count} ошибка'
     few: 'Присутствует %{count} ошибки'

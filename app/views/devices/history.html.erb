@@ -1,4 +1,4 @@
-<!-- app/views/devices/index.html.erb
+<!-- app/views/devices/history.html.erb
 # Copyright 2014 Sergei Ianovich
 #
 # Licensed under AGPLv3 or later
@@ -6,7 +6,7 @@
 -->
 
 <% provide(:title, (t '.title')) %>
-<% content_for :device_class, "active" %>
+<% content_for :state_class, "active" %>
 <% content_for :sidebar do %>
 <li>
   <%= link_to (t 'devices.new.link'), new_device_path,
@@ -37,20 +37,20 @@
             <div class="tp-check"></div>
           </td>
           <td class="tp-sender">
-            <%= link_to device.name, device %>
+            <%= link_to device.name, device_states_path(device) %>
           </td>
           <td>
           </td>
           <td>
             <% if device.state %>
-              <%= link_to device.state.content, device %>
+              <%= link_to device.state.content, device_states_path(device) %>
             <% end %>
           </td>
           <td>
           </td>
           <td class="tp-date">
             <% if device.state %>
-              <%= link_to device.state.time, device %>
+              <%= link_to device.state.time, device_states_path(device) %>
             <% end %>
           </td>
         </tr>
