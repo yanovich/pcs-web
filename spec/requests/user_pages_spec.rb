@@ -67,23 +67,16 @@ describe "User pages" do
     describe "of index" do
       it { should have_title('Пользователи') }
 
-      it "should list each user" do
-        User.all.each do |user|
-          expect(page).to have_selector('td', text: user.name)
-        end
-      end
-
       describe "pagination" do
 
         before(:all) do
-          30.times { FactoryGirl.create(:user); p "user count: #{User.count}" }
+          30.times { FactoryGirl.create(:user) }
           visit users_path
         end
 
-        it {p "user count: #{User.count}"; should have_selector('div.pagination') }
+        it { should have_selector('div.pagination') }
 
         it "should list each user" do
-          p "user count: #{User.count}"
           User.paginate(page: 1).each do |user|
             expect(page).to have_selector('td', text: user.name)
           end

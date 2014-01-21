@@ -50,6 +50,9 @@ Spork.prefork do
     #     --seed 1234
     config.order = "random"
     config.include Capybara::DSL
+    config.color_enabled = true
+    config.tty = true
+    config.formatter = :documentation
 
     config.before(:all) do
       Mongoid.default_session.collections.select {|c| c.name !~ /system/}.each {|c| c.find.remove_all}
