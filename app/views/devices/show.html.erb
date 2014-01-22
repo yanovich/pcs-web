@@ -17,11 +17,11 @@
 <% end %>
 
 
-<div class="row tp-user">
-  <div class="col-lg-4">
+<div class="row">
+  <div class="col-xs-8 col-lg-4 tp-user">
     <%= render @device %>
   </div>
-  <div class="col-lg-6">
+  <div class="col-lg-8">
     <table class="tp-data">
       <colgroup>
         <col class="tp-fulldate"/>
@@ -29,7 +29,7 @@
         <col class="tp-text"/>
       </colgroup>
       <tbody>
-      <% @device.states.each do |state| %> 
+      <% @states.each do |state| %> 
         <tr>
         <td class="tp-fulldate">
           <%= state.stamp.strftime('%b %d %H:%M:%S') %>

@@ -29,8 +29,10 @@ class Device
       file = File.open(self.filepath, 'r')
       file.seek(self.offset, IO::SEEK_SET)
 
+      i = 0
       begin
         while (line = file.gets)
+          p line
           start = self.offset
           self.offset = file.tell
           self.save
@@ -40,13 +42,16 @@ class Device
 
           line.slice!(" #{self.hostname} ") if line.index(" #{self.hostname} ") == 0
           size = self.offset - start
-          self.states.build(start: start, size: size, content: line.strip,
-                            stamp: stamp.to_time.localtime).save
+          state = State.new(start: start, size: size, content: line.strip,
+                            stamp: stamp.to_time.localtime, device_id: self.id)
+          state.save
+          i += 1
+          break if i > 1000
         end
       end
     rescue => e
     ensure
-      file.close
+      file.close if file
     end
   end
 end

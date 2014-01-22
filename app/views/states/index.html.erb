@@ -9,7 +9,7 @@
 <% content_for :state_class, "active" %>
 <% content_for :toolbar do %>
 <div class="pull-right">
-  <%= will_paginate %>
+  <%= paginate @states %>
 </div>
 <% end %>
 <label class="input-lg">

@@ -48,7 +48,7 @@ describe "Devices pages" do
       it { should have_selector('div.pagination') }
 
       it "should list each device" do
-        Device.paginate(page: 1).each do |device|
+        Device.page(1).each do |device|
           expect(page).to have_selector('td', text: device.name)
         end
       end
@@ -68,7 +68,7 @@ describe "Devices pages" do
 
       it "should list each state" do
         device = Device.first
-        device.states.paginate(page: 1).each do |state|
+        device.states.page(1).each do |state|
           expect(page).to have_selector('td', text: state.content)
         end
       end

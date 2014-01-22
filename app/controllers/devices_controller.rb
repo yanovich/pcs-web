@@ -13,6 +13,7 @@ class DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
+    @states = State.where(device_id: @device.id).desc(:c_at).page(1)
   end
 
   def new

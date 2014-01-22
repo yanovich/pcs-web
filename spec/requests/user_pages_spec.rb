@@ -77,7 +77,7 @@ describe "User pages" do
         it { should have_selector('div.pagination') }
 
         it "should list each user" do
-          User.paginate(page: 1).each do |user|
+          User.page(1).each do |user|
             expect(page).to have_selector('td', text: user.name)
           end
         end

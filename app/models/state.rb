@@ -7,6 +7,8 @@
 class State
   include Mongoid::Document
   include Mongoid::Timestamps::Created::Short
+  include Kaminari::MongoidExtension::Document
+  include Kaminari::MongoidExtension::Criteria
 
   belongs_to :device
 
@@ -15,7 +17,7 @@ class State
   field :start,   type: Integer
   field :size,    type: Integer
 
-  index({ device_id: 1, c_at: -1 })
+  index({ device_id: 1, c_at: -1, _id: 1 })
 
   def time
     if (DateTime.now - stamp) > 1
