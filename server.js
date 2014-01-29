@@ -15,6 +15,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(express.logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
   res.render('index', { title: 'asutp.io' });

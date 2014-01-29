@@ -1,5 +1,73 @@
+// views/index.jade -- mockup main page
+// Copyright 2014 Sergei Ianovich
+//
+// Licensed under AGPL-3.0 or later, see LICENSE
+// Process Control Service Web Interface
+
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  header.navbar
+    .navbar-header
+      a.navbar-brand(href='/') asutp.io
+    nav.collapse.navbar-collapse
+      ul.nav.navbar-nav.navbar-right
+        li
+          a(href='#') Оператор Имя Отчество
+  .tp-main.row
+    .col-xs-4.col-md-2.col-xl-2.tp-sidebar
+      ul.nav.tp-menu-side
+        li.active
+          a(href='#') Устройства
+        li
+          a(href='#') Apхив
+        li
+          a(href='#') Пользователи
+    .col-xs-12.col-md-10.col-xl-14.tp-content
+      .tp-data
+        table.tp-data
+          colgroup
+            col.tp-check
+            col.tp-led
+            col.tp-sender
+            col.tp-mark
+            col.tp-text
+            col.tp-spare
+            col.tp-date
+          tbody
+            tr
+              td.tp-check
+                .tp-check
+              td
+              td.tp-sender
+                span Название объекта
+              td
+              td
+                span Состояние
+                span.tp-details - пояснение
+              td
+              td
+                span время/дата
+            tr
+              td.tp-check
+                .tp-check
+              td
+              td.tp-sender
+                span Название объекта
+              td
+              td
+                span Состояние
+                span.tp-details - пояснение
+              td
+              td
+                span время/дата
+        .clearfix
+      .tp-footer
+        .tp-left &nbsp;
+        .tp-center
+          span ©2014 ЭлектроПлюс
+          |  - 
+          a(href='https://www.gnu.org/licenses/quick-guide-gplv3.ru.html', target='_blank') AGPL-3.0
+        .tp-right &nbsp;
+
+//- vim:ts=2 sts=2 sw=2 et:
