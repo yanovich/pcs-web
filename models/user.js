@@ -12,7 +12,10 @@ var user_schema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true },
-  email: String
+  email: {
+    type: String,
+    required: true,
+    trim: true }
 });
 
 var User = mongoose.model('User', user_schema);

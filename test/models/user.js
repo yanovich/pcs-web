@@ -38,6 +38,16 @@ describe('User', function () {
       });
     });
   })
+
+  describe('when email is not present', function () {
+    it('should not be valid', function (done) {
+      user.email = " ";
+      user.validate(function(err) {
+        expect(!err).to.be(false);
+        done();
+      });
+    });
+  })
 });
 
 // vim:ts=2 sts=2 sw=2 et:
