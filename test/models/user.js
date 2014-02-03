@@ -23,6 +23,10 @@ describe('User', function () {
     expect(user.email).not.to.be.an('undefined');
   });
 
+  it('should respond to hash', function () {
+    expect(user.hash).not.to.be.an('undefined');
+  });
+
   it('should be valid', function (done) {
     user.validate(function (err) {
       expect(!err).to.be(true);

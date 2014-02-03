@@ -21,7 +21,10 @@ var user_schema = new mongoose.Schema({
     required: true,
     unique: true,
     match: /^[a-z][\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+$/i,
-    trim: true }
+    trim: true },
+  hash : {
+    type: String,
+    default: '' }
 });
 
 user_schema.pre('save', function (next) {
