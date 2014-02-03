@@ -6,11 +6,15 @@
  */
 
 var mongoose = require('mongoose');
+var validates = require('./_validates');
 
 var user_schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    validate: {
+      validator: validates.length.max(50),
+      msg: 'name is too long' },
     trim: true },
   email: {
     type: String,

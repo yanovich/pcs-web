@@ -48,6 +48,19 @@ describe('User', function () {
       });
     });
   })
+
+  describe('when name is too long', function () {
+    it('should not be valid', function (done) {
+      var name = "";
+      for (var i = 0; i < 51; i++)
+        name += 'a';
+      user.name = name;
+      user.validate(function(err) {
+        expect(!err).to.be(false);
+        done();
+      });
+    });
+  })
 });
 
 // vim:ts=2 sts=2 sw=2 et:
