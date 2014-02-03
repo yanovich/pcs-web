@@ -7,11 +7,16 @@
 
 var mongoose = require('mongoose');
 
-var User = new mongoose.Schema({
-  name: String,
+var user_schema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true },
   email: String
 });
 
-module.exports = mongoose.model('User', User);
+var User = mongoose.model('User', user_schema);
+
+module.exports = User;
 
 // vim:ts=2 sts=2 sw=2 et:
