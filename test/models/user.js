@@ -10,7 +10,8 @@ var User = require('../../models/user');
 
 describe('User', function () {
   var user;
-  beforeEach(function () {
+  beforeEach(function (done) {
+    User.find().remove(done);
     user = new User({ name: "Example User", email: "user@example.com" });
   })
 
@@ -68,6 +69,19 @@ describe('User', function () {
       user.validate(function(err) {
         expect(!err).to.be(false);
         done();
+      });
+    });
+  })
+
+  describe('when email is already taken', function () {
+    it('should not be valid', function (done) {
+      var dup = new User({ name: "Example User", email: "user@example.com" });
+      dup.save(function (err) {
+        expect(!err).to.be(true);
+        user.save(function (err) {
+          expect(!err).to.be(false);
+          done();
+        });
       });
     });
   })

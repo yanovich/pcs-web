@@ -19,6 +19,7 @@ var user_schema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     match: /^[a-z][\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+$/i,
     trim: true }
 });
