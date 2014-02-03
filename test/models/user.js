@@ -17,6 +17,13 @@ describe('User', function(){
   it('should respond to email', function(){
     expect(user.email).not.to.be.an('undefined');
   });
+
+  it('should be valid', function(done){
+    user.validate(function(err) {
+      expect(err).not.to.be(true);
+      done();
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
