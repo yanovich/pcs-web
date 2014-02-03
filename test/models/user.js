@@ -76,6 +76,7 @@ describe('User', function () {
   describe('when email is already taken', function () {
     it('should not be valid', function (done) {
       var dup = new User({ name: "Example User", email: "user@example.com" });
+      dup.email = dup.email.toUpperCase();
       dup.save(function (err) {
         expect(!err).to.be(true);
         user.save(function (err) {

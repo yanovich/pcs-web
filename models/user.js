@@ -24,6 +24,11 @@ var user_schema = new mongoose.Schema({
     trim: true }
 });
 
+user_schema.pre('save', function (next) {
+  this.email = this.email.toLowerCase();
+  next();
+});
+
 var User = mongoose.model('User', user_schema);
 
 module.exports = User;
