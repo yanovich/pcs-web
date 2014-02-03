@@ -61,6 +61,16 @@ describe('User', function () {
       });
     });
   })
+
+  describe('when email format is invalid', function () {
+    it('should not be valid', function (done) {
+      user.email = "user@example,com";
+      user.validate(function(err) {
+        expect(!err).to.be(false);
+        done();
+      });
+    });
+  })
 });
 
 // vim:ts=2 sts=2 sw=2 et:
