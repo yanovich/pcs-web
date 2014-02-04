@@ -18,6 +18,10 @@ var Validations = function () {
   this.password = function (value) {
     if (this.isNew && (!this._password || this._password.trim() === ''))
       this.invalidate('password', 'required');
+
+    if (this._password || this._confirmation)
+      if (this._password !== this._confirmation)
+        this.invalidate('confirmation', "doesn't match password");
   };
 }
 

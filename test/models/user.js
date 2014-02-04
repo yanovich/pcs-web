@@ -110,6 +110,14 @@ describe('User', function () {
         done();
       });
     });
+
+    it('should require a password to match its confirmation', function (done) {
+      user.confirmation = "invalid";
+      user.validate(function(err) {
+        expect(!err.errors['confirmation']).to.be(false);
+        done();
+      });
+    });
   })
 });
 
