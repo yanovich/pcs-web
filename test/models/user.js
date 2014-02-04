@@ -135,6 +135,7 @@ describe('User', function () {
 
     it('should hash password', function () {
       expect(user.hash.length).not.to.be(0);
+      expect(user.hash).not.to.be(user.password);
     });
 
     it('should authenticate a know user with valid password', function (done) {

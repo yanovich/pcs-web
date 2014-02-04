@@ -6,6 +6,7 @@
  */
 
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 var validates = require('./_validates');
 
 var user_schema = new mongoose.Schema({
@@ -47,18 +48,11 @@ user_schema.virtual('confirmation').set(function (value) {
 
 user_schema.methods = {
   authenticate: function (password, cb) {
-    var self = this;
-    this.encrypt(password, function (err, hash) {
-      var valid = false;
-      if (!err && self.hash === hash)
-        valid = true;
-
-      cb(err, valid);
-    })
+    bcrypt.compare(password, this.hash, cb);
   },
 
   encrypt: function (password, cb) {
-    cb(undefined, password); //FIXME: actually hash it
+    bcrypt.hash(password, 1, cb);
   }
 }
 
