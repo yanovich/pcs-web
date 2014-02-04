@@ -127,6 +127,16 @@ describe('User', function () {
       });
     });
   })
+
+  describe('password hashing', function () {
+    beforeEach(function (done) {
+      user.save(done);
+    })
+
+    it('should hash password', function () {
+      expect(user.hash.length).not.to.be(0);
+    });
+  })
 });
 
 // vim:ts=2 sts=2 sw=2 et:

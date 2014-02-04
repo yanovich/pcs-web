@@ -50,6 +50,11 @@ user_schema.pre('save', function (next) {
   next();
 });
 
+user_schema.pre('save', function (next) {
+  this.hash = this._password; //FIXME: actually hash it
+  next();
+});
+
 var User = mongoose.model('User', user_schema);
 
 module.exports = User;
