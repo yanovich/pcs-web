@@ -15,6 +15,10 @@ Length.prototype.max = function (max_len) {
 
 var Validations = function () {
   this.length = new Length;
+  this.password = function (value) {
+    if (this.isNew && (!this._password || this._password.trim() === ''))
+      this.invalidate('password', 'required');
+  };
 }
 
 module.exports = new Validations;

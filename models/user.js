@@ -24,6 +24,8 @@ var user_schema = new mongoose.Schema({
     trim: true },
   hash : {
     type: String,
+    validate: {
+      validator: validates.password },
     default: '' }
 });
 

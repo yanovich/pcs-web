@@ -8,12 +8,14 @@
 var expect = require('expect.js');
 var User = require('../../models/user');
 
+var userAttrs = { name: "Example User", email: "user@example.com",
+      password: 'password', confirmation: 'password' }
+
 describe('User', function () {
   var user;
   beforeEach(function (done) {
     User.find().remove(done);
-    user = new User({ name: "Example User", email: "user@example.com",
-      password: 'password', confirmation: 'password' });
+    user = new User(userAttrs);
   })
 
   it('should respond to name', function () {
@@ -88,7 +90,7 @@ describe('User', function () {
 
   describe('when email is already taken', function () {
     it('should not be valid', function (done) {
-      var dup = new User({ name: "Example User", email: "user@example.com" });
+      var dup = new User(userAttrs);
       dup.email = dup.email.toUpperCase();
       dup.save(function (err) {
         expect(!err).to.be(true);
@@ -100,15 +102,15 @@ describe('User', function () {
     });
   })
 
-//  describe('password validations', function () {
-//    it('should require a password for a new user', function (done) {
-//      user.email = "user@example,com";
-//      user.validate(function(err) {
-//        expect(!err).to.be(false);
-//        done();
-//      });
-//    });
-//  })
+  describe('password validations', function () {
+    it('should require a password for a new user', function (done) {
+      user.password = " ";
+      user.validate(function(err) {
+        expect(!err.errors['password']).to.be(false);
+        done();
+      });
+    });
+  })
 });
 
 // vim:ts=2 sts=2 sw=2 et:
