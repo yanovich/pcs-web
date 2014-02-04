@@ -5,23 +5,33 @@
  * Process Control Service Web Interface
  */
 
-var Length = function () {}
-
-Length.prototype.max = function (max_len) {
-  return function (value) {
-    return value.length <= max_len;
-  }
-}
-
 var Validations = function () {
-  this.length = new Length;
-  this.password = function (value) {
-    if (this.isNew && (!this._password || this._password.trim() === ''))
-      this.invalidate('password', 'required');
+  this.length = function (opts) {
+    return function (value) {
+      var valid = true;
 
-    if (this._password || this._confirmation)
-      if (this._password !== this._confirmation)
-        this.invalidate('confirmation', "doesn't match password");
+      if (opts['max'])
+        if (value.length > opts['max'])
+          valid = false;
+
+      return valid;
+    };
+  };
+
+  this.password = function (opts) {
+    return function (value) {
+      if (this.isNew && (!this._password || this._password.trim() === ''))
+        this.invalidate('password', 'required');
+
+      if (this._password || this._confirmation)
+        if (this._password !== this._confirmation)
+          this.invalidate('confirmation', "doesn't match password");
+
+      if (opts['length'])
+        if (opts['length']['min'])
+          if (this._password.length < opts['length']['min'])
+            this.invalidate('password', 'too short');
+    };
   };
 }
 

@@ -13,7 +13,7 @@ var user_schema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: validates.length.max(50),
+      validator: validates.length({ max: 50 }),
       msg: 'name is too long' },
     trim: true },
   email: {
@@ -25,7 +25,7 @@ var user_schema = new mongoose.Schema({
   hash : {
     type: String,
     validate: {
-      validator: validates.password },
+      validator: validates.password({ length: { min: 6 } } ) },
     default: '' }
 });
 

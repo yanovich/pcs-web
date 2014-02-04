@@ -118,6 +118,14 @@ describe('User', function () {
         done();
       });
     });
+
+    it('should reject short passwords', function (done) {
+      user.password = user.confirmation = "short";
+      user.validate(function(err) {
+        expect(!err.errors['password']).to.be(false);
+        done();
+      });
+    });
   })
 });
 
