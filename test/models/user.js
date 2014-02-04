@@ -12,7 +12,8 @@ describe('User', function () {
   var user;
   beforeEach(function (done) {
     User.find().remove(done);
-    user = new User({ name: "Example User", email: "user@example.com" });
+    user = new User({ name: "Example User", email: "user@example.com",
+      password: 'password', confirmation: 'password' });
   })
 
   it('should respond to name', function () {
@@ -25,6 +26,14 @@ describe('User', function () {
 
   it('should respond to hash', function () {
     expect(user.hash).not.to.be.an('undefined');
+  });
+
+  it('should respond to password', function () {
+    expect(user.password).not.to.be.an('undefined');
+  });
+
+  it('should respond to confirmation', function () {
+    expect(user.confirmation).not.to.be.an('undefined');
   });
 
   it('should be valid', function (done) {
@@ -90,6 +99,16 @@ describe('User', function () {
       });
     });
   })
+
+//  describe('password validations', function () {
+//    it('should require a password for a new user', function (done) {
+//      user.email = "user@example,com";
+//      user.validate(function(err) {
+//        expect(!err).to.be(false);
+//        done();
+//      });
+//    });
+//  })
 });
 
 // vim:ts=2 sts=2 sw=2 et:

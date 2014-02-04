@@ -27,6 +27,22 @@ var user_schema = new mongoose.Schema({
     default: '' }
 });
 
+user_schema.virtual('password').get(function () {
+  return this._password;
+});
+
+user_schema.virtual('password').set(function (value) {
+  this._password = value;
+});
+
+user_schema.virtual('confirmation').get(function () {
+  return this._confirmation;
+});
+
+user_schema.virtual('confirmation').set(function (value) {
+  this._confirmation = value;
+});
+
 user_schema.pre('save', function (next) {
   this.email = this.email.toLowerCase();
   next();
