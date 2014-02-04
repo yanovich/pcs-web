@@ -136,6 +136,22 @@ describe('User', function () {
     it('should hash password', function () {
       expect(user.hash.length).not.to.be(0);
     });
+
+    it('should authenticate a know user with valid password', function (done) {
+      user.authenticate('password', function (err, valid) {
+        expect(!err).to.be(true);
+        expect(valid).to.be(true);
+        done();
+      });
+    });
+
+    it('should not authenticate with invalid password', function (done) {
+      user.authenticate('invalid', function (err, valid) {
+        expect(!err).to.be(true);
+        expect(valid).to.be(false);
+        done();
+      });
+    });
   })
 });
 

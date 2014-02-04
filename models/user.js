@@ -45,14 +45,34 @@ user_schema.virtual('confirmation').set(function (value) {
   this._confirmation = value;
 });
 
+user_schema.methods = {
+  authenticate: function (password, cb) {
+    var self = this;
+    this.encrypt(password, function (err, hash) {
+      var valid = false;
+      if (!err && self.hash === hash)
+        valid = true;
+
+      cb(err, valid);
+    })
+  },
+
+  encrypt: function (password, cb) {
+    cb(undefined, password); //FIXME: actually hash it
+  }
+}
+
 user_schema.pre('save', function (next) {
   this.email = this.email.toLowerCase();
   next();
 });
 
 user_schema.pre('save', function (next) {
-  this.hash = this._password; //FIXME: actually hash it
-  next();
+  var self = this;
+  this.encrypt(this._password, function (err, hash) {
+    self.hash = hash;
+    next();
+  });
 });
 
 var User = mongoose.model('User', user_schema);
