@@ -5,10 +5,8 @@
  * Process Control Service Web Interface
  */
 
-var request = require('supertest');
-var expect = require('expect.js');
-
 var app = require('../app');
+var request = require('supertest');
 var server = request(app);
 
 describe('root page', function(){
@@ -17,10 +15,7 @@ describe('root page', function(){
       .get('/')
       .expect(200)
       .expect(/asutp\.io/)
-      .end(function(err, res) {
-        expect(!err).to.eql(true);
-        done();
-      });
+      .end(done)
   })
 });
 
