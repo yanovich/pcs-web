@@ -7,6 +7,16 @@
 extends ../layout
 
 block main
-  h1 Sign in
+  header.banner-signin
+    a.navbar-brand(href='/') asutp.io
+  .container
+    h2.form-signin-heading.text-center Please sign in to proceed
+    form(method='POST', action='/signin').form-signin
+      label(for='email').hidden Email
+      input(id='email', name='email', type='text', placeholder='Email').form-control
+      label(for='password').hidden Password
+      input(id='password', name='password', type='password', placeholder='Password').form-control
+      input(type='submit',name='submit',value='Sign in').btn.btn-lg.btn-primary.btn-block
+  include ../_footer
 
 //- vim:ts=2 sts=2 sw=2 et:
