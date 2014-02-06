@@ -9,6 +9,7 @@ var express = require('express');
 var path = require('path');
 
 var userRoutes = require('./routes/user');
+var sessionRoutes = require('./routes/session');
 
 var app = express();
 
@@ -20,11 +21,13 @@ if (process.env.NODE_ENV !== 'test')
   app.use(express.logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+sessionRoutes(app);
+
+userRoutes(app);
+
 app.get('/', function(req, res) {
   res.render('index', { title: 'asutp.io' });
 });
-
-userRoutes(app);
 
 app.use(function (err, req, res, next) {
   if (err)
