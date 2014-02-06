@@ -15,7 +15,7 @@ var User = require('../../models/user');
 var userAttrs = { name: "Example User1", email: "user-1@example.com",
       password: 'password', confirmation: 'password' }
 
-describe('root page', function(){
+describe('User#show page', function(){
   var user;
 
   before( function (done) {
@@ -23,7 +23,7 @@ describe('root page', function(){
     user.save(done);
   });
 
-  it('should contain logo', function(done){
+  it('should display user', function(done){
     server
       .get('/users/' + user._id.toString())
       .expect(200)
