@@ -9,8 +9,8 @@ var path = require('path');
 var express = require('express');
 var mongoose = require('mongoose');
 
-var userRoutes = require('./routes/user');
-var sessionRoutes = require('./routes/session');
+var users = require('./routes/user');
+var sessions = require('./routes/session');
 
 var config = require('./config');
 
@@ -23,10 +23,13 @@ app.set('view engine', 'jade');
 if (process.env.NODE_ENV !== 'test')
   app.use(express.logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded());
 
-sessionRoutes(app);
+app.get('/signin', sessions.new);
+app.post('/signin', sessions.create);
 
-userRoutes(app);
+app.param('user', users.load);
+app.get('/users/:user', users.show);
 
 app.get('/', function(req, res) {
   res.render('index', { title: 'asutp.io' });

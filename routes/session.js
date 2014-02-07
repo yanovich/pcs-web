@@ -5,12 +5,36 @@
  * Process Control Service Web Interface
  */
 
-module.exports = function (app) {
-  app.get('/signin', function (req, res) {
-    res.render('sessions/new', {
-      title: 'Sign in'
-    })
+var User = require('../models/user');
+
+function sessionNew(req, res) {
+  res.render('sessions/new', {
+    title: 'Sign in'
   });
 }
 
+module.exports.new = sessionNew;
+
+function loadOperatorByEmail(req, res, next) {
+  User.findOne({ email: req.body.email }, function (err, user) {
+    if (err) {
+      res.send(500, 'Sorry, internal server error.');
+      return;
+    }
+    req.operator = user;
+    next();
+  })
+}
+
+function createSession(req, res) {
+  console.log(req.body);
+  res.render('sessions/new', {
+    title: 'Sign in',
+    errors: {
+      password: ['Wrong email or password'] }
+  });
+}
+
+module.exports.create = [loadOperatorByEmail,
+                         createSession];
 // vim:ts=2 sts=2 sw=2 et:

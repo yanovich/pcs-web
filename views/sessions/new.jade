@@ -6,17 +6,25 @@
 
 extends ../layout
 
+
 block main
   header.banner-signin
     a.navbar-brand(href='/') asutp.io
   .container
     h2.form-signin-heading.text-center Please sign in to proceed
-    form(method='POST', action='/signin').form-signin
+    form(method='post', action='/signin', accept-charset="UTF-8").form-signin
       label(for='email').hidden Email
       input(id='email', name='email', type='text', placeholder='Email').form-control
-      label(for='password').hidden Password
-      input(id='password', name='password', type='password', placeholder='Password').form-control
-      input(type='submit',name='submit',value='Sign in').btn.btn-lg.btn-primary.btn-block
+      - var passwordClass = 'form-group'
+      - if (errors && errors['password']) passwordClass += ' has-error'
+      div(class='#{passwordClass}')
+        label(for='password').hidden Password
+        input(id='password', name='password', type='password',
+          placeholder='Password').form-control
+        if (errors && errors['password'])
+          each error in errors['password']
+            label(for='password').help-block= error
+        input(type='submit',name='submit',value='Sign in').btn.btn-lg.btn-primary.btn-block
   include ../_footer
 
 //- vim:ts=2 sts=2 sw=2 et:
