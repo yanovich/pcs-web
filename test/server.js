@@ -5,9 +5,8 @@
  * Process Control Service Web Interface
  */
 
-var app = require('../app');
 var request = require('supertest');
-var server = request(app);
+var server = request(global.url);
 
 describe('root page', function(){
   it('should contain logo', function(done){

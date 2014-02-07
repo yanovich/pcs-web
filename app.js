@@ -5,15 +5,18 @@
  * Process Control Service Web Interface
  */
 
-var express = require('express');
 var path = require('path');
+var express = require('express');
+var mongoose = require('mongoose');
 
 var userRoutes = require('./routes/user');
 var sessionRoutes = require('./routes/session');
 
+var config = require('./config');
+
 var app = express();
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -34,6 +37,12 @@ app.use(function (err, req, res, next) {
     console.log(err);
 
   next(err);
+});
+
+mongoose.connect(config.dbUrl);
+
+process.on('exit', function() {
+  mongoose.connection.close();
 });
 
 module.exports = app;

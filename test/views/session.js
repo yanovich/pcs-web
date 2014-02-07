@@ -8,8 +8,7 @@
 var request = require('supertest');
 var expect = require('expect.js');
 
-var app = require('../../app');
-var server = request(app);
+var server = request(global.url);
 
 describe('signin page', function() {
   it('should display prompt', function(done) {

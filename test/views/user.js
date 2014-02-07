@@ -8,8 +8,7 @@
 var request = require('supertest');
 var expect = require('expect.js');
 
-var app = require('../../app');
-var server = request(app);
+var server = request(global.url);
 
 var User = require('../../models/user');
 var userAttrs = { name: "Example User1", email: "user-1@example.com",
