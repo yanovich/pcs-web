@@ -15,13 +15,14 @@ block main
     form(method='post', action='/signin', accept-charset="UTF-8").form-signin
       label(for='email').hidden Email
       input(id='email', name='email', type='text', placeholder='Email').form-control
-      - var passwordClass = 'form-group'
-      - if (errors && errors['password']) passwordClass += ' has-error'
-      div(class='#{passwordClass}')
+      - var passwordClass = ''
+      - if (errors)
+        - if (errors['password']) passwordClass += ' has-error'
+      div(class='form-group#{passwordClass}')
         label(for='password').hidden Password
         input(id='password', name='password', type='password',
           placeholder='Password').form-control
-        if (errors && errors['password'])
+        if passwordClass !== ''
           each error in errors['password']
             label(for='password').help-block= error
         input(type='submit',name='submit',value='Sign in').btn.btn-lg.btn-primary.btn-block
