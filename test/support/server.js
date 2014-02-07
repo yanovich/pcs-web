@@ -8,7 +8,7 @@
 var app = require('../../app')
 var port = app.get('port');
 
-if (true) {
+if (!port) {
   var http = require('http');
   var server = http.createServer(app);
   server.listen(app.get('port'));

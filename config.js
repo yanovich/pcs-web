@@ -27,6 +27,9 @@ else if (process.env.NODE_ENV === 'production')
 else
   conf = dev;
 
+// Allow environment to override config
+if (process.env.PORT || process.env.PORT === 0)
+  conf.port = process.env.PORT;
 
 module.exports = conf;
 
