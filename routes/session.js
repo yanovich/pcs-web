@@ -16,7 +16,6 @@ function sessionNew(req, res) {
 module.exports.new = sessionNew;
 
 module.exports.requireAuthentication  = function(req, res, next) {
-  console.log('session: ' + req.session);
   if (!req.session.operatorId)
     return res.redirect('/signin');
 

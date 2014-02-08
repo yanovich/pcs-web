@@ -41,7 +41,6 @@ app.get('/users/:user', users.show);
 
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';
-  console.log(req.operator);
   if (req.operator)
     title = req.operator.name + ' ' + title;
 
