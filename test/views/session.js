@@ -37,13 +37,30 @@ describe('signin page', function() {
       browser
         .visit('/signin')
         .then(function () {
-          browser.fill('Email', attrs.email);
-          browser.fill('Password', attrs.password);
           browser.pressButton('Sign in')
             .then(function () {
               expect(browser.success).to.be(true);
               expect(browser.queryAll('div.form-group.has-error').length).to.be(1);
               expect(browser.text('label.help-block')).to.be('Wrong email or password');
+            })
+            .then(done, done);
+        })
+    })
+  })
+
+  describe('with valid information', function () {
+    it('should accept user', function (done) {
+      browser
+        .visit('/signin')
+        .then(function () {
+          browser.fill('Email', attrs.email);
+          browser.fill('Password', attrs.password);
+          browser.pressButton('Sign in')
+            .then(function () {
+              expect(browser.success).to.be(true);
+              expect(browser.queryAll('div.form-group.has-error').length).to.be(0);
+              expect(browser.location.pathname).to.be('/');
+              expect(browser.text('title')).to.contain(attrs.name);
             })
             .then(done, done);
         })

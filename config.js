@@ -8,11 +8,13 @@
 var test = {
   port: 0,
   dbUrl: 'mongodb://localhost:27017/pcs_web-test',
+  secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXK',
 };
 
 var dev = {
   port: 3000,
   dbUrl: 'mongodb://localhost:27017/pcs_web-dev',
+  secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXK',
 };
 
 var production = {

@@ -8,9 +8,11 @@
 var path = require('path');
 var express = require('express');
 var mongoose = require('mongoose');
+var clientSessions = require("client-sessions");
 
 var users = require('./routes/user');
 var sessions = require('./routes/session');
+var authUser = sessions.requireAuthentication;
 
 var config = require('./config');
 
@@ -25,14 +27,25 @@ if (process.env.NODE_ENV !== 'test')
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded());
 
+
+app.use(clientSessions({
+  secret: config.secret,
+  cookieName: 'session',
+}));
+
 app.get('/signin', sessions.new);
 app.post('/signin', sessions.create);
 
 app.param('user', users.load);
 app.get('/users/:user', users.show);
 
-app.get('/', function(req, res) {
-  res.render('index', { title: 'asutp.io' });
+app.get('/', authUser, function(req, res) {
+  var title = 'asutp.io';
+  console.log(req.operator);
+  if (req.operator)
+    title = req.operator.name + ' ' + title;
+
+  res.render('index', { title: title });
 });
 
 app.use(function (err, req, res, next) {
