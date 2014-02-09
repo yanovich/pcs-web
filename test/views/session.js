@@ -86,4 +86,19 @@ describe('signin page', function() {
   })
 });
 
+describe('authorization', function() {
+  describe('of non-signed-in users', function () {
+    describe('accessing root page', function () {
+      beforeEach(function (done) {
+        browser
+          .visit('/')
+          .then(done, done)
+      })
+
+      it('should require sign in', function () {
+        expect(browser.location.pathname).to.be('/signin');
+      })
+    })
+  })
+});
 // vim:ts=2 sts=2 sw=2 et:
