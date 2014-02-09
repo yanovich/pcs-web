@@ -6,10 +6,8 @@
  */
 
 var expect = require('expect.js');
-var request = require('supertest');
 var Browser = require('zombie');
 
-var server = request(global.url);
 var browser = new Browser({ site: global.url });
 
 var User = require('../../models/user');
@@ -24,46 +22,40 @@ describe('signin page', function() {
     user.save(done);
   });
 
-  it('should display prompt', function(done) {
-    server
-      .get('/signin')
-      .expect(200)
-      .expect(new RegExp('Sign in'))
-      .end(done);
+  beforeEach( function (done) {
+    browser.visit('/signin').then(done, done);
+  });
+
+  it('should display prompt', function() {
+    expect(browser.statusCode).to.be(200);
+    expect(browser.text('title')).to.contain('Sign in');
   })
 
   describe('with invalid information', function () {
     it('should decline signin', function (done) {
-      browser
-        .visit('/signin')
+      browser.pressButton('Sign in')
         .then(function () {
-          browser.pressButton('Sign in')
-            .then(function () {
-              expect(browser.success).to.be(true);
-              expect(browser.queryAll('div.form-group.has-error').length).to.be(1);
-              expect(browser.text('label.help-block')).to.be('Wrong email or password');
-            })
-            .then(done, done);
+          expect(browser.success).to.be(true);
+          expect(browser.queryAll('div.form-group.has-error').length).to.be(1);
+          expect(browser.text('label.help-block')).to.be('Wrong email or password');
         })
+        .then(done, done);
     })
   })
 
   describe('with valid information', function () {
     it('should accept user', function (done) {
       browser
-        .visit('/signin')
+        .fill('Email', attrs.email)
+        .fill('Password', attrs.password)
+        .pressButton('Sign in')
         .then(function () {
-          browser.fill('Email', attrs.email);
-          browser.fill('Password', attrs.password);
-          browser.pressButton('Sign in')
-            .then(function () {
-              expect(browser.success).to.be(true);
-              expect(browser.queryAll('div.form-group.has-error').length).to.be(0);
-              expect(browser.location.pathname).to.be('/');
-              expect(browser.text('title')).to.contain(attrs.name);
-            })
-            .then(done, done);
+          expect(browser.success).to.be(true);
+          expect(browser.queryAll('div.form-group.has-error').length).to.be(0);
+          expect(browser.location.pathname).to.be('/');
+          expect(browser.text('title')).to.contain(attrs.name);
         })
+        .then(done, done);
     })
   })
 });
