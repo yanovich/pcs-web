@@ -8,9 +8,23 @@
 var User = require('../models/user');
 
 function sessionNew(req, res) {
-  res.render('sessions/new', {
-    title: 'Sign in'
-  });
+  function renderNew () {
+    res.render('sessions/new', {
+      title: 'Sign in'
+    });
+  }
+  if (!req.session.operatorId)
+    return renderNew();
+
+  User.findOne({ _id: req.session.operatorId }, function (err, user) {
+    if (err)
+      return res.send(500, 'Sorry, internal server error.');
+
+    if (user)
+      return res.redirect('/');
+
+    return renderNew();
+  })
 }
 
 module.exports.new = sessionNew;

@@ -44,7 +44,7 @@ describe('signin page', function() {
   })
 
   describe('with valid information', function () {
-    beforeEach(function (done) {
+    before(function (done) {
       browser
         .fill('Email', attrs.email)
         .fill('Password', attrs.password)
@@ -57,6 +57,18 @@ describe('signin page', function() {
       expect(browser.queryAll('div.form-group.has-error').length).to.be(0);
       expect(browser.location.pathname).to.be('/');
       expect(browser.text('title')).to.contain(attrs.name);
+    })
+
+    describe('on revisit', function () {
+      beforeEach(function (done) {
+        browser
+          .visit('/signin')
+          .then(done, done)
+      })
+
+      it('should render /', function () {
+        expect(browser.location.pathname).to.be('/');
+      })
     })
   })
 });
