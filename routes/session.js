@@ -6,6 +6,7 @@
  */
 
 var User = require('../models/user');
+var auth = require('./_auth');
 
 function sessionNew(req, res) {
   function renderNew () {
@@ -28,22 +29,6 @@ function sessionNew(req, res) {
 }
 
 module.exports.new = sessionNew;
-
-module.exports.requireAuthentication  = function(req, res, next) {
-  if (!req.session.operatorId)
-    return res.redirect('/signin');
-
-  User.findOne({ _id: req.session.operatorId }, function (err, user) {
-    if (err)
-      return res.send(500, 'Sorry, internal server error.');
-
-    if (!user)
-      return res.redirect('/signin');
-
-    req.operator = user;
-    next();
-  })
-}
 
 function loadOperatorByEmail(req, res, next) {
   User.findOne({ email: req.body.email }, function (err, user) {
@@ -78,4 +63,12 @@ function createSession(req, res) {
 
 module.exports.create = [loadOperatorByEmail,
                          createSession];
+
+function destroySession(req, res) {
+    req.session.operatorId = undefined;
+    res.redirect('/signin');
+}
+
+module.exports.destroy = [auth.authenticate,
+                         destroySession];
 // vim:ts=2 sts=2 sw=2 et:

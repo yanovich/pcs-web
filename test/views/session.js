@@ -70,6 +70,19 @@ describe('signin page', function() {
         expect(browser.location.pathname).to.be('/');
       })
     })
+
+    describe('followed by signout', function () {
+      beforeEach(function (done) {
+        browser
+          .pressButton('Sign out')
+          .then(done, done)
+      })
+
+      it('should destroy session', function () {
+        expect(browser.location.pathname).to.be('/signin');
+        expect(browser.text('title')).to.contain('Sign in');
+      })
+    })
   })
 });
 

@@ -6,6 +6,7 @@
  */
 
 var User = require('../models/user');
+var auth = require('./_auth');
 
 module.exports.load = function (req, res, next, id) {
   User.findOne({ _id: id }, function (err, user) {
@@ -14,11 +15,14 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
-module.exports.show = function (req, res) {
+function showUser (req, res) {
   res.render('users/show', {
     user: req.user,
+    operator: req.operator,
     title: req.user.name
   })
 }
 
+module.exports.show = [ auth.authenticate,
+                        showUser];
 // vim:ts=2 sts=2 sw=2 et:

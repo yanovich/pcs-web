@@ -9,5 +9,14 @@ header.navbar
     a.navbar-brand(href='/') asutp.io
   nav.collapse.navbar-collapse
     ul.nav.navbar-nav.navbar-right
-      li
-        a(href='#') Оператор Имя Отчество
+      li.dropdown
+        button(type='button', data-toggle='dropdown').btn.dropdown-toggle
+          = operator.name
+          span.caret
+        ul.dropdown-menu
+          li
+            a(href='/users/#{operator._id}') Profile
+          li
+            form(method='post', action='/signout', accept-charset="UTF-8").form-signout
+              input(type='hidden',name='_method',value='delete')
+              input(type='submit',name='submit',value='Sign out').btn.btn-block

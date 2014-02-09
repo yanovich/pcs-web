@@ -14,7 +14,8 @@ var twbs = require.resolve('bootstrap-browser').split('bootstrap-browser')[0];
 
 var users = require('./routes/user');
 var sessions = require('./routes/session');
-var authUser = sessions.requireAuthentication;
+var auth = require('./routes/_auth');
+var authUser = auth.authenticate;
 
 var config = require('./config');
 
@@ -30,7 +31,12 @@ app.use('/static',
     express.static(path.join(__dirname, 'public/stylesheets/')));
 app.use('/static/bootstrap',
     express.static(path.join(twbs, 'bootstrap-browser/dist/css')));
+app.use('/static/bootstrap',
+    express.static(path.join(twbs, 'bootstrap-browser/js')));
+app.use('/static/jquery', express.static(path.join(
+        path.dirname(require.resolve('jquery-browser')), 'lib/')));
 app.use(express.urlencoded());
+app.use(express.methodOverride());
 
 
 app.use(clientSessions({
@@ -40,6 +46,7 @@ app.use(clientSessions({
 
 app.get('/signin', sessions.new);
 app.post('/signin', sessions.create);
+app.del('/signout', sessions.destroy);
 
 app.param('user', users.load);
 app.get('/users/:user', users.show);
@@ -49,7 +56,10 @@ app.get('/', authUser, function(req, res) {
   if (req.operator)
     title = req.operator.name + ' ' + title;
 
-  res.render('index', { title: title });
+  res.render('index', {
+    title: title,
+    operator: req.operator,
+  });
 });
 
 app.use(function (err, req, res, next) {
