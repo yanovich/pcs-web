@@ -5,30 +5,42 @@
  * Process Control Service Web Interface
  */
 
-var request = require('supertest');
 var expect = require('expect.js');
+var Browser = require('zombie');
 
-var server = request(global.url);
+var browser = new Browser({ site: global.url });
 
 var User = require('../../models/user');
-var userAttrs = { name: "Example User1", email: "user-1@example.com",
+var attrs = { name: "Example User1", email: "user-1@example.com",
       password: 'password', confirmation: 'password' }
 
 describe('User#show page', function(){
   var user;
 
   before( function (done) {
-    user = new User(userAttrs);
+    user = new User(attrs);
     user.save(done);
   });
 
-  it('should display user', function(done){
-    server
-      .get('/users/' + user._id.toString())
-      .expect(200)
-      .expect(new RegExp(user.name))
-      .expect(new RegExp(user.email))
-      .end(done);
+  beforeEach( function (done) {
+    browser
+    .visit('/signin')
+    .then(function () {
+      browser
+      .fill('Email', attrs.email)
+      .fill('Password', attrs.password)
+      .pressButton('Sign in')
+      .then(function () {
+        browser.visit('/users/' + user._id.toString()).then(done, done);
+      });
+    });
+  });
+
+  it('should display user', function(){
+    var doc = browser.document;
+    expect(browser.statusCode).to.be(200);
+    expect(browser.text('body')).to.contain(user.name);
+    expect(browser.text('body')).to.contain(user.email);
   })
 });
 
