@@ -10,6 +10,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var clientSessions = require("client-sessions");
 
+var twbs = require.resolve('bootstrap-browser').split('bootstrap-browser')[0];
+
 var users = require('./routes/user');
 var sessions = require('./routes/session');
 var authUser = sessions.requireAuthentication;
@@ -24,7 +26,10 @@ app.set('view engine', 'jade');
 
 if (process.env.NODE_ENV !== 'test')
   app.use(express.logger('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static',
+    express.static(path.join(__dirname, 'public/stylesheets/')));
+app.use('/static/bootstrap',
+    express.static(path.join(twbs, 'bootstrap-browser/dist/css')));
 app.use(express.urlencoded());
 
 
