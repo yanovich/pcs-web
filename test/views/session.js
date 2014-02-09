@@ -44,18 +44,19 @@ describe('signin page', function() {
   })
 
   describe('with valid information', function () {
-    it('should accept user', function (done) {
+    beforeEach(function (done) {
       browser
         .fill('Email', attrs.email)
         .fill('Password', attrs.password)
         .pressButton('Sign in')
-        .then(function () {
-          expect(browser.success).to.be(true);
-          expect(browser.queryAll('div.form-group.has-error').length).to.be(0);
-          expect(browser.location.pathname).to.be('/');
-          expect(browser.text('title')).to.contain(attrs.name);
-        })
-        .then(done, done);
+        .then(done, done)
+    })
+
+    it('should accept user', function () {
+      expect(browser.success).to.be(true);
+      expect(browser.queryAll('div.form-group.has-error').length).to.be(0);
+      expect(browser.location.pathname).to.be('/');
+      expect(browser.text('title')).to.contain(attrs.name);
     })
   })
 });
