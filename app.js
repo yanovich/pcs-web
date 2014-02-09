@@ -57,6 +57,7 @@ app.get('/', authUser, function(req, res) {
     title = req.operator.name + ' ' + title;
 
   res.render('index', {
+    pretty: true,
     title: title,
     operator: req.operator,
   });
