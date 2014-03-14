@@ -44,6 +44,12 @@ app.use(clientSessions({
   cookieName: 'session',
 }));
 
+app.use(express.csrf());
+app.use(function (req, res, next) {
+  res.locals.csrf = req.csrfToken();
+  next();
+});
+
 app.get('/signin', sessions.new);
 app.post('/signin', sessions.create);
 app.del('/signout', sessions.destroy);
