@@ -20,6 +20,7 @@ var authUser = auth.authenticate;
 var config = require('./config');
 
 var app = express();
+var i18n = require('i18n-t')({ supported_languages: ['ru'] });
 
 app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
@@ -49,6 +50,10 @@ app.use(function (req, res, next) {
   res.locals.csrf = req.csrfToken();
   next();
 });
+
+app.use(i18n.express());
+if (process.env.NODE_ENV === 'test')
+  app.i18n = i18n.request();
 
 app.get('/signin', sessions.new);
 app.post('/signin', sessions.create);

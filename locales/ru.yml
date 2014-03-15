@@ -1,0 +1,15 @@
+# locales/ru.yml -- Russian translation
+# Copyright 2014 Sergei Ianovich
+#
+# Licensed under AGPLv3 or later
+# Process Control Service Web Interface
+
+ru:
+  user:
+    email: Эл.почта
+    password: Пароль
+  session:
+    prompt: Для работы в системе необходима регистрация
+    sign_in: Регистрация
+
+# vim:ts=2 sts=2 sw=2 et:

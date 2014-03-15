@@ -12,6 +12,7 @@
     "jade": "*",
     "jquery-browser": "1.x",
     "bootstrap-browser": "3.0.x",
+    "i18n-t": "git://github.com/yanovich/i18n-t#d30b6f02b09",
     "client-sessions": "0.6.0"
   },
   "devDependencies": {

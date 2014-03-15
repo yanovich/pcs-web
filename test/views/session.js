@@ -9,6 +9,9 @@ var expect = require('expect.js');
 var Browser = require('zombie');
 
 var browser = new Browser({ site: global.url });
+function t(key, options) {
+  return global.i18n.t(key, options);
+}
 
 var User = require('../../models/user');
 var attrs = { name: "Example User2", email: "user-2@example.com",
@@ -33,7 +36,8 @@ describe('signin page', function() {
 
   describe('with invalid information', function () {
     it('should decline signin', function (done) {
-      browser.pressButton('Sign in')
+      browser
+        .pressButton(t('session.sign_in'))
         .then(function () {
           expect(browser.success).to.be(true);
           expect(browser.queryAll('div.form-group.has-error').length).to.be(1);
@@ -46,9 +50,9 @@ describe('signin page', function() {
   describe('with valid information', function () {
     before(function (done) {
       browser
-        .fill('Email', attrs.email)
-        .fill('Password', attrs.password)
-        .pressButton('Sign in')
+        .fill(t('user.email'), attrs.email)
+        .fill(t('user.password'), attrs.password)
+        .pressButton(t('session.sign_in'))
         .then(done, done)
     })
 

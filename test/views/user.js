@@ -9,6 +9,9 @@ var expect = require('expect.js');
 var Browser = require('zombie');
 
 var browser = new Browser({ site: global.url });
+function t(key, options) {
+  return global.i18n.t(key, options);
+}
 
 var User = require('../../models/user');
 var attrs = { name: "Example User1", email: "user-1@example.com",
@@ -27,9 +30,9 @@ describe('User#show page', function(){
     .visit('/signin')
     .then(function () {
       browser
-      .fill('Email', attrs.email)
-      .fill('Password', attrs.password)
-      .pressButton('Sign in')
+      .fill(t('user.email'), attrs.email)
+      .fill(t('user.password'), attrs.password)
+      .pressButton(t('session.sign_in'))
       .then(function () {
         browser.visit('/users/' + user._id.toString()).then(done, done);
       });
