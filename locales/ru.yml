@@ -11,5 +11,6 @@ ru:
   session:
     prompt: Для работы в системе необходима регистрация
     sign_in: Регистрация
+    sign_out: Выход
 
 # vim:ts=2 sts=2 sw=2 et:

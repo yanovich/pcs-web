@@ -78,7 +78,7 @@ describe('signin page', function() {
     describe('followed by signout', function () {
       beforeEach(function (done) {
         browser
-          .pressButton('Sign out')
+          .pressButton(t('session.sign_out'))
           .then(done, done)
       })
 
