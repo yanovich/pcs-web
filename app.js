@@ -34,6 +34,8 @@ app.use('/static/bootstrap',
     express.static(path.join(twbs, 'bootstrap-browser/dist/css')));
 app.use('/static/bootstrap',
     express.static(path.join(twbs, 'bootstrap-browser/js')));
+app.use('/static/fonts',
+    express.static(path.join(twbs, 'bootstrap-browser/dist/fonts')));
 app.use('/static/jquery', express.static(path.join(
         path.dirname(require.resolve('jquery-browser')), 'lib/')));
 app.use(express.urlencoded());
