@@ -23,6 +23,22 @@ function showUser (req, res) {
   })
 }
 
+var userFields = ['name', 'email'];
+
+function updateUser (req, res) {
+  userFields.forEach(function (f) {
+    if (req.body[f] && req.body[f] !== req.user[f]) {
+      req.user[f] = req.body[f];
+    }
+  });
+  req.user.save(function () {
+    res.redirect('/users/' + req.user._id);
+  });
+}
+
 module.exports.show = [ auth.authenticate,
                         showUser];
+
+module.exports.update = [ auth.authenticate,
+                          updateUser];
 // vim:ts=2 sts=2 sw=2 et:

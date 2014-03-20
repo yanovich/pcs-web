@@ -23,14 +23,15 @@ var Validations = function () {
       if (this.isNew && (!this._password || this._password.trim() === ''))
         this.invalidate('password', 'required');
 
-      if (this._password || this._confirmation)
+      if (this._password || this._confirmation) {
         if (this._password !== this._confirmation)
           this.invalidate('confirmation', "doesn't match password");
 
-      if (opts['length'])
-        if (opts['length']['min'])
-          if (this._password.length < opts['length']['min'])
-            this.invalidate('password', 'too short');
+        if (opts['length'])
+          if (opts['length']['min'])
+            if (this._password.length < opts['length']['min'])
+              this.invalidate('password', 'too short');
+      }
     };
   };
 }

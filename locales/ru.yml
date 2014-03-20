@@ -6,8 +6,10 @@
 
 ru:
   user:
+    name: Полное имя
     email: Эл.почта
     password: Пароль
+    update: Изменить
   session:
     prompt: Для работы в системе необходима регистрация
     sign_in: Регистрация
