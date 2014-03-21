@@ -56,10 +56,15 @@ describe('User#show page', function(){
       .then(done, done);
     })
 
-    it('should show updated date', function () {
+    it('should show updated date', function (done) {
       expect(browser.statusCode).to.be(200);
       expect(browser.query("input[value='"+update.name+"']")).to.be.true;
       expect(browser.query('input[value="'+update.email+'"]')).to.be.true;
+      User.findById(user._id, function (err, user) {
+        user.name.should.equal(update.name);
+        user.email.should.equal(update.email);
+        done();
+      });
     })
   })
 });
