@@ -18,9 +18,12 @@ ru:
     prompt: Для работы в системе необходима регистрация
     sign_in: Регистрация
     sign_out: Выход
-  error_msg:
-    one: 'Присутствует %{count} ошибка'
-    few: 'Присутствует %{count} ошибки'
-    many: 'Присутствует %{count} ошибок'
+  flash:
+    update:
+      success: Изменено успешно
+      error:
+        one: 'Присутствует %{count} ошибка'
+        few: 'Присутствует %{count} ошибки'
+        many: 'Присутствует %{count} ошибок'
 
 # vim:ts=2 sts=2 sw=2 et:

@@ -33,11 +33,13 @@ function updateUser (req, res) {
     if (err) {
       res.locals.err = err;
       if (err.errors && Object.keys(err.errors).length)
-        res.locals.messages.push({ severity: 'danger', key: 'error_msg',
+        res.locals.messages.push({ severity: 'danger',
+          key: 'flash.update.error',
           options: { count: Object.keys(err.errors).length } });
-      console.log(res.locals.messages);
       return showUser(req, res);
     }
+    req.session.messages.push({ severity: 'success',
+      key: 'flash.update.success' });
     res.redirect('/users/' + req.user._id);
   });
 }

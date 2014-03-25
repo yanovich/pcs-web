@@ -54,7 +54,7 @@ describe('User', function(){
     })
 
     describe('edit with valid data', function () {
-      before(function (done) {
+      beforeEach(function (done) {
         attrs.name = 'New Name';
         attrs.email = 'new@example.com';
         browser
@@ -68,6 +68,7 @@ describe('User', function(){
         expect(browser.statusCode).to.be(200);
         expect(browser.query("input[value='"+attrs.name+"']")).not.to.be(undefined);
         expect(browser.query('input[value="'+attrs.email+'"]')).not.to.be(undefined);
+        expect(browser.queryAll('.tp-flash .alert.alert-success').length).to.be(1);
         User.findById(user._id, function (err, user) {
           user.name.should.equal(attrs.name);
           user.email.should.equal(attrs.email);
