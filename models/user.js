@@ -63,6 +63,8 @@ user_schema.pre('save', function (next) {
 
 user_schema.pre('save', function (next) {
   var self = this;
+  if (!this._password)
+    return next();
   this.encrypt(this._password, function (err, hash) {
     self.hash = hash;
     next();

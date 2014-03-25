@@ -21,6 +21,7 @@ var update = {};
 
 describe('User', function(){
   var user;
+  var hash;
 
   beforeEach(function () {
     browser = new Browser({ site: global.url });
@@ -28,7 +29,9 @@ describe('User', function(){
 
   before(function () {
     user = new User(attrs);
-    user.save();
+    user.save(function () {
+      hash = user.hash;
+    });
   });
 
   describe('profile page', function () {
@@ -70,6 +73,7 @@ describe('User', function(){
         User.findById(user._id, function (err, user) {
           user.name.should.equal(update.name);
           user.email.should.equal(update.email);
+          user.hash.should.equal(hash);
           done();
         });
       })
