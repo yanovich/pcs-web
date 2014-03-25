@@ -17,8 +17,6 @@ var User = require('../../models/user');
 var attrs = { name: 'Example User1"', email: "user-1@example.com",
       password: 'password', confirmation: 'password' }
 
-var update = {};
-
 describe('User', function(){
   var user;
   var hash;
@@ -51,31 +49,46 @@ describe('User', function(){
 
     it('should display user', function () {
       expect(browser.statusCode).to.be(200);
-      expect(browser.query("input[value='"+user.name+"']")).to.be.true;
-      expect(browser.query('input[value="'+user.email+'"]')).to.be.true;
+      expect(browser.query("input[value='"+user.name+"']")).not.to.be(undefined);
+      expect(browser.query('input[value="'+user.email+'"]')).not.to.be(undefined);
     })
 
     describe('edit with valid data', function () {
       before(function (done) {
-        update.name = 'New Name';
-        update.email = 'new@example.com';
+        attrs.name = 'New Name';
+        attrs.email = 'new@example.com';
         browser
-        .fill(t('user.name'), update.name)
-        .fill(t('user.email'), update.email)
+        .fill(t('user.name'), attrs.name)
+        .fill(t('user.email'), attrs.email)
         .pressButton(t('user.update'))
         .then(done, done)
       })
 
-      it('should show updated date', function (done) {
+      it('should show updated data', function (done) {
         expect(browser.statusCode).to.be(200);
-        expect(browser.query("input[value='"+update.name+"']")).to.be.true;
-        expect(browser.query('input[value="'+update.email+'"]')).to.be.true;
+        expect(browser.query("input[value='"+attrs.name+"']")).not.to.be(undefined);
+        expect(browser.query('input[value="'+attrs.email+'"]')).not.to.be(undefined);
         User.findById(user._id, function (err, user) {
-          user.name.should.equal(update.name);
-          user.email.should.equal(update.email);
+          user.name.should.equal(attrs.name);
+          user.email.should.equal(attrs.email);
           user.hash.should.equal(hash);
           done();
         });
+      })
+    })
+
+    describe('edit with invalid data', function () {
+      beforeEach(function (done) {
+        browser
+        .fill(t('user.name'), '')
+        .fill(t('user.email'), '')
+        .pressButton(t('user.update'))
+        .then(done, done);
+      })
+
+      it('should display errors', function () {
+        expect(browser.statusCode).to.be(200);
+        expect(browser.query('label.help-block[for="name"]')).not.to.be(undefined);
       })
     })
   })

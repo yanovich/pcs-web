@@ -8,7 +8,7 @@
 var expect = require('expect.js');
 var Browser = require('zombie');
 
-var browser = new Browser({ site: global.url });
+var browser;
 function t(key, options) {
   return global.i18n.t(key, options);
 }
@@ -26,6 +26,7 @@ describe('signin page', function() {
   });
 
   beforeEach( function (done) {
+    browser = new Browser({ site: global.url });
     browser.visit('/signin').then(done, done);
   });
 
@@ -48,7 +49,7 @@ describe('signin page', function() {
   })
 
   describe('with valid information', function () {
-    before(function (done) {
+    beforeEach(function (done) {
       browser
         .fill(t('user.email'), attrs.email)
         .fill(t('user.password'), attrs.password)
@@ -91,6 +92,10 @@ describe('signin page', function() {
 });
 
 describe('authorization', function() {
+  beforeEach( function () {
+    browser = new Browser({ site: global.url });
+  });
+
   describe('of non-signed-in users', function () {
     describe('accessing root page', function () {
       beforeEach(function (done) {

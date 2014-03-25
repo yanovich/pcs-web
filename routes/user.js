@@ -27,11 +27,13 @@ var userFields = ['name', 'email'];
 
 function updateUser (req, res) {
   userFields.forEach(function (f) {
-    if (req.body[f] && req.body[f] !== req.user[f]) {
-      req.user[f] = req.body[f];
-    }
+    req.user[f] = req.body[f];
   });
-  req.user.save(function () {
+  req.user.save(function (err) {
+    if (err) {
+      res.locals.err = err;
+      return showUser(req, res);
+    }
     res.redirect('/users/' + req.user._id);
   });
 }
