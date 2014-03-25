@@ -18,14 +18,14 @@ block content
             input(id='name', name='name', type='text', value=user.name, placeholder=t('user.name')).form-control
             if e('name')
               label.help-block(for='name')
-                = t('mongoose.'+err.errors.name.type, { path: t('user.name') })
+                = t('mongoose.'+e('name').type, { path: t('user.name') })
         .form-group(class=e('email')?'has-error':'')
           label(for='email').control-label.col-sm-3= t('user.email')
           .col-sm-9
             input(id='email', name='email', type='text', value=user.email,  placeholder=t('user.email')).form-control
             if e('email')
               label.help-block(for='email')
-                = t('mongoose.'+err.errors.email.type, { path: t('user.email') })
+                = t('mongoose.'+e('email').type, { path: t('user.email') })
         input(name='_csrf', value=csrf, type='hidden')
         input(type='hidden',name='_method',value='put')
         input(type='submit',name='submit',value=t('user.update')).btn.btn-sm.btn-primary

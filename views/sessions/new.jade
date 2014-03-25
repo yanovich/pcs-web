@@ -15,18 +15,15 @@ block main
     form(method='post', action='/signin', accept-charset="UTF-8").form-signin
       label(for='email').hidden= t('user.email')
       input(id='email', name='email', type='text', placeholder=t('user.email')).form-control
-      - var passwordClass = ''
-      - if (errors)
-        - if (errors['password']) passwordClass += ' has-error'
-      div(class='form-group#{passwordClass}')
+      .form-group(class=e('password')?'has-error':'')
         label(for='password').hidden= t('user.password')
-        input(name='_csrf', value=csrf, type='hidden')
         input(id='password', name='password', type='password',
           placeholder=t('user.password')).form-control
-        if passwordClass !== ''
-          each error in errors['password']
-            label(for='password').help-block= error
-        input(type='submit',name='submit',value=t('session.sign_in')).btn.btn-lg.btn-primary.btn-block
+        if e('password')
+          label(for='password').help-block
+            = t('mongoose.'+e('password').type)
+      input(name='_csrf', value=csrf, type='hidden')
+      input(type='submit',name='submit',value=t('session.sign_in')).btn.btn-lg.btn-primary.btn-block
   include ../_footer
 
 //- vim:ts=2 sts=2 sw=2 et:

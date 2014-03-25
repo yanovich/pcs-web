@@ -42,10 +42,9 @@ function loadOperatorByEmail(req, res, next) {
 
 function createSession(req, res) {
   function signinFail() {
+    res.locals.err = { errors: { password: { type: 'signin' } } };
     res.render('sessions/new', {
-      title: 'Sign in',
-      errors: {
-        password: ['Wrong email or password'] }
+      title: 'Sign in'
     });
   }
   if (!req.operator)

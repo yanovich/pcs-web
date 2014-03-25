@@ -55,7 +55,8 @@ app.use(function (req, res, next) {
 
 app.use(function (req, res, next) {
   res.locals.e = function (path) {
-    return res.locals.err && res.locals.err.errors && res.locals.err.errors[path];
+    if (res.locals.err && res.locals.err.errors)
+      return res.locals.err.errors[path];
   };
   next();
 });

@@ -42,7 +42,7 @@ describe('signin page', function() {
         .then(function () {
           expect(browser.success).to.be(true);
           expect(browser.queryAll('div.form-group.has-error').length).to.be(1);
-          expect(browser.text('label.help-block')).to.be('Wrong email or password');
+          expect(browser.text('label.help-block')).to.be(t('mongoose.signin'));
         })
         .then(done, done);
     })
