@@ -88,7 +88,8 @@ describe('User', function(){
 
       it('should display errors', function () {
         expect(browser.statusCode).to.be(200);
-        expect(browser.query('label.help-block[for="name"]')).not.to.be(undefined);
+        expect(browser.query('.has-error label.help-block[for="name"]')).not.to.be(undefined);
+        expect(browser.query('.has-error label.help-block[for="email"]')).not.to.be(undefined);
       })
     })
   })

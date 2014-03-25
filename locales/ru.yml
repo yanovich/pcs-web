@@ -5,6 +5,9 @@
 # Process Control Service Web Interface
 
 ru:
+  mongoose:
+    required: не может быть пустым
+    regexp: имеет неверное значение
   user:
     name: Полное имя
     email: Эл.почта

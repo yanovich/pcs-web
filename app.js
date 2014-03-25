@@ -53,6 +53,13 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(function (req, res, next) {
+  res.locals.e = function (path) {
+    return res.locals.err && res.locals.err.errors && res.locals.err.errors[path];
+  };
+  next();
+});
+
 app.use(i18n.express());
 if (process.env.NODE_ENV === 'test')
   app.i18n = i18n.request();

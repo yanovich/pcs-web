@@ -10,18 +10,22 @@ block content
   .row.tp-user
     .col-lg-6
       form(method='post', accept-charset="UTF-8").form-horizontal
-        .form-group
+        .form-group(class=e('name')?'has-error':'')
           label.tp-photo.control-label.col-sm-3
             span.glyphicon.glyphicon-user
           label(for='name').control-label.hidden= t('user.name')
           .col-sm-9
             input(id='name', name='name', type='text', value=user.name, placeholder=t('user.name')).form-control
-            if (err && err.errors && err.errors.name)
-              label.help-block(for='name')= err.errors.name.type
-        .form-group
+            if e('name')
+              label.help-block(for='name')
+                = t('mongoose.'+err.errors.name.type, { path: t('user.name') })
+        .form-group(class=e('email')?'has-error':'')
           label(for='email').control-label.col-sm-3= t('user.email')
           .col-sm-9
             input(id='email', name='email', type='text', value=user.email,  placeholder=t('user.email')).form-control
+            if e('email')
+              label.help-block(for='email')
+                = t('mongoose.'+err.errors.email.type, { path: t('user.email') })
         input(name='_csrf', value=csrf, type='hidden')
         input(type='hidden',name='_method',value='put')
         input(type='submit',name='submit',value=t('user.update')).btn.btn-sm.btn-primary
