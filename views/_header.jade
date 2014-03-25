@@ -21,3 +21,12 @@ header.navbar
               input(type='hidden',name='_method',value='delete')
               input(type='hidden',name='_csrf',value=csrf)
               input(type='submit',name='submit',value=t('session.sign_out')).btn.btn-block
+  .tp-flash-container
+    .clearfix
+    .tp-flash
+      if messages
+        - console.log(messages)
+        each m in messages
+          .alert.alert-dismissable(class='alert-'+m.severity)
+            button.close(type='button', data-dismiss='alert') &times;
+            = t(m.key, m.options)

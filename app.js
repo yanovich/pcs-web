@@ -26,7 +26,7 @@ app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-if (process.env.NODE_ENV !== 'test')
+//if (process.env.NODE_ENV !== 'test')
   app.use(express.logger('dev'));
 app.use('/static',
     express.static(path.join(__dirname, 'public/stylesheets/')));
@@ -58,6 +58,13 @@ app.use(function (req, res, next) {
     if (res.locals.err && res.locals.err.errors)
       return res.locals.err.errors[path];
   };
+  next();
+});
+
+app.use(function (req, res, next) {
+    res.locals.messages = [];
+  if (req.session.messages)
+    res.locals.messages.concat(req.session.messages.splice(0, Number.MAX_VALUE));
   next();
 });
 

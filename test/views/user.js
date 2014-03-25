@@ -90,6 +90,7 @@ describe('User', function(){
         expect(browser.statusCode).to.be(200);
         expect(browser.query('.has-error label.help-block[for="name"]')).not.to.be(undefined);
         expect(browser.query('.has-error label.help-block[for="email"]')).not.to.be(undefined);
+        expect(browser.queryAll('.tp-flash .alert.alert-danger').length).to.be(1);
       })
     })
   })
