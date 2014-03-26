@@ -51,6 +51,7 @@ describe('User', function(){
       expect(browser.statusCode).to.be(200);
       expect(browser.query("input[value='"+user.name+"']")).not.to.be(undefined);
       expect(browser.query('input[value="'+user.email+'"]')).not.to.be(undefined);
+      expect(browser.text('.tp-menu-side li.active a')).to.contain(t('user.self.plural'));
     })
 
     describe('edit with valid data', function () {

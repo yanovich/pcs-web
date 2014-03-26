@@ -11,12 +11,12 @@ block main
   .tp-main.row
     .col-xs-4.col-md-2.col-xl-2.tp-sidebar
       ul.nav.tp-menu-side
-        li.active
+        li
           a(href='#') Устройства
         li
           a(href='#') Apхив
-        li
-          a(href='#') Пользователи
+        li(class=active=='users'?'active':'')
+          a(href='#')= t('user.self.plural')
     .col-xs-12.col-md-10.col-xl-14.tp-content
       block content
       include ./_footer

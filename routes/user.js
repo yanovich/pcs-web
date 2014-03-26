@@ -17,6 +17,7 @@ module.exports.load = function (req, res, next, id) {
 
 function showUser (req, res) {
   res.render('users/show', {
+    active: 'users',
     user: req.user,
     operator: req.operator,
     title: req.user.name
