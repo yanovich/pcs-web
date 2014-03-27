@@ -6,32 +6,44 @@
  */
 
 var app = require('./app');
+var Faker = require('Faker');
 var User = require('./models/user');
 
 var userAttrs = { name: "Янович Сергей Владимирович", email: "ynvich@example.com",
       password: 'foobar', confirmation: 'foobar' }
 
+var i = 1;
 
-User.findOne({ email: userAttrs.email }, function (err, user) {
+function addUser(err)
+{
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
+
+  if (i++ === 30)
+    process.exit(0);
+
+  userAttrs.name = Faker.Name.findName();
+  userAttrs.email = 'user-' + i + '@example.com';
+  var user = new User(userAttrs);
+  user.save(addUser);
+}
+
+User.count(function (err, count) {
   var root;
   if (err) {
     console.log(err);
     process.exit(1);
   }
 
-  if (user) {
-    console.log(user);
+  if (count > 30) {
+    console.log(count);
     process.exit(1);
   }
 
-  root = new User(userAttrs);
-  root.save(function (err) {
-
-    if (err) {
-      console.log(err);
-      process.exit(1);
-    }
-
-    process.exit(0);
-  });
+  User.remove(function (err) {
+    root = new User(userAttrs);
+    root.save(addUser);
+  })
 });

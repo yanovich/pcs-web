@@ -16,6 +16,7 @@
     "client-sessions": "0.6.0"
   },
   "devDependencies": {
+    "Faker": "*",
     "mocha": "*",
     "supertest": "*",
     "zombie": "*",
