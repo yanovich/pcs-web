@@ -16,7 +16,7 @@ block main
         li
           a(href='#') Apхив
         li(class=active=='users'?'active':'')
-          a(href='#')= t('user.self.plural')
+          a(href='/users')= t('user.self.plural')
     .col-xs-12.col-md-10.col-xl-14.tp-content
       block content
       include ./_footer

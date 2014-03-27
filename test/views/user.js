@@ -96,6 +96,34 @@ describe('User', function(){
       })
     })
   })
+
+  describe('administration of', function () {
+    describe('index page', function () {
+      beforeEach(function (done) {
+        browser
+        .visit('/signin')
+        .then(function () {
+          browser
+          .fill(t('user.email'), attrs.email)
+          .fill(t('user.password'), attrs.password)
+          .pressButton(t('session.sign_in'))
+          .then(function () {
+            browser.visit('/users').then(done, done);
+          }, done);
+        }, done);
+      })
+
+      it('should list users', function () {
+        expect(browser.statusCode).to.be(200);
+        User.find(function (err, users) {
+          users.forEach(function (u) {
+            expect(browser.text('table.tp-data td.tp-sender')).to.contain(u.name);
+            expect(browser.text('table.tp-data td.tp-email')).to.contain(u.email);
+          });
+        })
+      })
+    })
+  })
 });
 
 // vim:ts=2 sts=2 sw=2 et:

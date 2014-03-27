@@ -15,18 +15,17 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
-function showUser (req, res) {
+function showUser(req, res) {
   res.render('users/show', {
     active: 'users',
     user: req.user,
-    operator: req.operator,
     title: req.user.name
   })
 }
 
 var userFields = ['name', 'email'];
 
-function updateUser (req, res) {
+function updateUser(req, res) {
   userFields.forEach(function (f) {
     req.user[f] = req.body[f];
   });
@@ -45,9 +44,22 @@ function updateUser (req, res) {
   });
 }
 
+function indexUsers(req, res) {
+  User.find().exec(function (err, users) {
+    res.render('users/index', {
+      users: users,
+      active: 'users',
+      title: res.locals.t('user.self.plural')
+    })
+  })
+}
+
 module.exports.show = [ auth.authenticate,
                         showUser];
 
 module.exports.update = [ auth.authenticate,
                           updateUser];
+
+module.exports.index = [ auth.authenticate,
+                         indexUsers];
 // vim:ts=2 sts=2 sw=2 et:
