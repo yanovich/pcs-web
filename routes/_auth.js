@@ -18,7 +18,7 @@ module.exports.authenticate = function (req, res, next) {
     if (!user)
       return res.redirect('/signin');
 
-    req.operator = user;
+    res.locals.operator = req.operator = user;
     next();
   })
 }
