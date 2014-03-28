@@ -7,6 +7,8 @@
 
 var app = require('../../app')
 var port = app.get('port');
+var User = require('../../models/user');
+var Factory = require('factory-lady');
 
 if (!port) {
   var http = require('http');
@@ -15,7 +17,17 @@ if (!port) {
   port = server.address().port;
 }
 
+var userCounter = 0;
+
+Factory.define('user', User, {
+  password: 'password',
+  confirmation: 'password',
+  name: function (cb) { cb('Example User ' + ++userCounter) },
+  email: function (cb) { cb('user-' + userCounter + '@example.com') }
+})
+
 global.url = 'http://localhost:' + port;
 global.i18n = app.i18n;
+global.Factory = Factory;
 
 // vim:ts=2 sts=2 sw=2 et:

@@ -16,6 +16,7 @@
     "client-sessions": "0.6.0"
   },
   "devDependencies": {
+    "factory-lady": "*",
     "Faker": "*",
     "mocha": "*",
     "supertest": "*",

@@ -14,15 +14,12 @@ function t(key, options) {
 }
 
 var User = require('../../models/user');
-var attrs = { name: "Example User2", email: "user-2@example.com",
-      password: 'password', confirmation: 'password' }
 
 describe('signin page', function() {
   var user;
 
   before( function (done) {
-    user = new User(attrs);
-    user.save(done);
+    Factory.create('user', function (u) { user = u; done(); });
   });
 
   beforeEach( function (done) {
@@ -51,8 +48,8 @@ describe('signin page', function() {
   describe('with valid information', function () {
     beforeEach(function (done) {
       browser
-        .fill(t('user.email'), attrs.email)
-        .fill(t('user.password'), attrs.password)
+        .fill(t('user.email'), user.email)
+        .fill(t('user.password'), user.password)
         .pressButton(t('session.sign_in'))
         .then(done, done)
     })
@@ -61,7 +58,7 @@ describe('signin page', function() {
       expect(browser.success).to.be(true);
       expect(browser.queryAll('div.form-group.has-error').length).to.be(0);
       expect(browser.location.pathname).to.be('/');
-      expect(browser.text('title')).to.contain(attrs.name);
+      expect(browser.text('title')).to.contain(user.name);
     })
 
     describe('on revisit', function () {

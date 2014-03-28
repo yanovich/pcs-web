@@ -14,8 +14,7 @@ function t(key, options) {
 }
 
 var User = require('../../models/user');
-var attrs = { name: 'Example User1"', email: "user-1@example.com",
-      password: 'password', confirmation: 'password' }
+var attrs = {}
 
 describe('User', function(){
   var user;
@@ -26,10 +25,7 @@ describe('User', function(){
   })
 
   before(function () {
-    user = new User(attrs);
-    user.save(function () {
-      hash = user.hash;
-    });
+    Factory.create('user', function (u) { user = u; hash = user.hash; });
   });
 
   describe('profile page', function () {
@@ -38,8 +34,8 @@ describe('User', function(){
       .visit('/signin')
       .then(function () {
         browser
-        .fill(t('user.email'), attrs.email)
-        .fill(t('user.password'), attrs.password)
+        .fill(t('user.email'), user.email)
+        .fill(t('user.password'), user.password)
         .pressButton(t('session.sign_in'))
         .then(function () {
           browser.visit('/users/' + user._id.toString()).then(done, done);
@@ -56,24 +52,24 @@ describe('User', function(){
 
     describe('edit with valid data', function () {
       beforeEach(function (done) {
-        attrs.name = 'New Name';
-        attrs.email = 'new@example.com';
+        user.name = 'New Name';
+        user.email = 'new@example.com';
         browser
-        .fill(t('user.name'), attrs.name)
-        .fill(t('user.email'), attrs.email)
+        .fill(t('user.name'), user.name)
+        .fill(t('user.email'), user.email)
         .pressButton(t('user.update'))
         .then(done, done)
       })
 
       it('should show updated data', function (done) {
         expect(browser.statusCode).to.be(200);
-        expect(browser.query("input[value='"+attrs.name+"']")).not.to.be(undefined);
-        expect(browser.query('input[value="'+attrs.email+'"]')).not.to.be(undefined);
+        expect(browser.query("input[value='"+user.name+"']")).not.to.be(undefined);
+        expect(browser.query('input[value="'+user.email+'"]')).not.to.be(undefined);
         expect(browser.queryAll('.tp-flash .alert.alert-success').length).to.be(1);
-        User.findById(user._id, function (err, user) {
-          user.name.should.equal(attrs.name);
-          user.email.should.equal(attrs.email);
-          user.hash.should.equal(hash);
+        User.findById(user._id, function (err, u) {
+          u.name.should.equal(user.name);
+          u.email.should.equal(user.email);
+          u.hash.should.equal(hash);
           done();
         });
       })
@@ -104,8 +100,8 @@ describe('User', function(){
         .visit('/signin')
         .then(function () {
           browser
-          .fill(t('user.email'), attrs.email)
-          .fill(t('user.password'), attrs.password)
+          .fill(t('user.email'), user.email)
+          .fill(t('user.password'), user.password)
           .pressButton(t('session.sign_in'))
           .then(function () {
             browser.visit('/users').then(done, done);
