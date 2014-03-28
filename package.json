@@ -6,22 +6,22 @@
   "license" : "AGPL-3.0",
   "repository" : {"type": "git", "url": "git://github.com:yanovich/pcs-web.git"},
   "dependencies": {
-    "mongoose": "3.8.6",
     "bcrypt": "0.7.7",
+    "bootstrap-browser": "3.0.x",
+    "client-sessions": "0.6.0",
     "express": "3.4.8",
     "jade": "*",
     "jquery-browser": "1.x",
-    "bootstrap-browser": "3.0.x",
     "i18n-t": "git://github.com/yanovich/i18n-t#d30b6f02b09",
-    "client-sessions": "0.6.0"
+    "mongoose": "3.8.6"
   },
   "devDependencies": {
+    "expect.js": "*",
     "factory-lady": "*",
     "Faker": "*",
     "mocha": "*",
+    "should": "*",
     "supertest": "*",
-    "zombie": "*",
-    "expect.js": "*",
-    "should": "*"
+    "zombie": "*"
   }
 }
