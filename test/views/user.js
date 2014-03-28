@@ -24,8 +24,8 @@ describe('User', function(){
     browser = new Browser({ site: global.url });
   })
 
-  before(function () {
-    Factory.create('user', function (u) { user = u; hash = user.hash; });
+  before(function (done) {
+    Factory.create('user', function (u) { user = u; hash = user.hash; done() });
   });
 
   describe('profile page', function () {
