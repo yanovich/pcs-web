@@ -18,14 +18,13 @@ var attrs = {}
 
 describe('User', function(){
   var user;
-  var hash;
 
   beforeEach(function () {
     browser = new Browser({ site: global.url });
   })
 
   before(function (done) {
-    Factory.create('user', function (u) { user = u; hash = user.hash; done() });
+    Factory.create('user', function (u) { user = u; done() });
   });
 
   describe('profile page', function () {
@@ -69,7 +68,7 @@ describe('User', function(){
         User.findById(user._id, function (err, u) {
           u.name.should.equal(user.name);
           u.email.should.equal(user.email);
-          u.hash.should.equal(hash);
+          u.hash.should.equal(user.hash);
           done();
         });
       })
