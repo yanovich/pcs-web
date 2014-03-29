@@ -122,7 +122,14 @@ body > .row {
 
 .tp-toolbar {
   padding-right: 15px;
-  font-size: 13px;
+}
+
+.tp-toolbar .page {
+  display: inline-block;
+  font-size: 80%;
+  float: left;
+  margin: 4px;
+  padding: 3px;
 }
 
 .pagination {
@@ -188,9 +195,10 @@ body > .row {
 
 .tp-content {
   padding-right: 15px;
+  padding-left: 0px;
 }
 
-@media (min-width: $screen-md-min) {
+@media (min-width: 992px) {
   .tp-main {
     overflow-y: hidden;
   }
@@ -307,6 +315,10 @@ table.tp-data td.tp-date {
   font-weight: bold;
 }
 
+.tp-user .tp-photo {
+  padding-top: 0px;
+}
+
 .tp-user .tp-photo span {
   font-size: 96px;
   height: 96px;
@@ -319,7 +331,7 @@ table.tp-data td.tp-date {
   float: right;
 }
 
-@media (min-width: $screen-sm-min) {
+@media (min-width: 768px) {
  .tp-user .tp-photo span {
     float: right;
  }

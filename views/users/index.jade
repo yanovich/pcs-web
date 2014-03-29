@@ -6,6 +6,18 @@
 
 extends ../_main
 
+block toolbar
+  .pull-right
+    .page
+      b= pager.firstItem
+      | –
+      b= pager.lastItem
+      = ' ' + t('pagination.of') + ' '
+      b= pager.count
+    ul.pagination
+      li: a(href=pager.prev)= '<'
+      li: a(href=pager.next)= '>'
+
 block content
   .tp-data
     table.tp-data

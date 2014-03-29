@@ -15,14 +15,16 @@ block content
             span.glyphicon.glyphicon-user
           label(for='name').control-label.hidden= t('user.name')
           .col-sm-9
-            input(id='name', name='name', type='text', value=user.name, placeholder=t('user.name')).form-control
+            input.form-control.input-lg(id='name', name='name',
+              type='text', value=user.name, placeholder=t('user.name'))
             if e('name')
               label.help-block(for='name')
                 = t('mongoose.'+e('name').type, { path: t('user.name') })
         .form-group(class=e('email')?'has-error':'')
           label(for='email').control-label.col-sm-3= t('user.email')
           .col-sm-9
-            input(id='email', name='email', type='text', value=user.email,  placeholder=t('user.email')).form-control
+            input.form-control.input-sm(id='email', name='email',
+              type='text', value=user.email,  placeholder=t('user.email'))
             if e('email')
               label.help-block(for='email')
                 = t('mongoose.'+e('email').type, { path: t('user.email') })

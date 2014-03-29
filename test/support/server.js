@@ -9,6 +9,7 @@ var app = require('../../app')
 var port = app.get('port');
 var User = require('../../models/user');
 var Factory = require('factory-lady');
+var Faker = require('Faker');
 
 if (!port) {
   var http = require('http');
@@ -22,8 +23,8 @@ var userCounter = 0;
 Factory.define('user', User, {
   password: 'password',
   confirmation: 'password',
-  name: function (cb) { cb('Example User ' + ++userCounter) },
-  email: function (cb) { cb('user-' + userCounter + '@example.com') }
+  name: function (cb) { cb(Faker.Name.findName()) },
+  email: function (cb) { cb('user-' + ++userCounter + '@example.com') }
 })
 
 global.url = 'http://localhost:' + port;

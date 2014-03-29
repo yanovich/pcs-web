@@ -71,6 +71,8 @@ user_schema.pre('save', function (next) {
   });
 });
 
+user_schema.index({ name: 1 });
+
 var User = mongoose.model('User', user_schema);
 
 module.exports = User;

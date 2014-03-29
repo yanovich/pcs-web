@@ -7,6 +7,7 @@
 
 var expect = require('expect.js');
 var Browser = require('zombie');
+var async = require('async');
 
 var browser;
 function t(key, options) {
@@ -24,7 +25,13 @@ describe('User', function(){
   })
 
   before(function (done) {
-    Factory.create('user', function (u) { user = u; done() });
+    async.times(26, function (n, next) {
+      Factory.create('user', function (u) { next(null, u); });
+    },
+    function (err, users) {
+      user = users[0];
+      done();
+    });
   });
 
   describe('profile page', function () {
@@ -108,9 +115,13 @@ describe('User', function(){
         }, done);
       })
 
-      it('should list users', function () {
+      it('should list users with pagination', function () {
         expect(browser.statusCode).to.be(200);
-        User.find(function (err, users) {
+        expect(browser.queryAll('table.tp-data tr').length).to.be(25);
+        expect(browser.query('a[href="/users?page=1"]')).not.to.be(undefined);
+        User
+        .find().sort({ name: 1 }).limit(25)
+        .exec(function (err, users) {
           users.forEach(function (u) {
             expect(browser.text('table.tp-data td.tp-sender')).to.contain(u.name);
             expect(browser.text('table.tp-data td.tp-email')).to.contain(u.email);

@@ -7,6 +7,7 @@
 
 var User = require('../models/user');
 var auth = require('./_auth');
+var per_page = 25;
 
 module.exports.load = function (req, res, next, id) {
   User.findOne({ _id: id }, function (err, user) {
@@ -45,13 +46,42 @@ function updateUser(req, res) {
 }
 
 function indexUsers(req, res) {
-  User.find().exec(function (err, users) {
-    res.render('users/index', {
-      users: users,
-      active: 'users',
-      title: res.locals.t('user.self.plural')
-    })
-  })
+  var page = Number(req.query.page) || 0;
+  User.count(function (err, count) {
+    if (err)
+      return res.send(500, err.toString());
+    if ((page * per_page) > count)
+      page = Math.floor((count - 1) / per_page);
+    User
+    .find().sort({ name: 1 }).skip(page*per_page).limit(per_page)
+    .exec(function (err, users) {
+      if (err)
+        return res.send(500, err.toString());
+      var prev = '#';
+      var next = '#';
+      var last;
+      if (page > 0)
+        prev = '/users?page=' + (page - 1);
+      if (per_page * (page + 1) < count) {
+        next = '/users?page=' + (page + 1);
+        last = per_page * (page + 1);
+      } else {
+        last = count;
+      }
+      res.render('users/index', {
+        pager: {
+          firstItem: page * per_page + 1,
+          lastItem:  last,
+          count: count,
+          prev: prev,
+          next: next
+        },
+        users: users,
+        active: 'users',
+        title: res.locals.t('user.self.plural')
+      })
+    });
+  });
 }
 
 module.exports.show = [ auth.authenticate,
