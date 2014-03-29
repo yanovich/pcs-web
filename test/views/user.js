@@ -51,8 +51,8 @@ describe('User', function(){
 
     it('should display user', function () {
       expect(browser.statusCode).to.be(200);
-      expect(browser.query("input[value='"+user.name+"']")).not.to.be(undefined);
-      expect(browser.query('input[value="'+user.email+'"]')).not.to.be(undefined);
+      expect(browser.query("input[value='"+user.name+"']")).to.be.ok();
+      expect(browser.query('input[value="'+user.email+'"]')).to.be.ok();
       expect(browser.text('.tp-menu-side li.active a')).to.contain(t('user.self.plural'));
     })
 
@@ -69,8 +69,8 @@ describe('User', function(){
 
       it('should show updated data', function (done) {
         expect(browser.statusCode).to.be(200);
-        expect(browser.query("input[value='"+user.name+"']")).not.to.be(undefined);
-        expect(browser.query('input[value="'+user.email+'"]')).not.to.be(undefined);
+        expect(browser.query("input[value='"+user.name+"']")).to.be.ok();
+        expect(browser.query('input[value="'+user.email+'"]')).to.be.ok();
         expect(browser.queryAll('.tp-flash .alert.alert-success').length).to.be(1);
         User.findById(user._id, function (err, u) {
           u.name.should.equal(user.name);
@@ -92,8 +92,8 @@ describe('User', function(){
 
       it('should display errors', function () {
         expect(browser.statusCode).to.be(200);
-        expect(browser.query('.has-error label.help-block[for="name"]')).not.to.be(undefined);
-        expect(browser.query('.has-error label.help-block[for="email"]')).not.to.be(undefined);
+        expect(browser.query('.has-error label.help-block[for="name"]')).to.be.ok();
+        expect(browser.query('.has-error label.help-block[for="email"]')).to.be.ok();
         expect(browser.queryAll('.tp-flash .alert.alert-danger').length).to.be(1);
       })
     })
@@ -118,7 +118,7 @@ describe('User', function(){
       it('should list users with pagination', function () {
         expect(browser.statusCode).to.be(200);
         expect(browser.queryAll('table.tp-data tr').length).to.be(25);
-        expect(browser.query('a[href="/users?page=1"]')).not.to.be(undefined);
+        expect(browser.query('a[href="/users?page=1"]')).to.be.ok();
         User
         .find().sort({ name: 1 }).limit(25)
         .exec(function (err, users) {
