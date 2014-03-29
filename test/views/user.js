@@ -100,14 +100,19 @@ describe('User', function(){
   })
 
   describe('administration of', function () {
+    var admin;
+    before(function (done) {
+      Factory.create('admin', function (a) { admin = a; done(); });
+    })
+
     describe('index page', function () {
       beforeEach(function (done) {
         browser
         .visit('/signin')
         .then(function () {
           browser
-          .fill(t('user.email'), user.email)
-          .fill(t('user.password'), user.password)
+          .fill(t('user.email'), admin.email)
+          .fill(t('user.password'), admin.password)
           .pressButton(t('session.sign_in'))
           .then(function () {
             browser.visit('/users').then(done, done);
@@ -117,6 +122,7 @@ describe('User', function(){
 
       it('should list users with pagination', function () {
         expect(browser.statusCode).to.be(200);
+        expect(browser.location.pathname).to.be('/users');
         expect(browser.queryAll('table.tp-data tr').length).to.be(25);
         expect(browser.query('a[href="/users?page=1"]')).to.be.ok();
         User

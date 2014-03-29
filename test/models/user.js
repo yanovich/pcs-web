@@ -26,6 +26,10 @@ describe('User', function () {
     expect(user.email).not.to.be.an('undefined');
   });
 
+  it('should respond to admin', function () {
+    expect(user.admin).not.to.be.an('undefined');
+  });
+
   it('should respond to hash', function () {
     expect(user.hash).not.to.be.an('undefined');
   });

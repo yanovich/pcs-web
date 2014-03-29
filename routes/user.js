@@ -16,6 +16,12 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
+function requireAdmin(req, res, next) {
+  if (req.operator.admin)
+    return next();
+  res.redirect('/users/' + req.operator._id);
+}
+
 function showUser(req, res) {
   res.render('users/show', {
     active: 'users',
@@ -91,5 +97,6 @@ module.exports.update = [ auth.authenticate,
                           updateUser];
 
 module.exports.index = [ auth.authenticate,
+                         requireAdmin,
                          indexUsers];
 // vim:ts=2 sts=2 sw=2 et:

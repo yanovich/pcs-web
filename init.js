@@ -10,7 +10,7 @@ var Faker = require('Faker');
 var User = require('./models/user');
 
 var userAttrs = { name: "Янович Сергей Владимирович", email: "ynvich@example.com",
-      password: 'foobar', confirmation: 'foobar' }
+      admin: true, password: 'foobar', confirmation: 'foobar' }
 
 var i = 1;
 
@@ -30,20 +30,7 @@ function addUser(err)
   user.save(addUser);
 }
 
-User.count(function (err, count) {
-  var root;
-  if (err) {
-    console.log(err);
-    process.exit(1);
-  }
-
-  if (count > 30) {
-    console.log(count);
-    process.exit(1);
-  }
-
-  User.remove(function (err) {
-    root = new User(userAttrs);
-    root.save(addUser);
-  })
-});
+User.remove(function (err) {
+  root = new User(userAttrs);
+  root.save(addUser);
+})

@@ -14,9 +14,9 @@ function t(key, options) {
 }
 
 var User = require('../../models/user');
+var user;
 
 describe('signin page', function() {
-  var user;
 
   before( function (done) {
     Factory.create('user', function (u) { user = u; done(); });
@@ -103,6 +103,32 @@ describe('authorization', function() {
 
       it('should require sign in', function () {
         expect(browser.location.pathname).to.be('/signin');
+      })
+    })
+  })
+
+  describe('of non-root signed-in users', function () {
+    beforeEach(function (done) {
+      browser
+      .visit('/signin')
+      .then(function () {
+        browser
+        .fill(t('user.email'), user.email)
+        .fill(t('user.password'), user.password)
+        .pressButton(t('session.sign_in'))
+        .then(done, done)
+      })
+    })
+
+    describe('accessing user index', function () {
+      beforeEach(function (done) {
+        browser
+          .visit('/users')
+          .then(done, done)
+      })
+
+      it('should render profile', function () {
+        expect(browser.location.pathname).to.be('/users/' + user._id);
       })
     })
   })

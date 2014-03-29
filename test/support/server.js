@@ -27,6 +27,14 @@ Factory.define('user', User, {
   email: function (cb) { cb('user-' + ++userCounter + '@example.com') }
 })
 
+Factory.define('admin', User, {
+  password: 'password',
+  confirmation: 'password',
+  admin: true,
+  name: function (cb) { cb(Faker.Name.findName()) },
+  email: function (cb) { cb('admin-' + ++userCounter + '@example.com') }
+})
+
 global.url = 'http://localhost:' + port;
 global.i18n = app.i18n;
 global.Factory = Factory;
