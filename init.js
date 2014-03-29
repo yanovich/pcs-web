@@ -26,6 +26,7 @@ function addUser(err)
 
   userAttrs.name = Faker.Name.findName();
   userAttrs.email = 'user-' + i + '@example.com';
+  userAttrs.admin = false;
   var user = new User(userAttrs);
   user.save(addUser);
 }

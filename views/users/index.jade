@@ -36,5 +36,7 @@ block content
             td.tp-email
               = u.email
             td.tp-info
+              if u.admin
+                span.label.label-danger= t('user.admin')
 
 //- vim:ts=2 sts=2 sw=2 et:
