@@ -105,19 +105,21 @@ describe('User', function(){
       Factory.create('admin', function (a) { admin = a; done(); });
     })
 
+    beforeEach(function (done) {
+      browser
+      .visit('/signin')
+      .then(function () {
+        browser
+        .fill(t('user.email'), admin.email)
+        .fill(t('user.password'), admin.password)
+        .pressButton(t('session.sign_in'))
+        .then(done, done);
+      }, done);
+    })
+
     describe('index page', function () {
       beforeEach(function (done) {
-        browser
-        .visit('/signin')
-        .then(function () {
-          browser
-          .fill(t('user.email'), admin.email)
-          .fill(t('user.password'), admin.password)
-          .pressButton(t('session.sign_in'))
-          .then(function () {
-            browser.visit('/users').then(done, done);
-          }, done);
-        }, done);
+        browser.visit('/users').then(done, done);
       })
 
       it('should list users with pagination', function () {
@@ -133,6 +135,17 @@ describe('User', function(){
             expect(browser.text('table.tp-data td.tp-email')).to.contain(u.email);
           });
         })
+      })
+    })
+
+    describe('profile page', function () {
+      beforeEach(function (done) {
+        browser.visit('/users/' + user._id).then(done, done);
+      })
+
+      it('should render user profile', function () {
+        expect(browser.statusCode).to.be(200);
+        expect(browser.location.pathname).to.be('/users/' + user._id);
       })
     })
   })

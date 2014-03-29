@@ -108,6 +108,12 @@ describe('authorization', function() {
   })
 
   describe('of non-root signed-in users', function () {
+    var otherUser;
+
+    before( function (done) {
+      Factory.create('user', function (u) { otherUser = u; done(); });
+    });
+
     beforeEach(function (done) {
       browser
       .visit('/signin')
@@ -128,6 +134,18 @@ describe('authorization', function() {
       })
 
       it('should render profile', function () {
+        expect(browser.location.pathname).to.be('/users/' + user._id);
+      })
+    })
+
+    describe('accessing another user profile', function () {
+      beforeEach(function (done) {
+        browser
+          .visit('/users/' + otherUser._id)
+          .then(done, done)
+      })
+
+      it('should render own profile', function () {
         expect(browser.location.pathname).to.be('/users/' + user._id);
       })
     })

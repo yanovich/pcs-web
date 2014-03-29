@@ -22,6 +22,14 @@ function requireAdmin(req, res, next) {
   res.redirect('/users/' + req.operator._id);
 }
 
+function requireAdminOrSelf(req, res, next) {
+  if (req.operator.admin)
+    return next();
+  if (req.operator._id.equals(req.user._id))
+    return next();
+  res.redirect('/users/' + req.operator._id);
+}
+
 function showUser(req, res) {
   res.render('users/show', {
     active: 'users',
@@ -91,9 +99,11 @@ function indexUsers(req, res) {
 }
 
 module.exports.show = [ auth.authenticate,
+                        requireAdminOrSelf,
                         showUser];
 
 module.exports.update = [ auth.authenticate,
+                          requireAdminOrSelf,
                           updateUser];
 
 module.exports.index = [ auth.authenticate,
