@@ -28,6 +28,22 @@ block content
             if e('email')
               label.help-block(for='email')
                 = t('mongoose.'+e('email').type, { path: t('user.email') })
+        .form-group(class=e('password')?'has-error':'')
+          label(for='password').control-label.col-sm-3= t('user.password')
+          .col-sm-9
+            input.form-control.input-sm(id='password', name='password',
+              type='password', value=user.password,  placeholder=t('user.password'))
+            if e('password')
+              label.help-block(for='password')
+                = t('mongoose.'+e('password').type, e('password'))
+        .form-group(class=e('confirmation')?'has-error':'')
+          label(for='confirmation').control-label.col-sm-3= t('user.confirmation')
+          .col-sm-9
+            input.form-control.input-sm(id='confirmation', name='confirmation',
+              type='password', value=user.confirmation,  placeholder=t('user.confirmation'))
+            if e('confirmation')
+              label.help-block(for='confirmation')
+                = t('mongoose.'+e('confirmation').type, e('confirmation'))
         input(name='_csrf', value=csrf, type='hidden')
         input(type='hidden',name='_method',value='put')
         input(type='submit',name='submit',value=t('user.update')).btn.btn-sm.btn-primary

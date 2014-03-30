@@ -25,12 +25,12 @@ var Validations = function () {
 
       if (this._password || this._confirmation) {
         if (this._password !== this._confirmation)
-          this.invalidate('confirmation', "doesn't match password");
+          this.invalidate('confirmation', { path: 'confirmation', type: 'mismatch' });
 
         if (opts['length'])
           if (opts['length']['min'])
             if (this._password.length < opts['length']['min'])
-              this.invalidate('password', 'too short');
+              this.invalidate('password', { path: 'password', type: 'short', count: opts['length']['min'] });
       }
     };
   };

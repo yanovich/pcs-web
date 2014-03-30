@@ -60,9 +60,13 @@ describe('User', function(){
       beforeEach(function (done) {
         user.name = 'New Name';
         user.email = 'new@example.com';
+        user.password = 'newPassword';
+        user.confirmation = 'newPassword';
         browser
         .fill(t('user.name'), user.name)
         .fill(t('user.email'), user.email)
+        .fill(t('user.password'), user.password)
+        .fill(t('user.confirmation'), user.confirmation)
         .pressButton(t('user.update'))
         .then(done, done)
       })
@@ -75,8 +79,10 @@ describe('User', function(){
         User.findById(user._id, function (err, u) {
           u.name.should.equal(user.name);
           u.email.should.equal(user.email);
-          u.hash.should.equal(user.hash);
-          done();
+          u.authenticate(user.password, function (err, valid) {
+            expect(valid).to.be(true);
+            done();
+          });
         });
       })
     })

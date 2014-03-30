@@ -38,7 +38,7 @@ function showUser(req, res) {
   })
 }
 
-var userFields = ['name', 'email'];
+var userFields = ['name', 'email', 'password', 'confirmation'];
 
 function updateUser(req, res) {
   userFields.forEach(function (f) {
