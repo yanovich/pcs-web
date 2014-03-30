@@ -56,7 +56,13 @@ function createSession(req, res) {
     if (!valid)
       return signinFail();
     req.session.operatorId = req.operator._id;
-    res.redirect('/');
+    if (req.session.returnTo) {
+      var redirect = req.session.returnTo;
+      req.session.returnTo = undefined;
+      res.redirect(redirect);
+    } else {
+      res.redirect('/');
+    }
   });
 }
 

@@ -8,8 +8,10 @@
 var User = require('../models/user');
 
 module.exports.authenticate = function (req, res, next) {
-  if (!req.session.operatorId)
+  if (!req.session.operatorId) {
+    req.session.returnTo = req.url;
     return res.redirect('/signin');
+  }
 
   User.findOne({ _id: req.session.operatorId }, function (err, user) {
     if (err)

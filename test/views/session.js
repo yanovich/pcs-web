@@ -92,6 +92,24 @@ describe('authentication', function () {
     })
   })
 
+  describe('friendly redirect', function () {
+    beforeEach(function (done) {
+      browser
+      .visit('/users/' + user._id)
+      .then(function () {
+        browser
+        .fill(t('user.email'), user.email)
+        .fill(t('user.password'), user.password)
+        .pressButton(t('session.sign_in'))
+        .then(done, done)
+      })
+    })
+
+    it('should redirect to profile after sign in', function () {
+      expect(browser.location.pathname).to.be('/users/' + user._id);
+    })
+  })
+
   describe('authorization', function() {
     describe('of non-signed-in users', function () {
       describe('accessing root page', function () {
