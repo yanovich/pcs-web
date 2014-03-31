@@ -59,7 +59,7 @@ describe('User', function(){
     describe('edit with valid data', function () {
       beforeEach(function (done) {
         user.name = 'Update Name';
-        user.email = 'update@example.com';
+        user.email = 'u@example.com';
         user.password = 'newPassword';
         user.confirmation = 'newPassword';
         browser
