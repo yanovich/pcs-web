@@ -8,6 +8,7 @@
 var app = require('../../app')
 var port = app.get('port');
 var User = require('../../models/user');
+var Device = require('../../models/device');
 var Factory = require('factory-lady');
 var Faker = require('Faker');
 
@@ -33,6 +34,13 @@ Factory.define('admin', User, {
   admin: true,
   name: function (cb) { cb(Faker.Name.findName()) },
   email: function (cb) { cb('admin-' + ++userCounter + '@example.com') }
+})
+
+var deviceCounter = 0;
+
+Factory.define('device', Device, {
+  name: function (cb) { cb('Example Device ' + ++deviceCounter) },
+  filepath: function (cb) { cb('/tmp/dev' + deviceCounter) }
 })
 
 global.url = 'http://localhost:' + port;
