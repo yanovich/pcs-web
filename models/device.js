@@ -1,4 +1,4 @@
-/* models/user.js
+/* models/device.js
  * Copyright 2014 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
