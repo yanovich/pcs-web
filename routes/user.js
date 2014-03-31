@@ -32,8 +32,10 @@ function requireAdminOrSelf(req, res, next) {
 
 function showUser(req, res) {
   res.render('users/show', {
+    action: '/users/' + req.user._id,
     active: 'users',
     user: req.user,
+    _method: 'put',
     title: req.user.name
   })
 }
@@ -100,6 +102,39 @@ function indexUsers(req, res) {
   });
 }
 
+function newUser(req, res) {
+  if (!req.user) req.user = new User();
+  res.render('users/show', {
+    action: '/users',
+    active: 'users',
+    user: req.user,
+    title: res.locals.t('user.new')
+  })
+}
+
+function createUser(req, res) {
+  req.user = new User();
+  userFields.forEach(function (f) {
+    req.user[f] = req.body[f];
+  });
+  if (req.operator.admin && !req.operator._id.equals(req.user._id))
+    req.user.admin = !!req.body['admin'];
+  req.user.save(function (err) {
+    if (err) {
+      console.log(err);
+      res.locals.err = err;
+      if (err.errors && Object.keys(err.errors).length)
+        res.locals.messages.push({ severity: 'danger',
+          key: 'flash.update.error',
+          options: { count: Object.keys(err.errors).length } });
+      return newUser(req, res);
+    }
+    req.session.messages.push({ severity: 'success',
+      key: 'flash.create.success' });
+    res.redirect('/users/' + req.user._id);
+  });
+}
+
 module.exports.show = [ auth.authenticate,
                         requireAdminOrSelf,
                         showUser];
@@ -111,4 +146,13 @@ module.exports.update = [ auth.authenticate,
 module.exports.index = [ auth.authenticate,
                          requireAdmin,
                          indexUsers];
+
+module.exports.new = [ auth.authenticate,
+                       requireAdmin,
+                       newUser];
+
+module.exports.create = [ auth.authenticate,
+                          requireAdmin,
+                          createUser];
+
 // vim:ts=2 sts=2 sw=2 et:

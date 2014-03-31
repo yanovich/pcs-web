@@ -76,9 +76,11 @@ app.post('/signin', sessions.create);
 app.del('/signout', sessions.destroy);
 
 app.param('user', users.load);
+app.get('/users/new', users.new);
 app.get('/users/:user', users.show);
 app.put('/users/:user', users.update);
 app.get('/users', users.index);
+app.post('/users', users.create);
 
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';

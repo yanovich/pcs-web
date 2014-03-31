@@ -9,7 +9,7 @@ extends ../_main
 block content
   .row.tp-user
     .col-lg-6
-      form(method='post', accept-charset="UTF-8").form-horizontal
+      form(method='post', accept-charset="UTF-8", action=action).form-horizontal
         .form-group(class=e('name')?'has-error':'')
           label.tp-photo.control-label.col-sm-3
             span.glyphicon.glyphicon-user
@@ -38,7 +38,7 @@ block content
           label(for='password').control-label.col-sm-3= t('user.password')
           .col-sm-9
             input.form-control.input-sm(id='password', name='password',
-              type='password', value=user.password,  placeholder=t('user.password'))
+              type='password', placeholder=t('user.password'))
             if e('password')
               label.help-block(for='password')
                 = t('mongoose.'+e('password').type, e('password'))
@@ -46,12 +46,17 @@ block content
           label(for='confirmation').control-label.col-sm-3= t('user.confirmation')
           .col-sm-9
             input.form-control.input-sm(id='confirmation', name='confirmation',
-              type='password', value=user.confirmation,  placeholder=t('user.confirmation'))
+              type='password', placeholder=t('user.confirmation'))
             if e('confirmation')
               label.help-block(for='confirmation')
                 = t('mongoose.'+e('confirmation').type, e('confirmation'))
         input(name='_csrf', value=csrf, type='hidden')
-        input(type='hidden',name='_method',value='put')
-        input(type='submit',name='submit',value=t('user.update')).btn.btn-sm.btn-primary
+        if _method
+          input(type='hidden',name='_method',value=_method)
+        input(type='submit',name='submit',value=t('action.'+_method)).btn.btn-sm.btn-primary
+
+block sidebar
+  if operator.admin
+    li: a.btn.btn-sm.btn-danger(href='/users/new')= t('action.undefined')
 
 //- vim:ts=2 sts=2 sw=2 et:

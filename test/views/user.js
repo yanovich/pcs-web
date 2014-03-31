@@ -58,8 +58,8 @@ describe('User', function(){
 
     describe('edit with valid data', function () {
       beforeEach(function (done) {
-        user.name = 'New Name';
-        user.email = 'new@example.com';
+        user.name = 'Update Name';
+        user.email = 'update@example.com';
         user.password = 'newPassword';
         user.confirmation = 'newPassword';
         browser
@@ -67,7 +67,7 @@ describe('User', function(){
         .fill(t('user.email'), user.email)
         .fill(t('user.password'), user.password)
         .fill(t('user.confirmation'), user.confirmation)
-        .pressButton(t('user.update'))
+        .pressButton(t('action.put'))
         .then(done, done)
       })
 
@@ -92,7 +92,7 @@ describe('User', function(){
         browser
         .fill(t('user.name'), '')
         .fill(t('user.email'), '')
-        .pressButton(t('user.update'))
+        .pressButton(t('action.put'))
         .then(done, done);
       })
 
@@ -158,7 +158,7 @@ describe('User', function(){
         beforeEach(function (done) {
           browser
           .check(t('user.admin'))
-          .pressButton(t('user.update'))
+          .pressButton(t('action.put'))
           .then(done, done);
         })
 
@@ -166,6 +166,49 @@ describe('User', function(){
           User.findById(user._id, function (err, u) {
             expect(u.admin).to.be(true);
             done();
+          });
+        })
+      })
+    })
+
+    describe('new users', function () {
+      beforeEach(function (done) {
+        browser.visit('/users/new').then(done, done);
+      })
+
+      it('should index provide input form', function () {
+        expect(browser.statusCode).to.be(200);
+        expect(browser.location.pathname).to.be('/users/new');
+      })
+
+      describe('with valid data', function () {
+        var newUser = new User();
+        beforeEach(function (done) {
+          newUser.name = 'New Name';
+          newUser.email = 'new@example.com';
+          newUser.password = 'newPassword';
+          newUser.confirmation = 'newPassword';
+          browser
+          .fill(t('user.name'), newUser.name)
+          .fill(t('user.email'), newUser.email)
+          .fill(t('user.password'), newUser.password)
+          .fill(t('user.confirmation'), newUser.confirmation)
+          .pressButton(t('action.undefined'))
+          .then(done, done)
+        })
+
+        it('should show created user', function (done) {
+          expect(browser.statusCode).to.be(200);
+          expect(browser.query("input[value='"+newUser.name+"']")).to.be.ok();
+          expect(browser.query('input[value="'+newUser.email+'"]')).to.be.ok();
+          expect(browser.queryAll('.tp-flash .alert.alert-success').length).to.be(1);
+          User.findOne({ email: newUser.email }, function (err, u) {
+            u.name.should.equal(newUser.name);
+            u.email.should.equal(newUser.email);
+            u.authenticate(newUser.password, function (err, valid) {
+              expect(valid).to.be(true);
+              done();
+            });
           });
         })
       })
