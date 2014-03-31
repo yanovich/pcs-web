@@ -153,6 +153,22 @@ describe('User', function(){
         expect(browser.statusCode).to.be(200);
         expect(browser.location.pathname).to.be('/users/' + user._id);
       })
+
+      describe('admin attribute', function () {
+        beforeEach(function (done) {
+          browser
+          .check(t('user.admin'))
+          .pressButton(t('user.update'))
+          .then(done, done);
+        })
+
+        it('should assign admin', function (done) {
+          User.findById(user._id, function (err, u) {
+            expect(u.admin).to.be(true);
+            done();
+          });
+        })
+      })
     })
   })
 });

@@ -28,6 +28,12 @@ block content
             if e('email')
               label.help-block(for='email')
                 = t('mongoose.'+e('email').type, { path: t('user.email') })
+        .form-group
+          label(for='admin').control-label.col-sm-3= t('user.admin')
+          .col-sm-9
+            input.form-control.input-sm(id='admin', name='admin',
+              type='checkbox', checked=user.admin,
+              disabled=(!operator.admin || operator._id.equals(user._id)))
         .form-group(class=e('password')?'has-error':'')
           label(for='password').control-label.col-sm-3= t('user.password')
           .col-sm-9

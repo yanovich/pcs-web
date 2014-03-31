@@ -44,6 +44,8 @@ function updateUser(req, res) {
   userFields.forEach(function (f) {
     req.user[f] = req.body[f];
   });
+  if (req.operator.admin && !req.operator._id.equals(req.user._id))
+    req.user.admin = !!req.body['admin'];
   req.user.save(function (err) {
     if (err) {
       res.locals.err = err;
