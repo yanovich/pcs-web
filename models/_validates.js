@@ -21,7 +21,7 @@ var Validations = function () {
   this.password = function (opts) {
     return function (value) {
       if (this.isNew && (!this._password || this._password.trim() === ''))
-        this.invalidate('password', 'required');
+        this.invalidate('password',  { path: 'password', type: 'required' });
 
       if (this._password || this._confirmation) {
         if (this._password !== this._confirmation)
