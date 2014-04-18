@@ -7,6 +7,10 @@
 
 var path = require('path');
 var express = require('express');
+var logger = require('morgan');
+var body_parser = require('body-parser');
+var method_override = require('method-override');
+var csrf = require('csurf');
 var mongoose = require('mongoose');
 var clientSessions = require("client-sessions");
 
@@ -27,7 +31,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 if (process.env.NODE_ENV !== 'test')
-  app.use(express.logger('dev'));
+  app.use(logger('dev'));
 app.use('/static',
     express.static(path.join(__dirname, 'public/stylesheets/')));
 app.use('/static/bootstrap',
@@ -38,8 +42,8 @@ app.use('/static/fonts',
     express.static(path.join(twbs, 'bootstrap-browser/dist/fonts')));
 app.use('/static/jquery', express.static(path.join(
         path.dirname(require.resolve('jquery-browser')), 'lib/')));
-app.use(express.urlencoded());
-app.use(express.methodOverride());
+app.use(body_parser.urlencoded());
+app.use(method_override());
 
 
 app.use(clientSessions({
@@ -47,7 +51,7 @@ app.use(clientSessions({
   cookieName: 'session',
 }));
 
-app.use(express.csrf());
+app.use(csrf());
 app.use(function (req, res, next) {
   res.locals.csrf = req.csrfToken();
   next();
