@@ -146,7 +146,9 @@ describe('User', function(){
 
     describe('bad profile page', function () {
       beforeEach(function (done) {
-        browser.visit('/users/bad').then(done, function () { done(); });
+        var c = browser.console;
+        browser.console = { error: function () {} };
+        browser.visit('/users/bad').then(done, function () { browser.console = c; done(); });
       })
 
       it('should report error', function () {
