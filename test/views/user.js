@@ -144,6 +144,16 @@ describe('User', function(){
       })
     })
 
+    describe('bad profile page', function () {
+      beforeEach(function (done) {
+        browser.visit('/users/bad').then(done, function () { done(); });
+      })
+
+      it('should report error', function () {
+        expect(browser.statusCode).to.be(404);
+      })
+    })
+
     describe('profile page', function () {
       beforeEach(function (done) {
         browser.visit('/users/' + user._id).then(done, done);

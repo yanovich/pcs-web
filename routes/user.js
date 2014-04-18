@@ -31,6 +31,8 @@ function requireAdminOrSelf(req, res, next) {
 }
 
 function showUser(req, res) {
+  if (!req.user)
+    return res.send(404);
   res.render('users/show', {
     action: '/users/' + req.user._id,
     active: 'users',
