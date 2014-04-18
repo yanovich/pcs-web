@@ -99,10 +99,13 @@ app.get('/', authUser, function(req, res) {
 });
 
 app.use(function (err, req, res, next) {
-  if (err)
-    console.log(err);
-
-  next(err);
+  if (err) {
+    res.send(err.status || 500);
+    if (!process.env.NODE_ENV)
+      throw err;
+  } else {
+    next();
+  }
 });
 
 mongoose.connect(config.dbUrl);
