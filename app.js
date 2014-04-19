@@ -20,12 +20,14 @@ var users = require('./routes/user');
 var sessions = require('./routes/session');
 var auth = require('./routes/_auth');
 var authUser = auth.authenticate;
+var states = require('./routes/state');
 
 var config = require('./config');
 
 var app = express();
 var i18n = require('i18n-t')({ supported_languages: ['ru'] });
 
+app.disable('x-powered-by');
 app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -42,9 +44,11 @@ app.use('/static/fonts',
     express.static(path.join(twbs, 'bootstrap-browser/dist/fonts')));
 app.use('/static/jquery', express.static(path.join(
         path.dirname(require.resolve('jquery-browser')), 'lib/')));
+
+app.use('/states', states.create);
+
 app.use(body_parser.urlencoded());
 app.use(method_override());
-
 
 app.use(clientSessions({
   secret: config.secret,
