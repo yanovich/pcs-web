@@ -5,9 +5,10 @@
  * Process Control Service Web Interface
  */
 
+var http = require('http')
 var app = require('./app')
 
-app.listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
