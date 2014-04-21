@@ -22,7 +22,7 @@ module.exports.create = function (req, res, next) {
   function onData(chunk) {
     res.write(chunk.toString());
   }
-  
+
   function onEnd(err) {
     res.end();
     if (err)
