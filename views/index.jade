@@ -43,10 +43,12 @@ html(ng-app="pcs")
             | –
             b {{pager.last}}
             = ' ' + t('pagination.of') + ' '
-            b {{pager.count}} ({{pager.prev}})
+            b {{pager.count}}
           ul.pagination
-            li: a(ng-href='{{pager.prev}}', ng-class="{disabled: pager.page == 1}")= '<'
-            li: a(ng-href='{{pager.next}}', ng-class="{disabled: pager.last == pager.count}")= '>'
+            li: a#prev(ng-show="pager.prev", href='{{pager.prev}}')= '<'
+            li: a#prev(ng-show="!pager.prev", ng-href='')= '<'
+            li: a#next(ng-show="pager.next", href='{{pager.next}}')= '>'
+            li: a#next(ng-show="!pager.next", ng-href='')= '>'
 
     .tp-main.row
       .col-xs-4.col-md-2.col-xl-2.tp-sidebar
