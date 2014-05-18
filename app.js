@@ -62,6 +62,19 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(function (req, res, next) {
+  res.json_ng = function (obj) {
+    var app = this.app;
+    var replacer = app.get('json replacer');
+    var spaces = app.get('json spaces');
+    var body = ")]}',\n" + JSON.stringify(obj, replacer, spaces);
+
+    this.set('Content-Type', 'application/json');
+    this.send(body)
+  }
+  next();
+});
+
 app.use(i18n.express());
 if (process.env.NODE_ENV === 'test')
   app.i18n = i18n.request();

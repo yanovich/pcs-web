@@ -39,7 +39,7 @@ function showUser(req, res) {
   exportFields.split(' ').forEach(function (f) {
     user[f] = req.user[f];
   });
-  res.json(user);
+  res.json_ng(user);
 }
 
 var userFields = ['name', 'email', 'password', 'confirmation'];
@@ -81,7 +81,7 @@ function indexUsers(req, res) {
       if (err)
         return res.send(500, err.toString());
       users.push({ count: count });
-      res.json(users)
+      res.json_ng(users);
     });
   });
 }
