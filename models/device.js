@@ -6,7 +6,6 @@
  */
 
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
 var validates = require('./_validates');
 
 var device_schema = new mongoose.Schema({
