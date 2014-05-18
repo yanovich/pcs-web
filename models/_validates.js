@@ -11,7 +11,7 @@ var Validations = function () {
       var valid = true;
 
       if (opts['max'])
-        if (value.length > opts['max'])
+        if (!value || value.length > opts['max'])
           valid = false;
 
       return valid;
