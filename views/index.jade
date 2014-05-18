@@ -45,7 +45,6 @@ html(ng-app="pcs")
         ul.nav.tp-menu-side(ng-controller="NavCtrl")
           li(ng-class="{ active: isActive('#/sites') }")
             a(href='#/sites') Объекты
-            p {{ debug().toString(); }}
           li
             a(href='#') Apхив
           li(ng-class="{ active: isActive('#/users') }")
