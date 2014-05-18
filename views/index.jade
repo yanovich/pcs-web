@@ -19,6 +19,8 @@ html(ng-app="pcs")
           li.dropdown
             button(type='button', data-toggle='dropdown').btn.dropdown-toggle
               = operator.name
+              p(style="display:none", pcs-operator-id)= operator._id
+              p(style="display:none", pcs-operator-admin)= operator.admin
               span.caret
             ul.dropdown-menu
               li
@@ -59,7 +61,7 @@ html(ng-app="pcs")
             a(href='#/sites') Объекты
           li
             a(href='#') Apхив
-          li(ng-class="{ active: isActive('#/users') }")
+          li(ng-if="operator.admin" ng-class="{ active: isActive('#/users') }")
             a(href='#/users')= t('user.self.plural')
       .col-xs-12.col-md-10.col-xl-14.tp-content
         div(ng-view)

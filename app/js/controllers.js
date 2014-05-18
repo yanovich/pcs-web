@@ -16,6 +16,7 @@ angular.module('pcs.controllers', [])
       page: 1,
       show: false
     }
+    $scope.operator = {}
     $scope.page = function (page, perPage, count) {
       $scope.pager.count = count;
       if (count) {
