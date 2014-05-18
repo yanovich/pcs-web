@@ -49,6 +49,15 @@ angular.module('pcs.controllers', [])
         $scope.user = User.get({ userId: $routeParams.userId }, function () {
           console.log($scope.user);
         });
+        $scope.save = function () {
+          console.log('Saving ' + $scope.user._id);
+          $scope.user.$save({}, function () {
+            $scope.userForm.$setPristine();
+            console.log($scope.user);
+          }, function (res) {
+            console.log(res);
+          });
+        }
   }])
   .controller('UsersCtrl', ['$scope', '$location', 'User',
       function($scope, $location, User) {

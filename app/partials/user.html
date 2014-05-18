@@ -1,6 +1,6 @@
 <div class="row tp-user">
   <div class="col-lg-6">
-    <form method="post" accept-charset="UTF-8" action="/users/53395da298796d7d1edd54ac" class="form-horizontal">
+    <form name="userForm" accept-charset="UTF-8" class="form-horizontal">
       <div class="form-group">
         <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-user"></span></label>
         <label for="name" class="control-label hidden">Полное имя</label>
@@ -23,18 +23,16 @@
       <div class="form-group">
         <label for="password" class="control-label col-sm-3">Пароль</label>
         <div class="col-sm-9">
-          <input id="password" name="password" type="password" placeholder="Пароль" class="form-control input-sm">
+          <input id="password" name="password" type="password" ng-model="user.password" placeholder="Пароль" class="form-control input-sm">
         </div>
       </div>
       <div class="form-group">
         <label for="confirmation" class="control-label col-sm-3">Подтверждение</label>
         <div class="col-sm-9">
-          <input id="confirmation" name="confirmation" type="password" placeholder="Подтверждение" class="form-control input-sm">
+          <input id="confirmation" name="confirmation" type="password" ng-model="user.confirmation" placeholder="Подтверждение" class="form-control input-sm">
         </div>
       </div>
-      <input name="_csrf" value="RjNmF8hkFDwv3iGWijrAnLctzrBYLoAMNAAo8=" type="hidden">
-      <input type="hidden" name="_method" value="put">
-      <input type="submit" name="submit" value="Изменить" class="btn btn-sm btn-primary">
+      <button name="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$pristine" ng-click="save()">Изменить</button>
     </form>
   </div>
 </div>

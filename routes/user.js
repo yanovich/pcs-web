@@ -52,16 +52,9 @@ function updateUser(req, res) {
     req.user.admin = !!req.body['admin'];
   req.user.save(function (err) {
     if (err) {
-      res.locals.err = err;
-      if (err.errors && Object.keys(err.errors).length)
-        res.locals.messages.push({ severity: 'danger',
-          key: 'flash.update.error',
-          options: { count: Object.keys(err.errors).length } });
-      return showUser(req, res);
+      return res.json(500, err);
     }
-    req.session.messages.push({ severity: 'success',
-      key: 'flash.update.success' });
-    res.redirect('/users/' + req.user._id);
+    res.json(req.user);
   });
 }
 

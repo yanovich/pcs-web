@@ -8,7 +8,7 @@
 var path = require('path');
 var express = require('express');
 var logger = require('morgan');
-var body_parser = require('body-parser');
+var bodyParser = require('body-parser');
 var method_override = require('method-override');
 var csrf = require('csurf');
 var mongoose = require('mongoose');
@@ -34,7 +34,7 @@ if (process.env.NODE_ENV !== 'test')
   app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'app/')));
 
-app.use(body_parser.urlencoded());
+app.use(bodyParser());
 app.use(method_override());
 
 app.use(clientSessions({
@@ -45,6 +45,7 @@ app.use(clientSessions({
 app.use(csrf());
 app.use(function (req, res, next) {
   res.locals.csrf = req.csrfToken();
+  res.cookie('XSRF-TOKEN', res.locals.csrf);
   next();
 });
 
@@ -86,6 +87,7 @@ app.del('/signout', sessions.destroy);
 app.param('user', users.load);
 app.get('/users', users.index);
 app.get('/users/:user', users.show);
+app.post('/users/:user', users.update);
 
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';
