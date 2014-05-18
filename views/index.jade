@@ -10,7 +10,7 @@ html(ng-app="pcs")
     title= title + ' - asupt.io'
     link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
     link(rel='stylesheet', href='css/app.css')
-  body
+  body(ng-controller="PageCtrl")
     header.navbar
       .navbar-header
         a.navbar-brand(href='/') asutp.io
@@ -37,7 +37,17 @@ html(ng-app="pcs")
               = t(m.key, m.options)
     .tp-toolbar.row
       .col-xs-12.col-md-10.col-xl-14.pull-right
-        block toolbar
+        .pull-right(ng-if="pager.show")
+          .page
+            b {{pager.first}}
+            | –
+            b {{pager.last}}
+            = ' ' + t('pagination.of') + ' '
+            b {{pager.count}} ({{pager.prev}})
+          ul.pagination
+            li: a(ng-href='{{pager.prev}}', ng-class="{disabled: pager.page == 1}")= '<'
+            li: a(ng-href='{{pager.next}}', ng-class="{disabled: pager.last == pager.count}")= '>'
+
     .tp-main.row
       .col-xs-4.col-md-2.col-xl-2.tp-sidebar
         ul.nav.tp-tools-side
