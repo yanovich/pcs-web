@@ -73,33 +73,11 @@ function indexUsers(req, res) {
     if ((page * per_page) > count)
       page = Math.floor((count - 1) / per_page);
     User
-    .find().sort({ name: 1 }).skip(page*per_page).limit(per_page)
+    .find().sort({ name: 1 })//.skip(page*per_page).limit(per_page)
     .exec(function (err, users) {
       if (err)
         return res.send(500, err.toString());
-      var prev = '#';
-      var next = '#';
-      var last;
-      if (page > 0)
-        prev = '/users?page=' + (page - 1);
-      if (per_page * (page + 1) < count) {
-        next = '/users?page=' + (page + 1);
-        last = per_page * (page + 1);
-      } else {
-        last = count;
-      }
-      res.render('users/index', {
-        pager: {
-          firstItem: page * per_page + 1,
-          lastItem:  last,
-          count: count,
-          prev: prev,
-          next: next
-        },
-        users: users,
-        active: 'users',
-        title: res.locals.t('user.self.plural')
-      })
+      res.json(users)
     });
   });
 }

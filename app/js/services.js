@@ -1,9 +1,16 @@
+/* app/js/services.js -- angular services
+ * Copyright 2014 Sergei Ianovich
+ *
+ * Licensed under AGPL-3.0 or later, see LICENSE
+ * Process Control Service Web Interface
+ */
+
 'use strict';
 
-/* Services */
+angular.module('pcs.services', ['ngResource']).
+  factory('User', ['$resource',
+      function ($resource) {
+        return $resource('/users/:userId');
+      }])
 
-
-// Demonstrate how to register services
-// In this case it is a simple value service.
-angular.module('pcs.services', []).
-  value('version', '0.1');
+// vim:ts=2 sts=2 sw=2 et:
