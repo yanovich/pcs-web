@@ -79,36 +79,18 @@ function indexUsers(req, res) {
   });
 }
 
-function newUser(req, res) {
-  if (!req.user) req.user = new User();
-  res.render('users/show', {
-    action: '/users',
-    active: 'users',
-    user: req.user,
-    title: res.locals.t('user.new')
-  })
-}
-
 function createUser(req, res) {
   req.user = new User();
   userFields.forEach(function (f) {
     req.user[f] = req.body[f];
   });
-  if (req.operator.admin && !req.operator._id.equals(req.user._id))
+  if (req.operator.admin)
     req.user.admin = !!req.body['admin'];
   req.user.save(function (err) {
     if (err) {
-      console.log(err);
-      res.locals.err = err;
-      if (err.errors && Object.keys(err.errors).length)
-        res.locals.messages.push({ severity: 'danger',
-          key: 'flash.update.error',
-          options: { count: Object.keys(err.errors).length } });
-      return newUser(req, res);
+      return res.json(500, err);
     }
-    req.session.messages.push({ severity: 'success',
-      key: 'flash.create.success' });
-    res.redirect('/users/' + req.user._id);
+    res.json(req.user);
   });
 }
 
@@ -123,10 +105,6 @@ module.exports.update = [ auth.authenticate,
 module.exports.index = [ auth.authenticate,
                          requireAdmin,
                          indexUsers];
-
-module.exports.new = [ auth.authenticate,
-                       requireAdmin,
-                       newUser];
 
 module.exports.create = [ auth.authenticate,
                           requireAdmin,

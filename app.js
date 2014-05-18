@@ -88,6 +88,7 @@ app.param('user', users.load);
 app.get('/users', users.index);
 app.get('/users/:user', users.show);
 app.post('/users/:user', users.update);
+app.post('/users', users.create);
 
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';

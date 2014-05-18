@@ -32,7 +32,7 @@
           <input id="confirmation" name="confirmation" type="password" ng-model="user.confirmation" placeholder="Подтверждение" class="form-control input-sm">
         </div>
       </div>
-      <button name="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$pristine" ng-click="save()">Изменить</button>
+      <button name="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$pristine" ng-click="save()">{{(user._id) ? 'Изменить' : 'Сохранить'}}</button>
     </form>
   </div>
 </div>
