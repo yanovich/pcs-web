@@ -42,12 +42,13 @@ html(ng-app="pcs")
       .col-xs-4.col-md-2.col-xl-2.tp-sidebar
         ul.nav.tp-tools-side
           block sidebar
-        ul.nav.tp-menu-side
-          li
+        ul.nav.tp-menu-side(ng-controller="NavCtrl")
+          li(ng-class="{ active: isActive('#/sites') }")
             a(href='#/sites') Объекты
+            p {{ debug().toString(); }}
           li
             a(href='#') Apхив
-          li(class=active=='users'?'active':'')
+          li(ng-class="{ active: isActive('#/users') }")
             a(href='#/users')= t('user.self.plural')
       .col-xs-12.col-md-10.col-xl-14.tp-content
         div(ng-view)
