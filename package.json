@@ -7,17 +7,17 @@
   "repository" : {"type": "git", "url": "git://github.com:yanovich/pcs-web.git"},
   "dependencies": {
     "bcrypt": "0.7.7",
+    "body-parser": "1.0.2",
     "bootstrap-browser": "3.0.x",
     "client-sessions": "0.6.0",
-    "express": "4.0.x",
-    "morgan": "1.0.0",
-    "body-parser": "1.0.2",
-    "method-override": "1.0.0",
     "csurf": "1.1.0",
+    "express": "4.0.x",
+    "i18n-t": "git://github.com/yanovich/i18n-t#d30b6f02b09",
     "jade": "*",
     "jquery-browser": "1.x",
-    "i18n-t": "git://github.com/yanovich/i18n-t#d30b6f02b09",
-    "mongoose": "3.8.6"
+    "method-override": "1.0.0",
+    "mongoose": "3.8.6",
+    "morgan": "1.0.0"
   },
   "devDependencies": {
     "async": "*",
