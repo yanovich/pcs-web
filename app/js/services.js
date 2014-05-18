@@ -10,7 +10,7 @@
 angular.module('pcs.services', ['ngResource']).
   factory('User', ['$resource',
       function ($resource) {
-        return $resource('/users/:userId?page=:pageNum');
+        return $resource('/users/:userId?page=:pageNum', { userId: '@_id' });
       }])
 
 // vim:ts=2 sts=2 sw=2 et:

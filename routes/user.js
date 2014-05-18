@@ -30,16 +30,16 @@ function requireAdminOrSelf(req, res, next) {
   res.redirect('/users/' + req.operator._id);
 }
 
+var exportFields = '_id name email admin';
+
 function showUser(req, res) {
   if (!req.user)
     return res.send(404);
-  res.render('users/show', {
-    action: '/users/' + req.user._id,
-    active: 'users',
-    user: req.user,
-    _method: 'put',
-    title: req.user.name
-  })
+  var user = {};
+  exportFields.split(' ').forEach(function (f) {
+    user[f] = req.user[f];
+  });
+  res.json(user);
 }
 
 var userFields = ['name', 'email', 'password', 'confirmation'];
@@ -76,7 +76,7 @@ function indexUsers(req, res) {
     if ((page * per_page) > count)
       page = Math.floor((count - 1) / per_page);
     User
-    .find().sort({ name: 1 }).skip(page*per_page).limit(per_page)
+    .find({}, exportFields).sort({ name: 1 }).skip(page*per_page).limit(per_page)
     .exec(function (err, users) {
       if (err)
         return res.send(500, err.toString());

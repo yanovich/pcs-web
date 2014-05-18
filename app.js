@@ -70,7 +70,9 @@ app.get('/signin', sessions.new);
 app.post('/signin', sessions.create);
 app.del('/signout', sessions.destroy);
 
+app.param('user', users.load);
 app.get('/users', users.index);
+app.get('/users/:user', users.show);
 
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';

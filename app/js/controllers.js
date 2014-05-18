@@ -43,6 +43,13 @@ angular.module('pcs.controllers', [])
   .controller('SitesCtrl', ['$scope', function($scope) {
     $scope.page(1, 25, 2);
   }])
+  .controller('UserCtrl', ['$scope', '$routeParams', 'User',
+      function($scope, $routeParams, User) {
+        $scope.page(1, 1, 0);
+        $scope.user = User.get({ userId: $routeParams.userId }, function () {
+          console.log($scope.user);
+        });
+  }])
   .controller('UsersCtrl', ['$scope', '$location', 'User',
       function($scope, $location, User) {
         var page = Number($location.search().page) || 1;

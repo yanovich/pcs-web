@@ -24,7 +24,7 @@ html(ng-app="pcs")
               span.caret
             ul.dropdown-menu
               li
-                a(href='/users/#{operator._id}') Profile
+                a(href='#/users/#{operator._id}') Profile
               li
                 form(method='post', action='/signout', accept-charset="UTF-8").form-signout
                   input(type='hidden',name='_method',value='delete')
