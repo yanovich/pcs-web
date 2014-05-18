@@ -1,48 +1,65 @@
-// views/index.jade -- mockup main page
+//- views/layout.jade -- master layout
 // Copyright 2014 Sergei Ianovich
 //
 // Licensed under AGPL-3.0 or later, see LICENSE
 // Process Control Service Web Interface
 
-extends _main
+doctype html
+html(ng-app="pcs")
+  head
+    title= title + ' - asupt.io'
+    link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
+    link(rel='stylesheet', href='css/app.css')
+  body
+    header.navbar
+      .navbar-header
+        a.navbar-brand(href='/') asutp.io
+      nav.collapse.navbar-collapse
+        ul.nav.navbar-nav.navbar-right
+          li.dropdown
+            button(type='button', data-toggle='dropdown').btn.dropdown-toggle
+              = operator.name
+              span.caret
+            ul.dropdown-menu
+              li
+                a(href='/users/#{operator._id}') Profile
+              li
+                form(method='post', action='/signout', accept-charset="UTF-8").form-signout
+                  input(type='hidden',name='_method',value='delete')
+                  input(type='hidden',name='_csrf',value=csrf)
+                  input(type='submit',name='submit',value=t('session.sign_out'))
+      .tp-flash-container
+        .clearfix
+        .tp-flash
+          each m in messages
+            .alert.alert-dismissable(class='alert-'+m.severity)
+              button.close(type='button', data-dismiss='alert') &times;
+              = t(m.key, m.options)
+    .tp-toolbar.row
+      .col-xs-12.col-md-10.col-xl-14.pull-right
+        block toolbar
+    .tp-main.row
+      .col-xs-4.col-md-2.col-xl-2.tp-sidebar
+        ul.nav.tp-tools-side
+          block sidebar
+        ul.nav.tp-menu-side
+          li
+            a(href='#/sites') Объекты
+          li
+            a(href='#') Apхив
+          li(class=active=='users'?'active':'')
+            a(href='#/users')= t('user.self.plural')
+      .col-xs-12.col-md-10.col-xl-14.tp-content
+        div(ng-view)
+        include _footer
+    script(src='bower_components/jquery/jquery.js')
+    script(src='bower_components/angular/angular.js')
+    script(src='bower_components/angular-route/angular-route.js')
+    script(src='bower_components/bootstrap/dist/js/bootstrap.js')
+    script(src='js/app.js')
+    script(src='js/services.js')
+    script(src='js/controllers.js')
+    script(src='js/filters.js')
+    script(src='js/directives.js')
 
-block content
-  .tp-data
-    table.tp-data
-      colgroup
-        col.tp-check
-        col.tp-led
-        col.tp-sender
-        col.tp-mark
-        col.tp-text
-        col.tp-spare
-        col.tp-date
-      tbody
-        tr
-          td.tp-check
-            .tp-check
-          td
-          td.tp-sender
-            span Название объекта
-          td
-          td
-            span Состояние
-            span.tp-details - пояснение
-          td
-          td
-            span время/дата
-        tr
-          td.tp-check
-            .tp-check
-          td
-          td.tp-sender
-            span Название объекта
-          td
-          td
-            span Состояние
-            span.tp-details - пояснение
-          td
-          td
-            span время/дата
-    .clearfix
 //- vim:ts=2 sts=2 sw=2 et:

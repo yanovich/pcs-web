@@ -1,0 +1,17 @@
+{
+  "name": "pcs-web",
+  "description": "Process Controll Service web interface",
+  "version": "0.0.0",
+  "homepage": "https://github.com/yanovich/pcs-web",
+  "license": "AGPL-3.0",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.x",
+    "bootstrap": "~3.1.1",
+    "html5-boilerplate": "~4.3.0",
+    "jquery": "1.10.2"
+  }
+}
