@@ -90,7 +90,7 @@ app.get('/users/:user', users.show);
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';
   if (req.operator)
-    title = req.operator.name + ' ' + title;
+    title = req.operator.name;
 
   res.render('index', {
     pretty: true,
