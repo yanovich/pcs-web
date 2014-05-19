@@ -10,46 +10,22 @@
       <col class="tp-date">
     </colgroup>
     <tbody>
-    <tr>
+    <tr ng-repeat="site in sites">
       <td class="tp-check">
         <div class="tp-check"></div>
       </td>
       <td>
       </td>
       <td class="tp-sender">
-        <span>Название объекта</span>
+        <a href="#/sites/{{site._id}}">{{site.name}}</a>
       </td>
       <td>
       </td>
       <td>
-        <span>Состояние</span>
-        <span class="tp-details"> - пояснение</span>
       </td>
       <td>
       </td>
       <td>
-        <span>время/дата</span>
-      </td>
-    </tr>
-    <tr>
-      <td class="tp-check">
-        <div class="tp-check"></div>
-      </td>
-      <td>
-      </td>
-      <td class="tp-sender">
-        <span>Название объекта</span>
-      </td>
-      <td>
-      </td>
-      <td>
-        <span>Состояние</span>
-        <span class="tp-details"> - пояснение</span>
-      </td>
-      <td>
-      </td>
-      <td>
-        <span>время/дата</span>
       </td>
     </tr>
     </tbody>

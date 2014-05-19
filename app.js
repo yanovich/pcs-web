@@ -14,6 +14,7 @@ var csrf = require('csurf');
 var mongoose = require('mongoose');
 var clientSessions = require("client-sessions");
 
+var sites = require('./routes/site');
 var users = require('./routes/user');
 var sessions = require('./routes/session');
 var auth = require('./routes/_auth');
@@ -89,6 +90,12 @@ app.get('/users', users.index);
 app.get('/users/:user', users.show);
 app.post('/users/:user', users.update);
 app.post('/users', users.create);
+
+app.param('site', sites.load);
+app.get('/sites', sites.index);
+app.get('/sites/:site', sites.show);
+app.post('/sites/:site', sites.update);
+app.post('/sites', sites.create);
 
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';

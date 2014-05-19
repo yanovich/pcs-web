@@ -43,9 +43,49 @@ angular.module('pcs.controllers', [])
       }
     }
   }])
-  .controller('SitesCtrl', ['$scope', function($scope) {
-    $scope.page(1, 25, 2);
-    $scope.setNewURL(null);
+  .controller('NewSiteCtrl', ['$scope', '$location', 'Site',
+      function($scope, $location, Site) {
+        $scope.page(1, 1, 0);
+        $scope.setNewURL(null);
+        $scope.site = new Site();
+        $scope.save = function () {
+          console.log('Saving ' + $scope.site.name);
+          $scope.site.$save({}, function () {
+            $scope.siteForm.$setPristine();
+            console.log($scope.site);
+            $location.path('/sites/' + $scope.site._id).replace();
+          }, function (res) {
+            console.log(res);
+          });
+        }
+  }])
+  .controller('SiteCtrl', ['$scope', '$routeParams', 'Site',
+      function($scope, $routeParams, Site) {
+        $scope.page(1, 1, 0);
+        $scope.setNewURL('#/sites/new');
+        console.log($routeParams);
+        $scope.site = Site.get({ siteId: $routeParams.siteId }, function () {
+          console.log($scope.site);
+        });
+        $scope.save = function () {
+          console.log('Saving ' + $scope.site._id);
+          $scope.site.$save({}, function () {
+            $scope.siteForm.$setPristine();
+            console.log($scope.site);
+          }, function (res) {
+            console.log(res);
+          });
+        }
+  }])
+  .controller('SitesCtrl', ['$scope', '$location', 'Site',
+      function($scope, $location, Site) {
+        var page = Number($location.search().page) || 1;
+        $scope.setNewURL('#/sites/new');
+        $scope.sites = Site.query({pageNum: page}, function () {
+          var len = $scope.sites.length - 1;
+          var count = $scope.sites.splice(len)[0].count;
+          $scope.page(page, 25, count);
+        });
   }])
   .controller('NewUserCtrl', ['$scope', '$location', 'User',
       function($scope, $location, User) {
@@ -66,9 +106,7 @@ angular.module('pcs.controllers', [])
   .controller('UserCtrl', ['$scope', '$routeParams', 'User',
       function($scope, $routeParams, User) {
         $scope.page(1, 1, 0);
-        if ($scope.operator.admin) {
-          $scope.setNewURL('#/users/new');
-        }
+        $scope.setNewURL('#/users/new');
         $scope.user = User.get({ userId: $routeParams.userId }, function () {
           console.log($scope.user);
         });
@@ -85,9 +123,7 @@ angular.module('pcs.controllers', [])
   .controller('UsersCtrl', ['$scope', '$location', 'User',
       function($scope, $location, User) {
         var page = Number($location.search().page) || 1;
-        if ($scope.operator.admin) {
-          $scope.setNewURL('#/users/new');
-        }
+        $scope.setNewURL('#/users/new');
         $scope.users = User.query({pageNum: page}, function () {
           var len = $scope.users.length - 1;
           var count = $scope.users.splice(len)[0].count;

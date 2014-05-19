@@ -7,8 +7,12 @@
 
 'use strict';
 
-angular.module('pcs.services', ['ngResource']).
-  factory('User', ['$resource',
+angular.module('pcs.services', ['ngResource'])
+  .factory('Site', ['$resource',
+      function ($resource) {
+        return $resource('/sites/:siteId?page=:pageNum', { siteId: '@_id' });
+      }])
+  .factory('User', ['$resource',
       function ($resource) {
         return $resource('/users/:userId?page=:pageNum', { userId: '@_id' });
       }])
