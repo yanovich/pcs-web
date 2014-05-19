@@ -14,6 +14,7 @@ var csrf = require('csurf');
 var mongoose = require('mongoose');
 var clientSessions = require("client-sessions");
 
+var devices = require('./routes/device');
 var sites = require('./routes/site');
 var users = require('./routes/user');
 var sessions = require('./routes/session');
@@ -90,6 +91,12 @@ app.get('/users', users.index);
 app.get('/users/:user', users.show);
 app.post('/users/:user', users.update);
 app.post('/users', users.create);
+
+app.param('device', devices.load);
+app.get('/devices', devices.index);
+app.get('/devices/:device', devices.show);
+app.post('/devices/:device', devices.update);
+app.post('/devices', devices.create);
 
 app.param('site', sites.load);
 app.get('/sites', sites.index);

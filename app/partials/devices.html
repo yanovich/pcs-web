@@ -1,0 +1,34 @@
+<div class="tp-data">
+  <table class="tp-data">
+    <colgroup>
+      <col class="tp-check">
+      <col class="tp-led">
+      <col class="tp-sender">
+      <col class="tp-mark">
+      <col class="tp-text">
+      <col class="tp-spare">
+      <col class="tp-date">
+    </colgroup>
+    <tbody>
+    <tr ng-repeat="device in devices">
+      <td class="tp-check">
+        <div class="tp-check"></div>
+      </td>
+      <td>
+      </td>
+      <td class="tp-sender">
+        <a href="#/devices/{{device._id}}">{{device.name}}</a>
+      </td>
+      <td>
+      </td>
+      <td>
+      </td>
+      <td>
+      </td>
+      <td>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="clearfix"></div>
+</div>

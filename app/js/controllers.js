@@ -43,6 +43,50 @@ angular.module('pcs.controllers', [])
       }
     }
   }])
+  .controller('NewDeviceCtrl', ['$scope', '$location', 'Device',
+      function($scope, $location, Device) {
+        $scope.page(1, 1, 0);
+        $scope.setNewURL(null);
+        $scope.device = new Device();
+        $scope.save = function () {
+          console.log('Saving ' + $scope.device.name);
+          $scope.device.$save({}, function () {
+            $scope.deviceForm.$setPristine();
+            console.log($scope.device);
+            $location.path('/devices/' + $scope.device._id).replace();
+          }, function (res) {
+            console.log(res);
+          });
+        }
+  }])
+  .controller('DeviceCtrl', ['$scope', '$routeParams', 'Device',
+      function($scope, $routeParams, Device) {
+        $scope.page(1, 1, 0);
+        $scope.setNewURL('#/devices/new');
+        console.log($routeParams);
+        $scope.device = Device.get({ deviceId: $routeParams.deviceId }, function () {
+          console.log($scope.device);
+        });
+        $scope.save = function () {
+          console.log('Saving ' + $scope.device._id);
+          $scope.device.$save({}, function () {
+            $scope.deviceForm.$setPristine();
+            console.log($scope.device);
+          }, function (res) {
+            console.log(res);
+          });
+        }
+  }])
+  .controller('DevicesCtrl', ['$scope', '$location', 'Device',
+      function($scope, $location, Device) {
+        var page = Number($location.search().page) || 1;
+        $scope.setNewURL('#/devices/new');
+        $scope.devices = Device.query({pageNum: page}, function () {
+          var len = $scope.devices.length - 1;
+          var count = $scope.devices.splice(len)[0].count;
+          $scope.page(page, 25, count);
+        });
+  }])
   .controller('NewSiteCtrl', ['$scope', '$location', 'Site',
       function($scope, $location, Site) {
         $scope.page(1, 1, 0);

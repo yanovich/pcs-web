@@ -8,6 +8,10 @@
 'use strict';
 
 angular.module('pcs.services', ['ngResource'])
+  .factory('Device', ['$resource',
+      function ($resource) {
+        return $resource('/devices/:deviceId?page=:pageNum', { deviceId: '@_id' });
+      }])
   .factory('Site', ['$resource',
       function ($resource) {
         return $resource('/sites/:siteId?page=:pageNum', { siteId: '@_id' });

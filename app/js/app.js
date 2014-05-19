@@ -10,6 +10,9 @@ angular.module('pcs', [
   'pcs.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/devices/new', {templateUrl: 'partials/device.html', controller: 'NewDeviceCtrl'});
+  $routeProvider.when('/devices/:deviceId', {templateUrl: 'partials/device.html', controller: 'DeviceCtrl'});
+  $routeProvider.when('/devices', {templateUrl: 'partials/devices.html', controller: 'DevicesCtrl'});
   $routeProvider.when('/sites/new', {templateUrl: 'partials/site.html', controller: 'NewSiteCtrl'});
   $routeProvider.when('/sites/:siteId', {templateUrl: 'partials/site.html', controller: 'SiteCtrl'});
   $routeProvider.when('/sites', {templateUrl: 'partials/sites.html', controller: 'SitesCtrl'});

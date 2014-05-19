@@ -61,6 +61,8 @@ html(ng-app="pcs")
             a(href='#/sites') Объекты
           li
             a(href='#') Apхив
+          li(ng-if="operator.admin" ng-class="{ active: isActive('#/devices') }")
+            a(href='#/devices')= t('device.self.plural')
           li(ng-if="operator.admin" ng-class="{ active: isActive('#/users') }")
             a(href='#/users')= t('user.self.plural')
       .col-xs-12.col-md-10.col-xl-14.tp-content

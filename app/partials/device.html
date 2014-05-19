@@ -1,0 +1,26 @@
+<div class="row tp-user">
+  <div class="col-lg-6">
+    <form name="deviceForm" accept-charset="UTF-8" class="form-horizontal">
+      <div class="form-group">
+        <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-hdd"></span></label>
+        <label for="name" class="control-label hidden">Название</label>
+        <div class="col-sm-9">
+          <input id="name" name="name" type="text" ng-model="device.name" placeholder="Название" class="form-control input-lg">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input_file" class="control-label col-sm-3">Чтение</label>
+        <div class="col-sm-9">
+          <input id="input_file" name="input_file" type="text" ng-model="device.input_file" placeholder="Чтение" class="form-control input-sm">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="output_file" class="control-label col-sm-3">Запись</label>
+        <div class="col-sm-9">
+          <input id="output_file" name="output_file" type="text" ng-model="device.output_file" placeholder="Запись" class="form-control input-sm">
+        </div>
+      </div>
+      <button name="submit" class="btn btn-sm btn-primary" ng-disabled="deviceForm.$pristine" ng-click="save()">{{(device._id) ? 'Изменить' : 'Сохранить'}}</button>
+    </form>
+  </div>
+</div>
