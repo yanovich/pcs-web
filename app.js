@@ -16,6 +16,7 @@ var clientSessions = require("client-sessions");
 
 var devices = require('./routes/device');
 var sites = require('./routes/site');
+var systems = require('./routes/system');
 var users = require('./routes/user');
 var sessions = require('./routes/session');
 var auth = require('./routes/_auth');
@@ -103,6 +104,12 @@ app.get('/sites', sites.index);
 app.get('/sites/:site', sites.show);
 app.post('/sites/:site', sites.update);
 app.post('/sites', sites.create);
+
+app.param('system', systems.load);
+app.get('/sites/:site/systems', systems.index);
+app.get('/sites/:site/systems/:system', systems.show);
+app.post('/sites/:site/systems/:system', systems.update);
+app.post('/sites/:site/systems', systems.create);
 
 app.get('/', authUser, function(req, res) {
   var title = 'asutp.io';

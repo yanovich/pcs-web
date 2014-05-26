@@ -16,6 +16,10 @@ angular.module('pcs.services', ['ngResource'])
       function ($resource) {
         return $resource('/sites/:siteId?page=:pageNum', { siteId: '@_id' });
       }])
+  .factory('System', ['$resource',
+      function ($resource) {
+        return $resource('/sites/:siteId/systems/:systemId?page=:pageNum', { siteId: '@site', systemId: '@_id' });
+      }])
   .factory('User', ['$resource',
       function ($resource) {
         return $resource('/users/:userId?page=:pageNum', { userId: '@_id' });

@@ -58,9 +58,7 @@ html(ng-app="pcs")
           li(ng-if="newURL && operator.admin"): a.btn.btn-sm.btn-danger(href="{{newURL}}")= t('action.undefined')
         ul.nav.tp-menu-side(ng-controller="NavCtrl")
           li(ng-class="{ active: isActive('#/sites') }")
-            a(href='#/sites') Объекты
-          li
-            a(href='#') Apхив
+            a(href='#/sites')= t('site.self.plural')
           li(ng-if="operator.admin" ng-class="{ active: isActive('#/devices') }")
             a(href='#/devices')= t('device.self.plural')
           li(ng-if="operator.admin" ng-class="{ active: isActive('#/users') }")

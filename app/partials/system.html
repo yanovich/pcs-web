@@ -1,0 +1,20 @@
+<div class="row tp-user">
+  <div class="col-lg-6">
+    <form name="systemForm" accept-charset="UTF-8" class="form-horizontal">
+      <div class="form-group">
+        <label for="site" class="control-label col-sm-3">Объект</label>
+        <div class="col-sm-9">
+          <a href="{{'#/sites/' + site._id}}">{{site.name}}</a>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-cog"></span></label>
+        <label for="name" class="control-label hidden">Название</label>
+        <div class="col-sm-9">
+          <input id="name" name="name" type="text" ng-model="system.name" placeholder="Название" class="form-control input-lg">
+        </div>
+      </div>
+      <button name="submit" class="btn btn-sm btn-primary" ng-disabled="systemForm.$pristine" ng-click="save()">{{(system._id) ? 'Изменить' : 'Сохранить'}}</button>
+    </form>
+  </div>
+</div>

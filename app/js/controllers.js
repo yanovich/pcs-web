@@ -103,13 +103,19 @@ angular.module('pcs.controllers', [])
           });
         }
   }])
-  .controller('SiteCtrl', ['$scope', '$routeParams', 'Site',
-      function($scope, $routeParams, Site) {
-        $scope.page(1, 1, 0);
-        $scope.setNewURL('#/sites/new');
+  .controller('SiteCtrl', ['$scope', '$routeParams', 'Site', 'System',
+      function($scope, $routeParams, Site, System) {
+        var page = Number($routeParams.page) || 1;
+        $scope.setNewURL('#/sites/' + $routeParams.siteId + '/systems/new');
         console.log($routeParams);
         $scope.site = Site.get({ siteId: $routeParams.siteId }, function () {
           console.log($scope.site);
+        });
+        $scope.systems = System.query({siteId: $routeParams.siteId,
+		pageNum: page}, function () {
+          var len = $scope.systems.length - 1;
+          var count = $scope.systems.splice(len)[0].count;
+          $scope.page(page, 25, count);
         });
         $scope.save = function () {
           console.log('Saving ' + $scope.site._id);
@@ -130,6 +136,44 @@ angular.module('pcs.controllers', [])
           var count = $scope.sites.splice(len)[0].count;
           $scope.page(page, 25, count);
         });
+  }])
+  .controller('NewSystemCtrl', ['$scope', '$routeParams', '$location',
+		  'Site', 'System',
+      function($scope, $routeParams, $location, Site, System) {
+        $scope.page(1, 1, 0);
+        $scope.setNewURL(null);
+        $scope.system = new System();
+	$scope.system.site = $routeParams.siteId;
+        $scope.site = Site.get({ siteId: $routeParams.siteId });
+        $scope.save = function () {
+          console.log('Saving ' + $scope.system.name);
+          $scope.system.$save({}, function () {
+            $scope.systemForm.$setPristine();
+            console.log($scope.system);
+            $location.path('/sites/' + $scope.site._id + '/systems/'
+		    + $scope.system._id).replace();
+          }, function (res) {
+            console.log(res);
+          });
+        }
+  }])
+  .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
+      function($scope, $routeParams, Site, System) {
+        $scope.page(1, 1, 0);
+        $scope.setNewURL(null);
+        $scope.system = new System();
+        $scope.system = System.get({ siteId: $routeParams.siteId,
+		systemId: $routeParams.systemId });
+        $scope.site = Site.get({ siteId: $routeParams.siteId });
+        $scope.save = function () {
+          console.log('Saving ' + $scope.system.name);
+          $scope.system.$save({}, function () {
+            $scope.systemForm.$setPristine();
+            console.log($scope.system);
+          }, function (res) {
+            console.log(res);
+          });
+        }
   }])
   .controller('NewUserCtrl', ['$scope', '$location', 'User',
       function($scope, $location, User) {

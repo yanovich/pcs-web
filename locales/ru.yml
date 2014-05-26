@@ -17,6 +17,9 @@ ru:
   device:
     self:
       plural: Устройства
+  site:
+    self:
+      plural: Объекты
   user:
     self:
       plural: Пользователи

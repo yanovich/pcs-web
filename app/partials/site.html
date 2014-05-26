@@ -1,5 +1,5 @@
-<div class="row tp-user">
-  <div class="col-lg-6">
+<div class="row">
+  <div class="col-lg-5 tp-user">
     <form name="siteForm" accept-charset="UTF-8" class="form-horizontal">
       <div class="form-group">
         <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-home"></span></label>
@@ -10,5 +10,30 @@
       </div>
       <button name="submit" class="btn btn-sm btn-primary" ng-disabled="siteForm.$pristine" ng-click="save()">{{(site._id) ? 'Изменить' : 'Сохранить'}}</button>
     </form>
+  </div>
+  <div class="tp-data col-lg-7">
+    <table class="tp-data">
+      <colgroup>
+        <col class="tp-check">
+        <col class="col-xs-6 col-sm-4 col-xl-3">
+        <col class="col-xs-4 col-sm-3 col-xl-2">
+        <col class="tp-text">
+      </colgroup>
+      <tbody>
+      <tr ng-repeat="system in systems">
+        <td class="tp-check">
+          <div class="tp-check"></div>
+        </td>
+        <td class="tp-sender">
+          <a href="#/sites/{{site._id}}/systems/{{system._id}}">{{system.name}}</a>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="clearfix"></div>
   </div>
 </div>
