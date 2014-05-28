@@ -49,17 +49,20 @@ function updateDevice(req, res) {
 }
 
 function indexDevices(req, res) {
+  var search = {};
   var page = Number(req.query.page) || 1;
+  if (req.query.name && req.query.name !== '')
+    search['name'] = req.query.name;
   page--;
   if (page < 0)
     page = 0;
-  Device.count(function (err, count) {
+  Device.count(search, function (err, count) {
     if (err)
       return res.send(500, err.toString());
     if ((page * perPage) > count)
       page = Math.floor((count - 1) / perPage);
     Device
-    .find({}, exportFields).sort({ name: 1 }).skip(page*perPage).limit(perPage)
+    .find(search, exportFields).sort({ name: 1 }).skip(page*perPage).limit(perPage)
     .exec(function (err, devices) {
       if (err)
         return res.send(500, err.toString());
