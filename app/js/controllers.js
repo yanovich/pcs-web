@@ -1,6 +1,11 @@
-'use strict';
+/* app/js/controllers.js -- application controllers
+ * Copyright 2014 Sergei Ianovich
+ *
+ * Licensed under AGPL-3.0 or later, see LICENSE
+ * Process Control Service Web Interface
+ */
 
-/* Controllers */
+'use strict';
 
 angular.module('pcs.controllers', [])
   .controller('NavCtrl', ['$scope', '$location', function($scope, $location) {
@@ -158,12 +163,18 @@ angular.module('pcs.controllers', [])
         }
   }])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
-      function($scope, $routeParams, Site, System) {
+      'Device',
+      function($scope, $routeParams, Site, System, Device) {
+        $scope.device = '';
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
-        $scope.system = new System();
         $scope.system = System.get({ siteId: $routeParams.siteId,
-		systemId: $routeParams.systemId });
+          systemId: $routeParams.systemId }, function () {
+            var device = Device.get({ deviceId: $scope.system.device }, function () {
+              console.log(device);
+              $scope.device = device.name;
+            });
+          });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
         $scope.save = function () {
           console.log('Saving ' + $scope.system.name);
@@ -172,6 +183,15 @@ angular.module('pcs.controllers', [])
             console.log($scope.system);
           }, function (res) {
             console.log(res);
+          });
+        }
+        $scope.updateDevice = function () {
+          var devices = Device.query({ name: $scope.device }, function () {
+            if (devices.length !== 2) {
+              $scope.system.device = null;
+              return;
+            }
+            $scope.system.device = devices[0]._id;
           });
         }
   }])
@@ -218,3 +238,5 @@ angular.module('pcs.controllers', [])
           $scope.page(page, 25, count);
         });
   }]);
+
+// vim:ts=2 sts=2 sw=2 et:

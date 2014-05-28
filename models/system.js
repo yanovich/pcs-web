@@ -14,6 +14,11 @@ var system_schema = new mongoose.Schema({
     required: true,
     ref: 'Site'
   },
+  device: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Device'
+  },
   name: {
     type: String,
     required: true,
