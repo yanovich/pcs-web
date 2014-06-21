@@ -86,7 +86,7 @@ angular.module('pcs.controllers', [])
       function($scope, $location, Device) {
         var page = Number($location.search().page) || 1;
         $scope.setNewURL('#/devices/new');
-        $scope.devices = Device.query({pageNum: page}, function () {
+        $scope.devices = Device.query({page: page}, function () {
           var len = $scope.devices.length - 1;
           var count = $scope.devices.splice(len)[0].count;
           $scope.page(page, 25, count);
@@ -117,7 +117,7 @@ angular.module('pcs.controllers', [])
           console.log($scope.site);
         });
         $scope.systems = System.query({siteId: $routeParams.siteId,
-		pageNum: page}, function () {
+		page: page}, function () {
           var len = $scope.systems.length - 1;
           var count = $scope.systems.splice(len)[0].count;
           $scope.page(page, 25, count);
@@ -136,7 +136,7 @@ angular.module('pcs.controllers', [])
       function($scope, $location, Site) {
         var page = Number($location.search().page) || 1;
         $scope.setNewURL('#/sites/new');
-        $scope.sites = Site.query({pageNum: page}, function () {
+        $scope.sites = Site.query({page: page}, function () {
           var len = $scope.sites.length - 1;
           var count = $scope.sites.splice(len)[0].count;
           $scope.page(page, 25, count);
@@ -232,7 +232,7 @@ angular.module('pcs.controllers', [])
       function($scope, $location, User) {
         var page = Number($location.search().page) || 1;
         $scope.setNewURL('#/users/new');
-        $scope.users = User.query({pageNum: page}, function () {
+        $scope.users = User.query({page: page}, function () {
           var len = $scope.users.length - 1;
           var count = $scope.users.splice(len)[0].count;
           $scope.page(page, 25, count);
