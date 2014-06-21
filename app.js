@@ -37,6 +37,8 @@ if (process.env.NODE_ENV !== 'test')
   app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'app/')));
 
+app.use('/states', states.create);
+
 app.use(bodyParser());
 app.use(method_override());
 
@@ -98,6 +100,8 @@ app.get('/devices', devices.index);
 app.get('/devices/:device', devices.show);
 app.post('/devices/:device', devices.update);
 app.post('/devices', devices.create);
+
+app.get('/devices/:device/states', states.index);
 
 app.param('site', sites.load);
 app.get('/sites', sites.index);

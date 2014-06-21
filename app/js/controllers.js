@@ -21,6 +21,7 @@ angular.module('pcs.controllers', [])
       page: 1,
       show: false
     }
+    $scope.moment = moment;
     $scope.operator = {}
     $scope.setNewURL = function (url) {
       $scope.newURL = url;
@@ -64,14 +65,19 @@ angular.module('pcs.controllers', [])
           });
         }
   }])
-  .controller('DeviceCtrl', ['$scope', '$routeParams', 'Device',
-      function($scope, $routeParams, Device) {
+  .controller('DeviceCtrl', ['$scope', '$routeParams', 'Device', 'State',
+      function($scope, $routeParams, Device, State) {
         $scope.page(1, 1, 0);
         $scope.setNewURL('#/devices/new');
         console.log($routeParams);
         $scope.device = Device.get({ deviceId: $routeParams.deviceId }, function () {
           console.log($scope.device);
         });
+        $scope.state = {};
+        var states = State.query({deviceId: $routeParams.deviceId,
+          limit: 1}, function () {
+            $scope.state = states[0];
+          });
         $scope.save = function () {
           console.log('Saving ' + $scope.device._id);
           $scope.device.$save({}, function () {

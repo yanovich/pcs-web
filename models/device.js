@@ -15,16 +15,11 @@ var device_schema = new mongoose.Schema({
     validate: {
       validator: validates.length({ max: 50 }),
       msg: 'name is too long' },
-    trim: true },
-  input_file: {
-    type: String,
-    required: true,
-    trim: true },
-  output_file: {
-    type: String,
-    required: true,
-    trim: true }
+    trim: true
+  }
 });
+
+device_schema.index({ name: 1 });
 
 var Device = mongoose.model('Device', device_schema);
 

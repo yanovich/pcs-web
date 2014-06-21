@@ -8,15 +8,27 @@
 var mongoose = require('mongoose');
 var Device = require('./device');
 
+var output = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  value: {
+    type: Number,
+    required: true
+  }
+});
+
 var state_schema = new mongoose.Schema({
   device: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Device' },
-  content: {
-    type: String,
-    required: true,
-    trim: true }
+    ref: 'Device'
+  },
+  stamp: Date,
+  outputs: [output]
 });
+
+state_schema.index({ device: 1, stamp: -1, _id: 1 });
 
 var State = mongoose.model('State', state_schema);
 
