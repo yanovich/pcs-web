@@ -11,6 +11,9 @@ var perPage = 25;
 
 module.exports.load = function (req, res, next, id) {
   Device.findOne({ _id: id }, function (err, device) {
+    if (err) {
+      return res.send(404);
+    }
     req.device = device;
     next();
   })
