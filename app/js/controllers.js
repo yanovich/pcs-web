@@ -195,6 +195,9 @@ angular.module('pcs.controllers', [])
           $scope.system.outputs.push($scope.n.out);
           $scope.n.out = null;
         }
+        $scope.dropOutput = function (i) {
+          $scope.system.outputs.splice(i);
+        }
         $scope.save = function () {
           console.log('Saving ' + $scope.system.name);
           $scope.system.$save({}, function () {
