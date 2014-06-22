@@ -154,7 +154,7 @@ angular.module('pcs.controllers', [])
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
         $scope.system = new System();
-	$scope.system.site = $routeParams.siteId;
+        $scope.system.site = $routeParams.siteId;
         $scope.site = Site.get({ siteId: $routeParams.siteId });
         $scope.save = function () {
           console.log('Saving ' + $scope.system.name);
@@ -169,9 +169,10 @@ angular.module('pcs.controllers', [])
         }
   }])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
-      'Device',
-      function($scope, $routeParams, Site, System, Device) {
+      'Device', 'State',
+      function($scope, $routeParams, Site, System, Device, State) {
         $scope.device = '';
+        $scope.n = {};
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
         $scope.system = System.get({ siteId: $routeParams.siteId,
@@ -180,8 +181,20 @@ angular.module('pcs.controllers', [])
               console.log(device);
               $scope.device = device.name;
             });
+            if (!$scope.system.outputs)
+              $scope.system.outputs = [];
+            $scope.state = {};
+            var states = State.query({deviceId: $scope.system.device,
+              limit: 1}, function () {
+                $scope.state = states[0];
+                console.log(states[0]);
+              });
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
+        $scope.addOutput = function () {
+          $scope.system.outputs.push($scope.n.out);
+          $scope.n.out = null;
+        }
         $scope.save = function () {
           console.log('Saving ' + $scope.system.name);
           $scope.system.$save({}, function () {

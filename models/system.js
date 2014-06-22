@@ -24,8 +24,11 @@ var system_schema = new mongoose.Schema({
     required: true,
     validate: {
       validator: validates.length({ max: 50 }),
-      msg: 'name is too long' },
-    trim: true }
+      msg: 'name is too long'
+    },
+    trim: true
+  },
+  outputs: [String]
 });
 
 system_schema.index({ site: 1, name: 1 });

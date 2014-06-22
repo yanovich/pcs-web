@@ -22,7 +22,7 @@ function requireAdmin(req, res, next) {
   res.send(401);
 }
 
-var exportFields = '_id device site name';
+var exportFields = '_id device site name outputs';
 
 function showSystem(req, res) {
   if (!req.system)
@@ -34,7 +34,7 @@ function showSystem(req, res) {
   res.json_ng(system);
 }
 
-var systemFields = ['name', 'device'];
+var systemFields = ['name', 'device', 'outputs'];
 
 function updateSystem(req, res) {
   if (!req.system)

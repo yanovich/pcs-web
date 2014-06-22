@@ -1,6 +1,6 @@
-<div class="row">
-  <div class="col-lg-6 tp-user">
-    <form name="systemForm" accept-charset="UTF-8" class="form-horizontal">
+<div class="row tp-user">
+  <form name="systemForm" accept-charset="UTF-8" class="form-horizontal">
+    <div class="col-lg-5">
       <div class="form-group">
         <label for="site" class="control-label col-sm-3">Объект</label>
         <div class="col-sm-9">
@@ -16,13 +16,13 @@
           <input id="name" name="name" type="text" ng-model="system.name" placeholder="Название" class="form-control input-lg">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': !system.device}">
         <label for="device" class="control-label col-sm-3">Контроллер</label>
         <div class="col-sm-5">
           <input id="device" name="device" type="text" ng-change="updateDevice()" ng-model="device" placeholder="Контроллер" class="form-control input-sm">
         </div>
         <div class="col-sm-4" ng-if="!system.device">
-          <label>Необходимо выбрать контроллер</a>
+          <label class="help-block">Необходимо выбрать контроллер</label>
         </div>
         <div class="col-sm-4" ng-if="!!system.device">
           <label class="control-label">
@@ -31,6 +31,36 @@
         </div>
       </div>
       <button name="submit" class="btn btn-sm btn-primary" ng-disabled="systemForm.$pristine" ng-click="save()">{{(system._id) ? 'Изменить' : 'Сохранить'}}</button>
-    </form>
-  </div>
+    </div>
+    <div class="col-lg-3" ng-if="!!system.device">
+      <label class="input-lg">Параметры</label>
+      <div class="form-group" ng-repeat="o in system.outputs">
+        <label for="{{o}}" class="control-label col-sm-4">{{o}}</label>
+        <div class="col-sm-8">
+          <p class="form-control-static" ng-if="!!state.outputs[o]">
+            {{state.outputs[o]}}
+          </label>
+          <label class="help-block" ng-if="!state.outputs[o]">
+            Отсутствует
+          </label>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{'has-error': !state.outputs[n.out]}">
+        <div class="col-sm-4">
+          <input id="out" name="n" type="text" class="form-control input-sm" ng-model="n.out">
+        </div>
+        <div class="col-sm-4">
+          <p class="form-control-static" ng-if="!!state.outputs[n.out]">
+            {{state.outputs[n.out]}}
+          </p>
+          <label class="help-block" ng-if="!state.outputs[n.out]">
+            Отсутствует
+          </label>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn btn-success" ng-disabled="!n.out" ng-click="addOutput()">Добавить</button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
