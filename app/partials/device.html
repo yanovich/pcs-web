@@ -21,11 +21,11 @@
           </label>
         </div>
       </div>
-      <div class="form-group" ng-repeat="output in state.outputs">
-        <label for="{{output.name}}" class="control-label col-sm-3">{{output.name}}</label>
+      <div class="form-group" ng-repeat="(key, value) in state.outputs">
+        <label for="{{key}}" class="control-label col-sm-3">{{key}}</label>
         <div class="col-sm-9">
-          <label class="control-label" id="{{output.name}}">
-            {{output.value}}
+          <label class="control-label" id="{{key}}">
+            {{value}}
           </label>
         </div>
       </div>

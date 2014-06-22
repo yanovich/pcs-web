@@ -66,6 +66,7 @@ module.exports.create = function (req, res, next) {
     state.device = device._id;
     state.stamp = new Date;
     state.outputs = input;
+    state.markModified('outputs');
     state.save();
   }
 
