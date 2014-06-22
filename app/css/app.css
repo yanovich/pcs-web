@@ -10,12 +10,53 @@ input[type="checkbox"].form-control {
 }
 
 @media (min-width: 1600px) {
+.col-xl-1 {
+  width: 6.25%;
+}
 .col-xl-2 {
   width: 12.5%;
 }
-
+.col-xl-3 {
+  width: 18.75%;
+}
+.col-xl-4 {
+  width: 25%;
+}
+.col-xl-5 {
+  width: 31.25%;
+}
+.col-xl-6 {
+  width: 37.5%;
+}
+.col-xl-7 {
+  width: 43.75%;
+}
+.col-xl-8 {
+  width: 50%;
+}
+.col-xl-9 {
+  width: 56.25%;
+}
+.col-xl-10 {
+  width: 62.5%;
+}
+.col-xl-11 {
+  width: 68.75%;
+}
+.col-xl-12 {
+  width: 75%;
+}
+.col-xl-13 {
+  width: 81.25%;
+}
 .col-xl-14 {
   width: 87.5%;
+}
+.col-xl-15 {
+  width: 93.25%;
+}
+.col-xl-16 {
+  width: 100%;
 }
 }
 
