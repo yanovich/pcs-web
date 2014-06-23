@@ -171,15 +171,14 @@ angular.module('pcs.controllers', [])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
       'Device', 'State',
       function($scope, $routeParams, Site, System, Device, State) {
-        $scope.device = '';
+        $scope.device = {};
         $scope.n = {};
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
         $scope.system = System.get({ siteId: $routeParams.siteId,
           systemId: $routeParams.systemId }, function () {
-            var device = Device.get({ deviceId: $scope.system.device }, function () {
-              console.log(device);
-              $scope.device = device.name;
+            $scope.device = Device.get({ deviceId: $scope.system.device }, function () {
+              $scope.n.deviceName = $scope.device.name;
             });
             if (!$scope.system.outputs)
               $scope.system.outputs = [];
@@ -187,7 +186,6 @@ angular.module('pcs.controllers', [])
             var states = State.query({deviceId: $scope.system.device,
               limit: 1}, function () {
                 $scope.state = states[0];
-                console.log(states[0]);
               });
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
@@ -208,7 +206,7 @@ angular.module('pcs.controllers', [])
           });
         }
         $scope.updateDevice = function () {
-          var devices = Device.query({ name: $scope.device }, function () {
+          var devices = Device.query({ name: $scope.n.deviceName }, function () {
             if (devices.length !== 2) {
               $scope.system.device = null;
               return;

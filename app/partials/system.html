@@ -19,14 +19,14 @@
       <div class="form-group" ng-class="{'has-error': !system.device}">
         <label for="device" class="control-label col-sm-3">Контроллер</label>
         <div class="col-sm-5">
-          <input id="device" name="device" type="text" ng-change="updateDevice()" ng-model="device" placeholder="Контроллер" class="form-control input-sm">
+          <input id="device" name="device" type="text" ng-change="updateDevice()" ng-model="n.deviceName" placeholder="Контроллер" class="form-control input-sm">
         </div>
         <div class="col-sm-4" ng-if="!system.device">
           <label class="help-block">Необходимо выбрать контроллер</label>
         </div>
         <div class="col-sm-4" ng-if="!!system.device">
           <label class="control-label">
-            <a href="{{'#/devices/' + system.device}}">{{device}}</a>
+            <a href="{{'#/devices/' + system.device}}">{{device.name}}</a>
           </label>
         </div>
       </div>
