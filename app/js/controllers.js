@@ -170,8 +170,10 @@ angular.module('pcs.controllers', [])
   }])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
       'Device', 'State',
-      function($scope, $routeParams, Site, System, Device, State) {
+      function($scope, $routeParams, Site, System, Device, State
+        ) {
         $scope.device = {};
+        $scope.state = { outputs: {} };
         $scope.n = {};
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
@@ -182,11 +184,7 @@ angular.module('pcs.controllers', [])
             });
             if (!$scope.system.outputs)
               $scope.system.outputs = [];
-            $scope.state = {};
-            var states = State.query({deviceId: $scope.system.device,
-              limit: 1}, function () {
-                $scope.state = states[0];
-              });
+            loadSystemState();
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
         $scope.addOutput = function () {
@@ -200,19 +198,31 @@ angular.module('pcs.controllers', [])
           console.log('Saving ' + $scope.system.name);
           $scope.system.$save({}, function () {
             $scope.systemForm.$setPristine();
-            console.log($scope.system);
           }, function (res) {
             console.log(res);
           });
         }
         $scope.updateDevice = function () {
+          $scope.device = {};
+          $scope.system.device = null;
           var devices = Device.query({ name: $scope.n.deviceName }, function () {
             if (devices.length !== 2) {
-              $scope.system.device = null;
               return;
             }
+            $scope.device = devices[0];
             $scope.system.device = devices[0]._id;
+            loadSystemState();
           });
+        }
+        function loadSystemState() {
+          $scope.state = { outputs: {} };
+          var states = State.query({deviceId: $scope.system.device,
+            limit: 1}, function () {
+              if (states.length !== 2) {
+                return;
+              }
+              $scope.state = states[0];
+            });
         }
   }])
   .controller('NewUserCtrl', ['$scope', '$location', 'User',
