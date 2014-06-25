@@ -69,9 +69,7 @@ angular.module('pcs.controllers', [])
       function($scope, $routeParams, Device, State) {
         $scope.page(1, 1, 0);
         $scope.setNewURL('#/devices/new');
-        console.log($routeParams);
         $scope.device = Device.get({ deviceId: $routeParams.deviceId }, function () {
-          console.log($scope.device);
         });
         $scope.state = {};
         var states = State.query({deviceId: $routeParams.deviceId,
@@ -118,21 +116,17 @@ angular.module('pcs.controllers', [])
       function($scope, $routeParams, Site, System) {
         var page = Number($routeParams.page) || 1;
         $scope.setNewURL('#/sites/' + $routeParams.siteId + '/systems/new');
-        console.log($routeParams);
         $scope.site = Site.get({ siteId: $routeParams.siteId }, function () {
-          console.log($scope.site);
         });
         $scope.systems = System.query({siteId: $routeParams.siteId,
-		page: page}, function () {
-          var len = $scope.systems.length - 1;
-          var count = $scope.systems.splice(len)[0].count;
-          $scope.page(page, 25, count);
+          page: page}, function () {
+            var len = $scope.systems.length - 1;
+            var count = $scope.systems.splice(len)[0].count;
+            $scope.page(page, 25, count);
         });
         $scope.save = function () {
-          console.log('Saving ' + $scope.site._id);
           $scope.site.$save({}, function () {
             $scope.siteForm.$setPristine();
-            console.log($scope.site);
           }, function (res) {
             console.log(res);
           });
@@ -184,6 +178,8 @@ angular.module('pcs.controllers', [])
             });
             if (!$scope.system.outputs)
               $scope.system.outputs = [];
+            if (!$scope.system.setpoints)
+              $scope.system.setpoints = {};
             loadSystemState();
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
@@ -194,8 +190,15 @@ angular.module('pcs.controllers', [])
         $scope.dropOutput = function (i) {
           $scope.system.outputs.splice(i);
         }
+        $scope.addSetpoint = function () {
+          $scope.system.setpoints[$scope.n.set] = $scope.n.setValue;
+          $scope.n.set = null;
+        }
+        $scope.dropSetpoint = function (key) {
+          delete $scope.system.setpoints[key];
+          $scope.systemForm.$setDirty();
+        }
         $scope.save = function () {
-          console.log('Saving ' + $scope.system.name);
           $scope.system.$save({}, function () {
             $scope.systemForm.$setPristine();
           }, function (res) {

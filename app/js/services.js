@@ -12,6 +12,11 @@ angular.module('pcs.services', ['ngResource'])
       function ($resource) {
         return $resource('/devices/:deviceId', { deviceId: '@_id' });
       }])
+  .factory('Program', ['$resource',
+      function ($resource) {
+        return $resource('/devices/:deviceId/programs/:programId',
+          { deviceId: '@device', programId: '@_id' });
+      }])
   .factory('Site', ['$resource',
       function ($resource) {
         return $resource('/sites/:siteId', { siteId: '@_id' });

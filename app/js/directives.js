@@ -9,13 +9,11 @@ angular.module('pcs.directives', []).
       if (elm.text() === 'true') {
         scope.operator.admin = true;
       }
-      console.log(elm.text());
     };
   }]).
   directive('pcsOperatorId', [function() {
     return function(scope, elm, attrs) {
       scope.operator._id = elm.text();
-      console.log(elm.text());
     };
   }]);
 
