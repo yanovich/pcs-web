@@ -66,10 +66,13 @@ angular.module('pcs.controllers', [])
         }
   }])
   .controller('DeviceCtrl', ['$scope', '$routeParams', 'Device', 'State',
-      function($scope, $routeParams, Device, State) {
+      'Setpoints',
+      function($scope, $routeParams, Device, State, Setpoints) {
         $scope.page(1, 1, 0);
         $scope.setNewURL('#/devices/new');
         $scope.device = Device.get({ deviceId: $routeParams.deviceId }, function () {
+        });
+        $scope.setpoints = Setpoints.get({ deviceId: $routeParams.deviceId }, function () {
         });
         $scope.state = {};
         var states = State.query({deviceId: $routeParams.deviceId,
@@ -225,6 +228,7 @@ angular.module('pcs.controllers', [])
                 return;
               }
               $scope.state = states[0];
+              console.log($scope.state);
             });
         }
   }])

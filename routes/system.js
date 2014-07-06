@@ -6,6 +6,7 @@
  */
 
 var System = require('../models/system');
+var Device = require('../models/device');
 var auth = require('./_auth');
 var perPage = 25;
 
@@ -32,6 +33,28 @@ function showSystem(req, res) {
     system[f] = req.system[f];
   });
   res.json_ng(system);
+}
+
+function showSetpoints(req, res) {
+  if (!req.device)
+    return res.send(404);
+  System.find({ 'device': req.device._id })
+    .exec(function (err, systems) {
+      if (err) {
+        return res.json(500, err);
+      }
+      var setpoints = {};
+      systems.forEach(function (system) {
+        if (system.setpoints) {
+          Object.keys(system.setpoints).forEach(function (s) {
+            if (system.setpoints.hasOwnProperty(s)) {
+              setpoints[s] = system.setpoints[s];
+            }
+          });
+        }
+      });
+      res.json(setpoints);
+    });
 }
 
 var systemFields = ['name', 'device', 'outputs', 'setpoints'];
@@ -94,6 +117,8 @@ function createSystem(req, res) {
 
 module.exports.show = [ auth.authenticate,
                         showSystem];
+
+module.exports.setpoints = [ showSetpoints ];
 
 module.exports.update = [ auth.authenticate,
                           requireAdmin,

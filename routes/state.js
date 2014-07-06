@@ -7,6 +7,7 @@
 
 var Device = require('../models/device');
 var State = require('../models/state');
+var System = require('../models/system');
 var auth = require('./_auth');
 var perPage = 25;
 
@@ -38,6 +39,7 @@ module.exports.create = function (req, res, next) {
       input = JSON.parse(chunk.toString(), {});
     }
     catch (e) {
+      res.write(toString());
       return;
     }
 
@@ -60,8 +62,24 @@ module.exports.create = function (req, res, next) {
       });
       return;
     }
-    res.write("ok\n");
-    console.log(input);
+    System.find({ 'device': device._id })
+      .exec(function (err, systems) {
+        if (err) {
+          return;
+        }
+        var setpoints = {};
+        systems.forEach(function (system) {
+          if (system.setpoints) {
+            Object.keys(system.setpoints).forEach(function (s) {
+              if (system.setpoints.hasOwnProperty(s)) {
+                setpoints[s] = system.setpoints[s];
+              }
+            });
+          }
+        });
+        var text = JSON.stringify(setpoints);
+        res.write(text);
+      });
     var state = new State;
     state.device = device._id;
     state.stamp = new Date;

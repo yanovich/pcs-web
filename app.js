@@ -100,6 +100,7 @@ app.get('/devices', devices.index);
 app.get('/devices/:device', devices.show);
 app.post('/devices/:device', devices.update);
 app.post('/devices', devices.create);
+app.get('/devices/:device/setpoints', systems.setpoints);
 
 app.get('/devices/:device/states', states.index);
 

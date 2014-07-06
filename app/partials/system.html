@@ -37,10 +37,10 @@
       <div class="form-group" ng-repeat="o in system.outputs">
         <label for="{{o}}" class="control-label col-sm-4">{{o}}</label>
         <div class="col-sm-6">
-          <p class="form-control-static" ng-if="!!state.outputs[o]">
+          <p class="form-control-static" ng-if="state.outputs[o] != undefined">
             {{state.outputs[o]}}
           </p>
-          <label class="help-block" ng-if="!state.outputs[o]">
+          <label class="help-block" ng-if="state.outputs[o] == undefined">
             Отсутствует
           </label>
         </div>
@@ -53,10 +53,10 @@
           <input id="out" name="n" type="text" class="form-control input-sm" ng-model="n.out">
         </div>
         <div class="col-sm-4">
-          <p class="form-control-static" ng-if="!!state.outputs[n.out]">
+          <p class="form-control-static" ng-if="state.outputs[n.out] != undefined">
             {{state.outputs[n.out]}}
           </p>
-          <label class="help-block" ng-if="!state.outputs[n.out]">
+          <label class="help-block" ng-if="state.outputs[n.out] == undefined">
             Отсутствует
           </label>
         </div>
