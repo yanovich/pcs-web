@@ -51,14 +51,14 @@ module.exports.create = function (req, res, next) {
       }
 
       Device.findOne({ _id: input.device }, function (err, d) {
-        if (err) {
+        if (err || !d) {
           res.send(500);
           cleanup();
           return;
         }
         device = d;
         res.writeHead(200);
-        res.write("ok\n");
+        res.write("ok");
       });
       return;
     }
