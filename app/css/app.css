@@ -5,6 +5,10 @@
  * Process Control Service Web Interface
  */
 
+.input-lg {
+  padding-left: 0px;
+}
+
 input[type="checkbox"].form-control {
   width: auto;
 }
