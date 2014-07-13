@@ -59,9 +59,32 @@ function showSetpoints(req, res) {
 
 var systemFields = ['name', 'device', 'outputs', 'setpoints'];
 
+function updateSetpoints(req, res) {
+  var dirty = false;
+  Object.keys(req.system.setpoints).forEach(function (s) {
+    if (typeof req.body.setpoints[s] != 'string') {
+      console.log(typeof req.body.setpoints[s]);
+      return res.send(500);
+    }
+    if (req.system.setpoints[s] != req.body.setpoints[s]) {
+      dirty = true;
+      req.system.setpoints[s] = req.body.setpoints[s];
+      req.system.markModified('setpoints.'+s);
+    }
+  });
+  if (!dirty) return res.send(500, 'Unchanged');
+  req.system.save(function (err) {
+    if (err) {
+      return res.json(500, err);
+    }
+    res.json_ng(req.system);
+  });
+}
+
 function updateSystem(req, res) {
   if (!req.system)
     return res.send(500);
+  if (!req.operator.admin) return updateSetpoints(req, res);
   systemFields.forEach(function (f) {
     req.system[f] = req.body[f];
   });
@@ -69,7 +92,7 @@ function updateSystem(req, res) {
     if (err) {
       return res.json(500, err);
     }
-    res.json(req.system);
+    res.json_ng(req.system);
   });
 }
 
@@ -121,7 +144,6 @@ module.exports.show = [ auth.authenticate,
 module.exports.setpoints = [ showSetpoints ];
 
 module.exports.update = [ auth.authenticate,
-                          requireAdmin,
                           updateSystem];
 
 module.exports.index = [ auth.authenticate,
