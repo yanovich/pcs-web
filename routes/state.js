@@ -68,15 +68,18 @@ module.exports.create = function (req, res, next) {
           return;
         }
         var setpoints = {};
+        var empty = 1;
         systems.forEach(function (system) {
           if (system.setpoints) {
             Object.keys(system.setpoints).forEach(function (s) {
               if (system.setpoints.hasOwnProperty(s)) {
                 setpoints[s] = system.setpoints[s];
+                empty = 0;
               }
             });
           }
         });
+        if (empty) return;
         var text = JSON.stringify(setpoints);
         res.write(text);
       });
