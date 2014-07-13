@@ -108,9 +108,45 @@ module.exports.create = function (req, res, next) {
 
 var exportFields = '_id device stamp outputs';
 
+function indexStatesStream(req, res) {
+  req.socket.setTimeout(Infinity);
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  });
+  res.write('\n');
+
+  var interval = req.query.interval || 1;
+  var t = setInterval(sendState, interval * 1000);
+  req.on('close', function () {
+    clearInterval(t);
+  });
+
+  sendState();
+
+  function sendState() {
+    State
+      .find({ device: req.device._id }, exportFields)
+      .sort({ stamp: -1 })
+      .limit(1)
+      .exec(function (err, states) {
+        if (err) {
+          res.write('id: error\n');
+          res.write('data: ' + err.toString());
+          return;
+        }
+        res.write('id: state\n');
+        res.write('data: ' + JSON.stringify(states[0]) + '\n\n');
+      })
+  }
+}
+
 function indexStates(req, res) {
   if (!req.device)
     return res.send(404);
+  if (req.query.stream)
+    return indexStatesStream(req, res);
   var page = Number(req.query.page) || 1;
   var limit =  Number(req.query.limit) || perPage;
   page--;

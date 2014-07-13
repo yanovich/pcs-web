@@ -75,10 +75,13 @@ angular.module('pcs.controllers', [])
         $scope.setpoints = Setpoints.get({ deviceId: $routeParams.deviceId }, function () {
         });
         $scope.state = {};
-        var states = State.query({deviceId: $routeParams.deviceId,
-          limit: 1}, function () {
-            $scope.state = states[0];
+        $scope.stateStream = new EventSource('/devices/' + $routeParams.deviceId
+          + '/states?stream=1&interval=10');
+        $scope.stateStream.addEventListener('message', function (e) {
+          $scope.$apply(function () {
+            $scope.state = angular.fromJson(e.data);
           });
+        }, false);
         $scope.save = function () {
           console.log('Saving ' + $scope.device._id);
           $scope.device.$save({}, function () {
