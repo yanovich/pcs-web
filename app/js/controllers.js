@@ -220,6 +220,7 @@ angular.module('pcs.controllers', [])
         }
         $scope.dropOutput = function (i) {
           $scope.system.outputs.splice(i);
+          $scope.systemForm.$setDirty();
         }
         $scope.addSetpoint = function () {
           $scope.system.setpoints[$scope.n.set] = $scope.n.setValue;
@@ -230,7 +231,7 @@ angular.module('pcs.controllers', [])
           $scope.systemForm.$setDirty();
         }
         $scope.save = function () {
-          $scope.system.$save({}, function () {
+          $scope.system.$save({}, function (e) {
             $scope.systemForm.$setPristine();
           }, function (res) {
             console.log(res);
