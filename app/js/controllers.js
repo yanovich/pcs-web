@@ -7,6 +7,37 @@
 
 'use strict';
 
+function loadDeviceState($scope, deviceId) {
+  if ($scope.stateStream) $scope.stateStream.close();
+  $scope.stateStream = new EventSource('/devices/' + deviceId
+      + '/states?stream=1&interval=10');
+  $scope.state = { outputs: {} };
+  $scope.stateStream.addEventListener('message', function (e) {
+    $scope.$apply(function () {
+      $scope.state = angular.fromJson(e.data);
+    });
+  }, false);
+  var off = $scope.$on('$locationChangeStart', function (e, next, current) {
+    if ($scope.stateStream) $scope.stateStream.close();
+    off();
+  });
+}
+
+function setDeviceUpdater($scope) {
+  $scope.updateDevice = function () {
+    $scope.device = {};
+    $scope.system.device = null;
+    var devices = Device.query({ name: $scope.n.deviceName }, function () {
+      if (devices.length !== 2) {
+        return;
+      }
+      $scope.device = devices[0];
+      $scope.system.device = devices[0]._id;
+      loadDeviceState($scope, $scope.system.device);
+    });
+  }
+}
+
 angular.module('pcs.controllers', [])
   .controller('NavCtrl', ['$scope', '$location', function($scope, $location) {
     $scope.isActive = function (viewLocation) {
@@ -74,14 +105,7 @@ angular.module('pcs.controllers', [])
         });
         $scope.setpoints = Setpoints.get({ deviceId: $routeParams.deviceId }, function () {
         });
-        $scope.state = {};
-        $scope.stateStream = new EventSource('/devices/' + $routeParams.deviceId
-          + '/states?stream=1&interval=10');
-        $scope.stateStream.addEventListener('message', function (e) {
-          $scope.$apply(function () {
-            $scope.state = angular.fromJson(e.data);
-          });
-        }, false);
+        loadDeviceState($scope, $routeParams.deviceId);
         $scope.save = function () {
           console.log('Saving ' + $scope.device._id);
           $scope.device.$save({}, function () {
@@ -167,6 +191,7 @@ angular.module('pcs.controllers', [])
             console.log(res);
           });
         }
+        setDeviceUpdater($scope);
   }])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
       'Device', 'State',
@@ -186,7 +211,7 @@ angular.module('pcs.controllers', [])
               $scope.system.outputs = [];
             if (!$scope.system.setpoints)
               $scope.system.setpoints = {};
-            loadSystemState();
+            loadDeviceState($scope, $scope.system.device);
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
         $scope.addOutput = function () {
@@ -210,29 +235,6 @@ angular.module('pcs.controllers', [])
           }, function (res) {
             console.log(res);
           });
-        }
-        $scope.updateDevice = function () {
-          $scope.device = {};
-          $scope.system.device = null;
-          var devices = Device.query({ name: $scope.n.deviceName }, function () {
-            if (devices.length !== 2) {
-              return;
-            }
-            $scope.device = devices[0];
-            $scope.system.device = devices[0]._id;
-            loadSystemState();
-          });
-        }
-        function loadSystemState() {
-          if ($scope.stateStream) $scope.stateStream.close();
-          $scope.stateStream = new EventSource('/devices/' + $scope.system.device
-              + '/states?stream=1&interval=10');
-          $scope.state = { outputs: {} };
-          $scope.stateStream.addEventListener('message', function (e) {
-            $scope.$apply(function () {
-              $scope.state = angular.fromJson(e.data);
-            });
-          }, false);
         }
   }])
   .controller('NewUserCtrl', ['$scope', '$location', 'User',
