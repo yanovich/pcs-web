@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-5 tp-user">
+  <div class="col-lg-5 tp-user" ng-if="operator.admin">
     <form name="deviceForm" accept-charset="UTF-8" class="form-horizontal">
       <div class="form-group">
         <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-hdd"></span></label>
@@ -10,23 +10,38 @@
       </div>
       <button name="submit" class="btn btn-sm btn-primary" ng-disabled="deviceForm.$pristine" ng-click="save()">{{(device._id) ? 'Изменить' : 'Сохранить'}}</button>
     </form>
+    <div class="clearfix"></div>
+  </div>
+  <div class="col-lg-5 tp-user" ng-if="!operator.admin">
+    <form name="deviceForm" accept-charset="UTF-8" class="form-horizontal">
+      <div class="form-group">
+        <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-hdd"></span></label>
+        <label for="name" class="control-label hidden">Название</label>
+        <div class="col-sm-9">
+          <p class="form-control-static input-lg">
+            {{device.name}}
+          </p>
+        </div>
+      </div>
+    </form>
+    <div class="clearfix"></div>
   </div>
   <div class="col-lg-3 tp-user">
     <form name="stateForm" accept-charset="UTF-8" class="form-horizontal">
       <div class="form-group">
-        <label for="date" class="control-label col-sm-3">Состояние</label>
-        <div class="col-sm-9">
+        <label for="date" class="control-label col-sm-4">Состояние</label>
+        <div class="col-sm-8">
           <p class="form-control-static" id="date">
             {{moment(state.stamp).calendar()}}
-          </label>
+          </p>
         </div>
       </div>
       <div class="form-group" ng-repeat="(key, value) in state.outputs">
-        <label for="{{key}}" class="control-label col-sm-3">{{key}}</label>
-        <div class="col-sm-9">
+        <label for="{{key}}" class="control-label col-sm-4">{{key}}</label>
+        <div class="col-sm-8">
           <p class="form-control-static" id="{{key}}">
             {{value}}
-          </label>
+          </p>
         </div>
       </div>
     </form>
@@ -34,14 +49,14 @@
   <div class="col-lg-4 tp-user">
     <form name="setpointForm" accept-charset="UTF-8" class="form-horizontal">
       <div class="form-group">
-        <label for="date" class="control-label col-sm-3">Уставки</label>
+        <label for="date" class="control-label col-sm-4">Уставки</label>
       </div>
       <div class="form-group" ng-repeat="(key, value) in setpoints">
-        <label for="{{key}}" class="control-label col-sm-3">{{key}}</label>
-        <div class="col-sm-9">
+        <label for="{{key}}" class="control-label col-sm-4">{{key}}</label>
+        <div class="col-sm-8">
           <p class="form-control-static" id="{{key}}">
             {{value}}
-          </label>
+          </p>
         </div>
       </div>
     </form>

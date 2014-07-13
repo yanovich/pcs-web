@@ -1,19 +1,19 @@
 <div class="row tp-user">
   <form name="systemForm" accept-charset="UTF-8" class="form-horizontal">
-    <div class="col-lg-5">
+    <div class="col-lg-5" ng-if="operator.admin">
+      <div class="form-group">
+        <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-cog"></span></label>
+        <label for="name" class="control-label hidden">Название</label>
+        <div class="col-sm-9">
+          <input id="name" name="name" type="text" ng-model="system.name" placeholder="Название" class="form-control input-lg">
+        </div>
+      </div>
       <div class="form-group">
         <label for="site" class="control-label col-sm-3">Объект</label>
         <div class="col-sm-9">
           <label class="control-label" id="site">
             <a href="{{'#/sites/' + site._id}}">{{site.name}}</a>
           </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-cog"></span></label>
-        <label for="name" class="control-label hidden">Название</label>
-        <div class="col-sm-9">
-          <input id="name" name="name" type="text" ng-model="system.name" placeholder="Название" class="form-control input-lg">
         </div>
       </div>
       <div class="form-group" ng-class="{'has-error': !system.device}">
@@ -32,8 +32,15 @@
       </div>
       <button name="submit" class="btn btn-sm btn-primary" ng-disabled="systemForm.$pristine" ng-click="save()">{{(system._id) ? 'Изменить' : 'Сохранить'}}</button>
     </div>
-    <div class="col-lg-3" ng-if="!!system.device">
-      <h4>Состояние</h4>
+    <div class="col-lg-3" ng-if="!!system.device && operator.admin">
+      <div class="form-group">
+        <label for="date" class="control-label col-sm-4">Состояние</label>
+        <div class="col-sm-8">
+          <p class="form-control-static" id="date">
+            {{moment(state.stamp).calendar()}}
+          </p>
+        </div>
+      </div>
       <div class="form-group" ng-repeat="o in system.outputs">
         <label for="{{o}}" class="control-label col-sm-4">{{o}}</label>
         <div class="col-sm-6">
@@ -45,35 +52,37 @@
           </label>
         </div>
         <div class="col-sm-2">
-          <button type="button" class="btn btn-danger" ng-click="dropOutput($index)">X</button>
+          <button type="button" class="btn btn-default" ng-click="dropOutput($index)"><span class="glyphicon glyphicon-remove"></button>
         </div>
       </div>
       <div class="form-group" ng-class="{'has-error': !state.outputs[n.out]}">
         <div class="col-sm-4">
           <input id="out" name="n" type="text" class="form-control input-sm" ng-model="n.out">
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
           <p class="form-control-static" ng-if="state.outputs[n.out] != undefined">
             {{state.outputs[n.out]}}
           </p>
-          <label class="help-block" ng-if="state.outputs[n.out] == undefined">
+          <label class="help-block" ng-if="n.out && state.outputs[n.out] == undefined">
             Отсутствует
           </label>
         </div>
-        <div class="col-sm-4">
-          <button type="button" class="btn btn-success" ng-disabled="!n.out" ng-click="addOutput()">Добавить</button>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-default" ng-disabled="!n.out" ng-click="addOutput()"><span class="glyphicon glyphicon-ok"></button>
         </div>
       </div>
     </div>
-    <div class="col-lg-4" ng-if="!!system.device">
-      <h4>Уставки</h4>
+    <div class="col-lg-4" ng-if="!!system.device && operator.admin">
+      <div class="form-group">
+        <label for="date" class="control-label col-sm-4">Уставки</label>
+      </div>
       <div class="form-group" ng-repeat="(key, value) in system.setpoints">
         <label for="{{key}}" class="control-label col-sm-4">{{key}}</label>
         <div class="col-sm-6">
           <input id="set.{{key}}" name="set.{{key}}" type="text" class="form-control input-sm" ng-model="system.setpoints[key]" value="{{value}}">
         </div>
         <div class="col-sm-2">
-          <button type="button" class="btn btn-danger" ng-click="dropSetpoint(key)">X</button>
+          <button type="button" class="btn btn-default" ng-click="dropSetpoint(key)"><span class="glyphicon glyphicon-remove"></button>
         </div>
       </div>
       <div class="form-group" ng-class="{'has-error': system.setpoints[n.set]}">
@@ -87,7 +96,74 @@
           </label>
         </div>
         <div class="col-sm-4">
-          <button type="button" class="btn btn-success" ng-disabled="!n.set || system.setpoints[n.set]" ng-click="addSetpoint()">Добавить</button>
+          <button type="button" class="btn btn-default" ng-disabled="!n.set || system.setpoints[n.set]" ng-click="addSetpoint()"><span class="glyphicon glyphicon-ok"></button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5" ng-if="!operator.admin">
+      <div class="form-group">
+        <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-cog"></span></label>
+        <label for="name" class="control-label hidden">Название</label>
+        <div class="col-sm-9">
+          <p class="form-control-static input-lg">
+            {{system.name}}
+          </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="site" class="control-label col-sm-3">Объект</label>
+        <div class="col-sm-9">
+          <label class="control-label" id="site">
+            <a href="{{'#/sites/' + site._id}}">{{site.name}}</a>
+          </label>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{'has-error': !system.device}">
+        <label for="device" class="control-label col-sm-3">Контроллер</label>
+        <div class="col-sm-4" ng-if="!system.device">
+          <label class="help-block">Необходимо выбрать контроллер</label>
+        </div>
+        <div class="col-sm-4" ng-if="!!system.device">
+          <label class="control-label">
+            <a href="{{'#/devices/' + system.device}}">{{device.name}}</a>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3" ng-if="!!system.device" ng-if="!operator.admin">
+      <div class="form-group">
+        <label for="date" class="control-label col-sm-4">Состояние</label>
+        <div class="col-sm-8">
+          <p class="form-control-static" id="date">
+            {{moment(state.stamp).calendar()}}
+          </p>
+        </div>
+      </div>
+      <div class="form-group" ng-repeat="o in system.outputs">
+        <label for="{{o}}" class="control-label col-sm-4">{{o}}</label>
+        <div class="col-sm-6">
+          <p class="form-control-static" ng-if="state.outputs[o] != undefined">
+            {{state.outputs[o]}}
+          </p>
+          <label class="help-block" ng-if="state.outputs[o] == undefined">
+            Отсутствует
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4" ng-if="!!system.device" ng-if="!operator.admin">
+      <div class="form-group">
+        <label for="date" class="control-label col-sm-4">Уставки</label>
+      </div>
+      <div class="form-group" ng-repeat="(key, value) in system.setpoints">
+        <label for="{{key}}" class="control-label col-sm-4">{{key}}</label>
+        <div class="col-sm-6">
+          <input id="set.{{key}}" name="set.{{key}}" type="text" class="form-control input-sm" ng-model="system.setpoints[key]" value="{{value}}">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-10">
+      <button name="submit" class="btn btn-sm btn-primary" ng-disabled="systemForm.$pristine" ng-click="save()">{{(system._id) ? 'Изменить' : 'Сохранить'}}</button>
         </div>
       </div>
     </div>
