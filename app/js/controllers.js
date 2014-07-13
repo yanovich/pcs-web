@@ -224,15 +224,15 @@ angular.module('pcs.controllers', [])
           });
         }
         function loadSystemState() {
+          if ($scope.stateStream) $scope.stateStream.close();
+          $scope.stateStream = new EventSource('/devices/' + $scope.system.device
+              + '/states?stream=1&interval=10');
           $scope.state = { outputs: {} };
-          var states = State.query({deviceId: $scope.system.device,
-            limit: 1}, function () {
-              if (states.length !== 2) {
-                return;
-              }
-              $scope.state = states[0];
-              console.log($scope.state);
+          $scope.stateStream.addEventListener('message', function (e) {
+            $scope.$apply(function () {
+              $scope.state = angular.fromJson(e.data);
             });
+          }, false);
         }
   }])
   .controller('NewUserCtrl', ['$scope', '$location', 'User',
