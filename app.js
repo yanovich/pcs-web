@@ -33,8 +33,15 @@ app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-if (process.env.NODE_ENV !== 'test')
-  app.use(logger('dev'));
+if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== 'production') {
+    app.use(logger('dev'));
+  } else {
+    var logPath = config.log || '/var/log/node/pcs.log';
+    var logFile = fs.createWriteStream(logPath, {flags: 'a'});
+    app.use(logger({ stream: logFile }));
+  }
+}
 app.use(express.static(path.join(__dirname, 'app/')));
 
 app.use('/states', states.create);
