@@ -170,6 +170,8 @@ angular.module('pcs.controllers', [])
           var len = $scope.sites.length - 1;
           var count = $scope.sites.splice(len)[0].count;
           $scope.page(page, 25, count);
+        }, function (res) {
+          console.log(res);
         });
   }])
   .controller('NewSystemCtrl', ['$scope', '$routeParams', '$location',
