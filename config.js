@@ -17,17 +17,24 @@ var dev = {
   secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXK',
 };
 
-var production = {
-};
-
 var conf;
 
-if (process.env.NODE_ENV === 'test')
+if (process.env.NODE_ENV === 'test') {
   conf = test;
-else if (process.env.NODE_ENV === 'production')
-  conf = production;
-else
+} else if (process.env.NODE_ENV === 'production') {
+  try {
+    conf = require('/etc/pcsweb.js');
+  }
+  catch (e) {
+    conf = {};
+  }
+  conf.log = conf.log || '/var/log/node/pcsweb';
+  conf.port = conf.port || 3000;
+  conf.dbUrl = conf.dbUrl || 'mongodb://localhost:27017/pcsweb';
+  conf.secret = conf.secret || dev.secret;
+} else {
   conf = dev;
+}
 
 // Allow environment to override config
 if (process.env.PORT || process.env.PORT === 0)

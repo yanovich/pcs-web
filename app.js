@@ -12,6 +12,7 @@ var bodyParser = require('body-parser');
 var method_override = require('method-override');
 var csrf = require('csurf');
 var mongoose = require('mongoose');
+var fs = require('fs');
 var clientSessions = require("client-sessions");
 
 var devices = require('./routes/device');
@@ -33,14 +34,20 @@ app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-if (process.env.NODE_ENV !== 'test') {
-  if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
+    var out = fs.createWriteStream(config.log, {flags: 'a'});
+    var err = fs.createWriteStream(config.log, {flags: 'a'});
+    var stdout = process.stdout;
+    var stderr = process.stderr;
+    process.__defineGetter__("stdout", function () {
+      return out;
+    });
+    process.__defineGetter__("stderr", function () {
+      return err;
+    });
+    app.use(logger('short'));
+} else if (process.env.NODE_ENV !== 'test') {
     app.use(logger('dev'));
-  } else {
-    var logPath = config.log || '/var/log/node/pcs.log';
-    var logFile = fs.createWriteStream(logPath, {flags: 'a'});
-    app.use(logger({ stream: logFile }));
-  }
 }
 app.use(express.static(path.join(__dirname, 'app/')));
 
