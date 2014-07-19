@@ -152,7 +152,20 @@ app.use(function (err, req, res, next) {
   }
 });
 
+var t;
 mongoose.connect(config.dbUrl);
+mongoose.connection.on('error', function (e) {
+  console.error(e);
+  if (t) return;
+  t = setTimeout(function () {
+    t = null;
+    mongoose.connect(config.dbUrl);
+  }, 10000);
+})
+
+mongoose.connection.on('connected', function () {
+  console.log('Connected to mongodb at "' + config.dbUrl +'"');
+})
 
 process.on('exit', function() {
   mongoose.connection.close();
