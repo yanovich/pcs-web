@@ -130,7 +130,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-3" ng-if="!!system.device" ng-if="!operator.admin">
+    <div class="col-lg-3" ng-if="!!system.device && !operator.admin">
       <div class="form-group">
         <label for="date" class="control-label col-sm-4">Состояние</label>
         <div class="col-sm-8">
@@ -151,7 +151,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4" ng-if="!!system.device" ng-if="!operator.admin">
+    <div class="col-lg-4" ng-if="!!system.device && !operator.admin">
       <div class="form-group">
         <label for="date" class="control-label col-sm-4">Уставки</label>
       </div>
