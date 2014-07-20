@@ -32,7 +32,7 @@ var system_schema = new mongoose.Schema({
   setpoints: {}
 });
 
-system_schema.index({ site: 1, name: 1, _id: 1 });
+system_schema.index({ site: 1, name: 1 }, { unique: 1 });
 system_schema.index({ device: 1, _id: 1 });
 
 var System = mongoose.model('System', system_schema);
