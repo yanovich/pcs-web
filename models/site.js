@@ -18,7 +18,7 @@ var site_schema = new mongoose.Schema({
     trim: true }
 });
 
-site_schema.index({ name: 1 });
+site_schema.index({ name: 1 }, { unique: 1 });
 
 var Site = mongoose.model('Site', site_schema);
 
