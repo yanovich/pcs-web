@@ -21,7 +21,7 @@ var user_schema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: /^[a-z][\w+\-.]*@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+$/i,
+    match: /^[a-z\d][\w+\-.]*@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+$/i,
     trim: true },
   admin: {
     type: Boolean,
