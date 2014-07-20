@@ -19,7 +19,7 @@ var device_schema = new mongoose.Schema({
   }
 });
 
-device_schema.index({ name: 1 });
+device_schema.index({ name: 1 }, { unique: 1 });
 
 var Device = mongoose.model('Device', device_schema);
 
