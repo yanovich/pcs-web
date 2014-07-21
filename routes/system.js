@@ -61,10 +61,13 @@ var systemFields = ['name', 'device', 'outputs', 'setpoints'];
 
 function updateSetpoints(req, res) {
   var dirty = false;
+  var bad = false;
   Object.keys(req.system.setpoints).forEach(function (s) {
-    if (typeof req.body.setpoints[s] != 'string') {
+    if (typeof req.body.setpoints[s] != 'string' &&
+      typeof req.body.setpoints[s] != 'number') {
       console.log(typeof req.body.setpoints[s]);
-      return res.send(500);
+      bad = true;
+      return;
     }
     if (req.system.setpoints[s] != req.body.setpoints[s]) {
       dirty = true;
@@ -73,6 +76,7 @@ function updateSetpoints(req, res) {
     }
   });
   if (!dirty) return res.send(500, 'Unchanged');
+  if (!bad) return res.send(500, 'Malformed');
   req.system.save(function (err) {
     if (err) {
       return res.json(500, err);
