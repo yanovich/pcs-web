@@ -364,6 +364,10 @@ table.tp-data td.tp-date {
   font-weight: bold;
 }
 
+.tp-user .form-group label.control-label {
+  overflow: hidden;
+}
+
 .tp-user .tp-photo {
   padding-top: 0px;
 }
