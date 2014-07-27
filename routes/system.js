@@ -76,7 +76,7 @@ function updateSetpoints(req, res) {
     }
   });
   if (!dirty) return res.send(500, 'Unchanged');
-  if (!bad) return res.send(500, 'Malformed');
+  if (bad) return res.send(500, 'Malformed');
   req.system.save(function (err) {
     if (err) {
       return res.json(500, err);
