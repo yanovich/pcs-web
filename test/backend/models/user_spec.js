@@ -16,6 +16,13 @@ var userAttrs = {
   confirmation: 'password',
 };
 
+var secondUserAttrs = {
+  name: "Example User 2",
+  email: "user2@example.com",
+  password: 'password',
+  confirmation: 'password',
+};
+
 describe('User', function() {
   var user;
   beforeEach(function(done) {
@@ -46,6 +53,55 @@ describe('User', function() {
 
     it('should respond to hash', function() {
       expect(user.hash).toEqual("");
+    });
+  });
+
+  describe("#generateResetPasswordToken", function() {
+    var resetUser = null;
+    beforeEach(function() {
+      resetUser = new User(secondUserAttrs);
+    });
+
+    it("should generate expires properties", function(done) {
+      var now = Date.now();
+
+      expect(resetUser.resetPasswordToken).toBeUndefined();
+      expect(resetUser.resetPasswordExpires).toBeUndefined();
+      expect(resetUser.isNew).toBeTruthy();
+
+      Date.now = jasmine.createSpy("date.now").andReturn(now);
+      resetUser.generateResetPasswordToken(function(err, token) {
+        expect(resetUser.resetPasswordToken).toBeDefined();
+        expect(resetUser.resetPasswordExpires).toBeDefined();
+        expect(resetUser.resetPasswordToken).toEqual(token);
+        expect(resetUser.resetPasswordExpires).toEqual(new Date(now + 60 * 60 * 1000));
+        expect(resetUser.isNew).toBeFalsy();
+        done();
+      });
+    });
+  });
+
+  describe("#resetPassword", function() {
+    var resetUser = null;
+    beforeEach(function(done) {
+      resetUser = new User(secondUserAttrs);
+      resetUser.generateResetPasswordToken(done);
+    });
+
+    it("should reset password", function(done) {
+      expect(resetUser.resetPasswordToken).toBeDefined();
+      expect(resetUser.resetPasswordExpires).toBeDefined();
+
+      resetUser.authenticate("some new pass", function(err, authenticated) {
+        expect(authenticated).toBeFalsy();
+        resetUser.resetPassword("some new pass", "some new pass", function(err) {
+          expect(err).toBe(null);
+          resetUser.authenticate("some new pass", function(err, authenticated) {
+            expect(authenticated).toBeTruthy();
+            done();
+          });
+        });
+      });
     });
   });
 
@@ -145,12 +201,12 @@ describe('User', function() {
     beforeEach(function (done) {
       user.save(done);
     })
- 
+
     it('should hash password', function () {
       expect(user.hash.length).not.toEqual(0);
       expect(user.hash).not.toEqual(user.password);
     });
- 
+
     it('should authenticate a know user with valid password', function (done) {
       user.authenticate('password', function (err, valid) {
         expect(err).toBeFalsy();
@@ -158,7 +214,7 @@ describe('User', function() {
         done();
       });
     });
- 
+
     it('should not authenticate with invalid password', function (done) {
       user.authenticate('invalid', function (err, valid) {
         expect(err).toBeFalsy();

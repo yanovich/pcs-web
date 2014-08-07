@@ -8,6 +8,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var validates = require('./_validates');
+var crypto = require('crypto');
 
 var user_schema = new mongoose.Schema({
   name: {
@@ -30,7 +31,11 @@ var user_schema = new mongoose.Schema({
     type: String,
     validate: {
       validator: validates.password({ length: { min: 6 } } ) },
-    default: '' }
+    default: '' },
+  resetPasswordToken: {
+    type: String },
+  resetPasswordExpires: {
+    type: Date }
 });
 
 user_schema.virtual('password').get(function () {
@@ -56,7 +61,35 @@ user_schema.methods = {
 
   encrypt: function (password, cb) {
     bcrypt.hash(password, 1, cb);
-  }
+  },
+
+  generateResetPasswordToken: function(cb) {
+    var me = this;
+    crypto.randomBytes(20, function(err, buf) {
+      if (err) {
+        return cb(err, null);
+      }
+      var token = buf.toString('hex');
+
+      me.resetPasswordToken = token;
+      me.resetPasswordExpires = Date.now() + 60 * 60 * 1000; //1hour
+
+      me.save(function(err) {
+        cb(err, token);
+      });
+    });
+  },
+
+  resetPassword: function(password, confirmation, cb) {
+    this.password = password;
+    this.confirmation = confirmation;
+    this.resetPasswordToken = undefined;
+    this.resetPasswordExpires = undefined;
+
+    this.save(function(err) {
+      cb(err);
+    });
+  },
 }
 
 user_schema.pre('save', function (next) {

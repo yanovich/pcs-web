@@ -1,0 +1,22 @@
+// views/sessions/forgot.jade -- signin page
+// Copyright 2014 Sergei Ianovich
+//
+// Licensed under AGPL-3.0 or later, see LICENSE
+// Process Control Service Web Interface
+
+extends ../layouts/sign
+
+block content
+  if notify && notify.message
+    h2.form-signin-heading.text-center= notify.message
+  form(method='post', action='/forgot', accept-charset="UTF-8").form-signin
+   .form-group(class=e('email')?'has-error':'')
+     label(for='email').hidden= t('user.email')
+     input(id='email', name='email', type='text', placeholder=t('user.email')).form-control
+     if e('email')
+      label(for='email').help-block= t('mongoose.'+e('email').type)
+   input(name='_csrf', value=csrf, type='hidden')
+   input(type='submit',name='submit',value=t('password_reset.reset_btn')).btn.btn-lg.btn-primary.btn-block
+   a.btn.btn-link(href='/signin')= t('session.sign_in')
+
+//- vim:ts=2 sts=2 sw=2 et:

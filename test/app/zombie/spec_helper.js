@@ -54,6 +54,7 @@ describe("ASUTP.IO", function() {
   require('./devices_spec');
   require('./sites_spec');
   require('./systems_spec');
+  require('./password_reset_spec');
 
   afterAll(function(done) {
     seed.down(function() {
