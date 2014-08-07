@@ -1,0 +1,23 @@
+// views/sessions/reset.jade -- signin page
+// Copyright 2014 Sergei Ianovich
+//
+// Licensed under AGPL-3.0 or later, see LICENSE
+// Process Control Service Web Interface
+
+extends ../layouts/sign
+
+block content
+  form(method='post').form-signin
+    .form-group
+      label(for='password').hidden= t('user.new_password')
+      input(id='password', name='password', type='password',
+        placeholder=t('user.new_password')).form-control
+      label(for='confirmation').hidden= t('user.confirmation')
+      input(id='confirmation', name='confirmation', type='password',
+        placeholder=t('user.confirmation')).form-control
+    input(name='_csrf', value=csrf, type='hidden')
+    input(type='submit',name='submit',value=t('password_reset.update_btn')).btn.btn-lg.btn-primary.btn-block
+    a.btn.btn-link(href='/signin')= t('session.sign_in')
+
+//- vim:ts=2 sts=2 sw=2 et:
+
