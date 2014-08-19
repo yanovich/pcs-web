@@ -9,12 +9,14 @@ var test = {
   port: 0,
   dbUrl: 'mongodb://localhost:27017/pcs_web-test',
   secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXK',
+  slavesCount: 1,
 };
 
 var dev = {
   port: 3000,
   dbUrl: 'mongodb://localhost:27017/pcs_web-dev',
   secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXK',
+  slavesCount: require('os').cpus().length,
 };
 
 var conf;
@@ -32,6 +34,7 @@ if (process.env.NODE_ENV === 'test') {
   conf.port = conf.port || 3000;
   conf.dbUrl = conf.dbUrl || 'mongodb://localhost:27017/pcsweb';
   conf.secret = conf.secret || dev.secret;
+  conf.slavesCount = conf.slavesCount || require('os').cpus().length;
 } else {
   conf = dev;
 }
