@@ -5,7 +5,6 @@
  * Process Control Service Web Interface
  */
 
-var config = require('./config');
 var cluster = require('cluster');
 
 function startServer() {
@@ -18,6 +17,12 @@ function startServer() {
 }
 
 if (cluster.isMaster) {
+  cluster.setupMaster({silent: true});
+  var log = require('./logger'),
+      config = require('./config');
+
+  log.enable({transports: config.logTo});
+
   if (config.slavesCount == 1) {
     startServer();
   } else {
@@ -27,6 +32,7 @@ if (cluster.isMaster) {
 
     cluster.on('online', function(worker) {
       console.log('Worker: ' + worker.process.pid + ' started');
+      log.logProcess(worker.process);
     });
 
     cluster.on('exit', function(worker) {
