@@ -10,6 +10,15 @@ var test = {
   dbUrl: 'mongodb://localhost:27017/pcs_web-test',
   secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXK',
   slavesCount: 1,
+  logTo: [
+    {
+      name: 'Console',
+      options: {
+        level: 'info',
+        colorize: true,
+      },
+    },
+  ],
 };
 
 var dev = {
@@ -17,6 +26,23 @@ var dev = {
   dbUrl: 'mongodb://localhost:27017/pcs_web-dev',
   secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXK',
   slavesCount: require('os').cpus().length,
+  logTo: [
+    {
+      name: 'Console',
+      options: {
+        level: 'info',
+        colorize: true,
+      },
+    },
+    {
+      name: 'File',
+      options: {
+        level: 'info',
+        filename: 'pcsweb_dev.log',
+        maxsize: 10 * 1024 * 1024, //10 Mb
+      },
+    },
+  ],
 };
 
 var conf;
@@ -35,6 +61,23 @@ if (process.env.NODE_ENV === 'test') {
   conf.dbUrl = conf.dbUrl || 'mongodb://localhost:27017/pcsweb';
   conf.secret = conf.secret || dev.secret;
   conf.slavesCount = conf.slavesCount || require('os').cpus().length;
+  conf.logTo = conf.logTo || [
+    {
+      name: 'Console',
+      options: {
+        level: 'info',
+        colorize: true,
+      },
+    },
+    {
+      name: 'File',
+      options: {
+        level: 'info',
+        filename: conf.log,
+        maxsize: 10 * 1024 * 1024, //10 Mb
+      },
+    },
+  ];
 } else {
   conf = dev;
 }
