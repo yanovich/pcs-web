@@ -20,6 +20,7 @@ var sites = require('./routes/site');
 var systems = require('./routes/system');
 var users = require('./routes/user');
 var sessions = require('./routes/session');
+var passwordReset = require('./routes/passwordReset');
 var auth = require('./routes/_auth');
 var authUser = auth.authenticate;
 var states = require('./routes/state');
@@ -102,6 +103,11 @@ if (process.env.NODE_ENV === 'test')
 app.get('/signin', sessions.new);
 app.post('/signin', sessions.create);
 app.del('/signout', sessions.destroy);
+
+app.get('/forgot', passwordReset.new);
+app.post('/forgot', passwordReset.create);
+app.get('/reset/:token', passwordReset.edit);
+app.post('/reset/:token', passwordReset.update);
 
 app.param('user', users.load);
 app.get('/users', users.index);

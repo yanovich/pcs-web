@@ -40,6 +40,14 @@ if (process.env.NODE_ENV === 'test') {
 if (process.env.PORT || process.env.PORT === 0)
   conf.port = process.env.PORT;
 
+conf.mailer = {
+  service: 'Gmail',
+  auth: {
+    user: 'noreply.asutp.io@gmail.com',
+    pass: 'asutp.io.noreply'
+  }
+};
+
 module.exports = conf;
 
 // vim:ts=2 sts=2 sw=2 et:

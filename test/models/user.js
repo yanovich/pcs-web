@@ -8,8 +8,11 @@
 var expect = require('expect.js');
 var User = require('../../models/user');
 
-var userAttrs = { name: "Example User", email: "user@example.com",
-      password: 'password', confirmation: 'password' }
+var userAttrs = {
+  name: "Example User", email: "user@example.com",
+  password: 'password', confirmation: 'password',
+  resetPasswordToken: "012345", resetPasswordExpires: Date.now()
+};
 
 describe('User', function () {
   var user;
@@ -40,6 +43,14 @@ describe('User', function () {
 
   it('should respond to confirmation', function () {
     expect(user.confirmation).not.to.be.an('undefined');
+  });
+
+  it('should respond to resetPasswordToken', function () {
+    expect(user.resetPasswordToken).not.to.be.an('undefined');
+  });
+
+  it('should respond to resetPasswordExpires', function () {
+    expect(user.resetPasswordExpires).not.to.be.an('undefined');
   });
 
   it('should be valid', function (done) {
