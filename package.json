@@ -29,8 +29,8 @@
   },
   "scripts": {
     "postinstall": "bower install",
-    "test-backend": "NODE_ENV=test node ./node_modules/jasmine-node/bin/jasmine-node test/backend --captureExceptions",
-    "test-angular-unit": "NODE_ENV=test ./node_modules/karma/bin/karma start test/karma.conf.js --single-run",
+    "test-backend": "NODE_ENV=test ./node_modules/jasmine-node/bin/jasmine-node test/backend --captureExceptions",
+    "test-angular-unit": "NODE_ENV=test ./node_modules/karma/bin/karma start test/app/unit/karma.conf.js --single-run",
     "test-e2e": "NODE_ENV=test ./node_modules/protractor/bin/protractor test/app/e2e/protractor.conf.js",
     "test": "npm run test-backend && npm run test-angular-unit && npm run test-e2e",
     "webdriver-update": "./node_modules/protractor/bin/webdriver-manager update",
