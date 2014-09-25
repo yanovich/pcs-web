@@ -25,7 +25,7 @@ function requireAdmin(req, res, next) {
   res.send(401);
 }
 
-var exportFields = '_id name input_file output_file';
+var exportFields = '_id name';
 
 function showDevice(req, res) {
   if (!req.device)
@@ -37,7 +37,7 @@ function showDevice(req, res) {
   res.json_ng(device);
 }
 
-var deviceFields = ['name', 'input_file', 'output_file'];
+var deviceFields = ['name'];
 
 function updateDevice(req, res) {
   deviceFields.forEach(function (f) {
