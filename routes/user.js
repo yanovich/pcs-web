@@ -11,6 +11,9 @@ var per_page = 25;
 
 module.exports.load = function (req, res, next, id) {
   User.findOne({ _id: id }, function (err, user) {
+    if (err)
+      return res.send(500, 'Sorry, internal server error.');
+
     req.user = user;
     next();
   })
