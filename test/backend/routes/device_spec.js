@@ -1,12 +1,12 @@
 'use strict'
-/* test/models/user.js -- test User model
+/* test/backend/routes/device_spec.js -- test Device routes
  * Copyright 2014 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
  * Process Control Service Web Interface
  */
 
-var helper = require('../spec_helper');
+require('../spec_helper');
 var User = require('../../../models/user');
 var Device = require('../../../models/device');
 var Routes = require('../../../routes/device');
@@ -30,7 +30,7 @@ var deviceAttrs = {
 };
 
 describe('Device\'s routes', function() {
-  var operator, admin, device;
+  var operator, admin, device, utils;
   beforeEach(function(done) {
     (new User(operatorAttrs)).save(function(err, newUser) {
       operator = newUser;
@@ -38,37 +38,12 @@ describe('Device\'s routes', function() {
         admin = newAdmin;
         (new Device(deviceAttrs)).save(function(err, newDevice) {
           device = newDevice;
+          utils = require('./_controller_util')(admin, operator);
           return done();
         });
       });
     });
   });
-
-  function executer(actions, req, res) {
-    if (actions.length == 0)
-      return;
-    var action = actions.shift(),
-    next = function() {
-      executer(actions, req, res);
-    };
-    action(req, res, next);
-  };
-
-  function operatorRequest() {
-    return {
-      session: {
-        operatorId: operator._id,
-      },
-    };
-  };
-
-  function adminRequest() {
-    return {
-      session: {
-        operatorId: admin._id,
-      },
-    };
-  };
 
   describe("#load", function() {
     it("should find by id and assign device to req", function(done) {
@@ -99,14 +74,14 @@ describe('Device\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.show.slice(0), req, res);
+      utils.executer(Routes.show.slice(0), req, res);
     });
 
     describe("when operator logged in", function() {
       var req;
 
       beforeEach(function() {
-        req = operatorRequest();
+        req = utils.operatorRequest();
       });
 
       it("should return not found if device is not exist", function(done) {
@@ -117,7 +92,7 @@ describe('Device\'s routes', function() {
             done();
           },
         };
-        executer(Routes.show.slice(0), req, res);
+        utils.executer(Routes.show.slice(0), req, res);
       });
 
 
@@ -133,7 +108,7 @@ describe('Device\'s routes', function() {
         };
         req.device = device;
         req.device.some_field = true;
-        executer(Routes.show.slice(0), req, res);
+        utils.executer(Routes.show.slice(0), req, res);
       });
     });
 
@@ -141,7 +116,7 @@ describe('Device\'s routes', function() {
       var req;
 
       beforeEach(function() {
-        req = adminRequest();
+        req = utils.adminRequest();
       });
 
       it("should return not found if device is not exist", function(done) {
@@ -152,7 +127,7 @@ describe('Device\'s routes', function() {
             done();
           },
         };
-        executer(Routes.show.slice(0), req, res);
+        utils.executer(Routes.show.slice(0), req, res);
       });
 
 
@@ -168,7 +143,7 @@ describe('Device\'s routes', function() {
         };
         req.device = device;
         req.device.some_field = true;
-        executer(Routes.show.slice(0), req, res);
+        utils.executer(Routes.show.slice(0), req, res);
       });
     });
   });
@@ -180,12 +155,12 @@ describe('Device\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.update.slice(0), req, res);
+      utils.executer(Routes.update.slice(0), req, res);
     });
 
     describe("operator signed in", function() {
       it("should not allow access", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
         res = {
           locals: {},
           send: function(code) {
@@ -193,7 +168,7 @@ describe('Device\'s routes', function() {
             done();
           },
         };
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
     });
 
@@ -201,7 +176,7 @@ describe('Device\'s routes', function() {
       var req;
 
       beforeEach(function() {
-        req = adminRequest();
+        req = utils.adminRequest();
       });
 
       it("should update device data", function(done) {
@@ -219,7 +194,7 @@ describe('Device\'s routes', function() {
           some_field: "mail@mail.com",
         };
         req.device = device;
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
 
       it("should return 500 if device was not saved", function(done) {
@@ -236,7 +211,7 @@ describe('Device\'s routes', function() {
         for (var i = 0; i < 55; ++i) {
           req.body += "a";
         }
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
     });
   });
@@ -248,7 +223,7 @@ describe('Device\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.index.slice(0), req, res);
+      utils.executer(Routes.index.slice(0), req, res);
     });
 
 
@@ -291,7 +266,7 @@ describe('Device\'s routes', function() {
           },
         };
         req.query = {};
-        executer(Routes.index.slice(0), req, res);
+        utils.executer(Routes.index.slice(0), req, res);
       });
 
       it("should sort results by name", function(done) {
@@ -311,7 +286,7 @@ describe('Device\'s routes', function() {
           if (err)
             throw err;
           original = devices.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
 
@@ -332,7 +307,7 @@ describe('Device\'s routes', function() {
           if (err)
             throw err;
           original = devices.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
 
@@ -353,7 +328,7 @@ describe('Device\'s routes', function() {
           if (err)
             throw err;
           original = devices.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
 
@@ -374,17 +349,17 @@ describe('Device\'s routes', function() {
           if (err)
             throw err;
           original = devices.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
     };
 
     describe("operator signed in", function() {
-      testCommonBehaviour(operatorRequest);
+      testCommonBehaviour(function() { return utils.operatorRequest.apply(utils, arguments); });
     });
 
     describe("administrator signed in", function() {
-      testCommonBehaviour(adminRequest);
+      testCommonBehaviour(function() { return utils.adminRequest.apply(utils, arguments); });
     });
   });
 
@@ -395,12 +370,12 @@ describe('Device\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.create.slice(0), req, res);
+      utils.executer(Routes.create.slice(0), req, res);
     });
 
     describe("operator signed in", function() {
       it("should deprecate create  for operator", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
         res = {
           locals: {},
           send: function(code) {
@@ -408,7 +383,7 @@ describe('Device\'s routes', function() {
             done();
           },
         };
-        executer(Routes.create.slice(0), req, res);
+        utils.executer(Routes.create.slice(0), req, res);
       });
     });
 
@@ -416,7 +391,7 @@ describe('Device\'s routes', function() {
       var req;
 
       beforeEach(function() {
-        req = adminRequest();
+        req = utils.adminRequest();
       });
 
       it("should create device with valid params", function(done) {
@@ -431,7 +406,7 @@ describe('Device\'s routes', function() {
         req.body = {
           name: "created device",
         };
-        executer(Routes.create.slice(0), req, res);
+        utils.executer(Routes.create.slice(0), req, res);
       });
 
       it("should return err with invalid params", function(done) {
@@ -444,7 +419,7 @@ describe('Device\'s routes', function() {
           },
         };
         req.body = deviceAttrs;
-        executer(Routes.create.slice(0), req, res);
+        utils.executer(Routes.create.slice(0), req, res);
       });
     });
   });

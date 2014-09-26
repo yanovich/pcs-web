@@ -1,12 +1,12 @@
 'use strict'
-/* test/models/user.js -- test User model
+/* test/backend/routes/user_spec.js -- test User's routes
  * Copyright 2014 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
  * Process Control Service Web Interface
  */
 
-var helper = require('../spec_helper');
+require('../spec_helper');
 var User = require('../../../models/user');
 var Routes = require('../../../routes/user');
 
@@ -25,7 +25,7 @@ var adminAttrs = {
 };
 
 describe('User\'s routes', function() {
-  var operator, admin;
+  var operator, admin, utils;
   beforeEach(function(done) {
     (new User(operatorAttrs)).save(function(err, newUser) {
       if (err) throw err;
@@ -33,36 +33,11 @@ describe('User\'s routes', function() {
       (new User(adminAttrs)).save(function(err, newAdmin) {
         if (err) throw err;
         admin = newAdmin;
+        utils = require('./_controller_util')(admin, operator);
         return done();
       });
     });
   });
-
-  function executer(actions, req, res) {
-    if (actions.length == 0)
-      return;
-    var action = actions.shift(),
-    next = function() {
-      executer(actions, req, res);
-    };
-    action(req, res, next);
-  };
-
-  function operatorRequest() {
-    return {
-      session: {
-        operatorId: operator._id,
-      },
-    };
-  };
-
-  function adminRequest() {
-    return {
-      session: {
-        operatorId: admin._id,
-      },
-    };
-  };
 
   describe("#load", function() {
     it("should find by id and assign user to req", function(done) {
@@ -94,11 +69,11 @@ describe('User\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.show.slice(0), req, res);
+      utils.executer(Routes.show.slice(0), req, res);
     });
 
     it("should deprecate view other user for operator", function(done) {
-      var req = operatorRequest(),
+      var req = utils.operatorRequest(),
       res = {
         locals: {},
         redirect: function(url) {
@@ -107,11 +82,11 @@ describe('User\'s routes', function() {
         },
       };
       req.user = admin;
-      executer(Routes.show.slice(0), req, res);
+      utils.executer(Routes.show.slice(0), req, res);
     });
 
     it("should return 404 is user is not exist", function(done) {
-      var req = adminRequest(),
+      var req = utils.adminRequest(),
       res = {
         locals: {},
         send: function(code) {
@@ -119,11 +94,11 @@ describe('User\'s routes', function() {
           done();
         },
       };
-      executer(Routes.show.slice(0), req, res);
+      utils.executer(Routes.show.slice(0), req, res);
     });
 
     it("should return administrator information", function(done) {
-      var req = adminRequest(),
+      var req = utils.adminRequest(),
       res = {
         locals: {},
         json_ng: function(user) {
@@ -136,11 +111,11 @@ describe('User\'s routes', function() {
         },
       };
       req.user = admin;
-      executer(Routes.show.slice(0), req, res);
+      utils.executer(Routes.show.slice(0), req, res);
     });
 
     it("should return operator information", function(done) {
-      var req = operatorRequest(),
+      var req = utils.operatorRequest(),
       res = {
         locals: {},
         json_ng: function(user) {
@@ -153,7 +128,7 @@ describe('User\'s routes', function() {
         },
       };
       req.user = operator;
-      executer(Routes.show.slice(0), req, res);
+      utils.executer(Routes.show.slice(0), req, res);
     });
   });
 
@@ -164,12 +139,12 @@ describe('User\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.update.slice(0), req, res);
+      utils.executer(Routes.update.slice(0), req, res);
     });
 
     describe("operator signed in", function() {
       it("should deprecate update other user for operator", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
         res = {
           locals: {},
           redirect: function(url) {
@@ -178,11 +153,11 @@ describe('User\'s routes', function() {
           },
         };
         req.user = admin;
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
 
       it("should update operator data", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
         res = {
           locals: {},
           json: function(user) {
@@ -199,11 +174,11 @@ describe('User\'s routes', function() {
           confirmation: "111111111",
         };
         req.user = operator;
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
 
       it("should not change admin property for operator", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
             res = {
               locals: {},
               json: function(user) {
@@ -220,11 +195,11 @@ describe('User\'s routes', function() {
           email: "mail@mail.com",
           admin: "true"
         };
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
 
       it("should return error if data is invalid", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
         res = {
           locals: {},
           json: function(code, err) {
@@ -236,13 +211,13 @@ describe('User\'s routes', function() {
           hello: "hello"
         };
         req.user = operator;
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
     });
 
     describe("administrator signed in", function() {
       it("should update admin data", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json: function(user) {
@@ -259,11 +234,11 @@ describe('User\'s routes', function() {
           confirmation: "111111111",
         };
         req.user = admin;
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
 
       it("should not change admin property for administrator", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
             res = {
               locals: {},
               json: function(user) {
@@ -280,11 +255,11 @@ describe('User\'s routes', function() {
           email: "mail@mail.com",
           admin: "false"
         };
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
 
       it("should return error if data is invalid", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json: function(code, err) {
@@ -296,11 +271,11 @@ describe('User\'s routes', function() {
           hello: "hello"
         };
         req.user = admin;
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
 
       it("can update other users", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json: function(user) {
@@ -317,7 +292,7 @@ describe('User\'s routes', function() {
           admin: "true"
         };
         req.user = operator;
-        executer(Routes.update.slice(0), req, res);
+        utils.executer(Routes.update.slice(0), req, res);
       });
     });
   });
@@ -329,12 +304,12 @@ describe('User\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.index.slice(0), req, res);
+      utils.executer(Routes.index.slice(0), req, res);
     });
 
     describe("operator signed in", function() {
       it("should deprecate update other user for operator", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
         res = {
           locals: {},
           redirect: function(url) {
@@ -343,7 +318,7 @@ describe('User\'s routes', function() {
           },
         };
         req.user = operator;
-        executer(Routes.index.slice(0), req, res);
+        utils.executer(Routes.index.slice(0), req, res);
       });
     });
 
@@ -374,7 +349,7 @@ describe('User\'s routes', function() {
       });
 
       it("should retrieve first page if not specified", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json_ng: function(users) {
@@ -385,12 +360,12 @@ describe('User\'s routes', function() {
         };
         req.query = {};
         req.user = admin;
-        executer(Routes.index.slice(0), req, res);
+        utils.executer(Routes.index.slice(0), req, res);
       });
 
       it("should sort results by name", function(done) {
         var original = [];
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json_ng: function(users) {
@@ -407,13 +382,13 @@ describe('User\'s routes', function() {
           if (err)
             throw err;
           original = users.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
 
       it("should skip pages", function(done) {
         var original = [];
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json_ng: function(users) {
@@ -430,13 +405,13 @@ describe('User\'s routes', function() {
           if (err)
             throw err;
           original = users.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
 
       it("should return first page if query is less then 1", function(done) {
         var original = [];
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json_ng: function(users) {
@@ -453,13 +428,13 @@ describe('User\'s routes', function() {
           if (err)
             throw err;
           original = users.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
 
       it("should return last page if query page bigger then real count", function(done) {
         var original = [];
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json_ng: function(users) {
@@ -476,7 +451,7 @@ describe('User\'s routes', function() {
           if (err)
             throw err;
           original = users.map(function(item) { return item._id.toString(); });
-          executer(Routes.index.slice(0), req, res);
+          utils.executer(Routes.index.slice(0), req, res);
         });
       });
     });
@@ -489,12 +464,12 @@ describe('User\'s routes', function() {
         expect(url).toEqual("/signin");
         done();
       }};
-      executer(Routes.create.slice(0), req, res);
+      utils.executer(Routes.create.slice(0), req, res);
     });
 
     describe("operator signed in", function() {
       it("should deprecate create user for operator", function(done) {
-        var req = operatorRequest(),
+        var req = utils.operatorRequest(),
         res = {
           locals: {},
           redirect: function(url) {
@@ -503,13 +478,13 @@ describe('User\'s routes', function() {
           },
         };
         req.user = operator;
-        executer(Routes.create.slice(0), req, res);
+        utils.executer(Routes.create.slice(0), req, res);
       });
     });
 
     describe("administrator signed in", function() {
       it("should create user with valida params", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json: function(user) {
@@ -526,11 +501,11 @@ describe('User\'s routes', function() {
           confirmation: "password",
         };
         req.user = admin;
-        executer(Routes.create.slice(0), req, res);
+        utils.executer(Routes.create.slice(0), req, res);
       });
 
       it("should return err with invalid params", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json: function(code, err) {
@@ -541,11 +516,11 @@ describe('User\'s routes', function() {
         };
         req.body = operatorAttrs;
         req.user = admin;
-        executer(Routes.create.slice(0), req, res);
+        utils.executer(Routes.create.slice(0), req, res);
       });
 
       it("should create admin", function(done) {
-        var req = adminRequest(),
+        var req = utils.adminRequest(),
         res = {
           locals: {},
           json: function(user) {
@@ -564,7 +539,7 @@ describe('User\'s routes', function() {
           confirmation: "password",
         };
         req.user = admin;
-        executer(Routes.create.slice(0), req, res);
+        utils.executer(Routes.create.slice(0), req, res);
       });
     });
   });
