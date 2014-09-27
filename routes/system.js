@@ -12,6 +12,9 @@ var perPage = 25;
 
 module.exports.load = function (req, res, next, id) {
   System.findOne({ _id: id }, function (err, system) {
+    if (err) {
+      return res.send(404);
+    }
     req.system = system;
     next();
   })
@@ -75,7 +78,7 @@ function updateSetpoints(req, res) {
       req.system.markModified('setpoints.'+s);
     }
   });
-  if (!dirty) return res.send(500, 'Unchanged');
+  if (!bad && !dirty) return res.send(500, 'Unchanged');
   if (bad) return res.send(500, 'Malformed');
   req.system.save(function (err) {
     if (err) {
