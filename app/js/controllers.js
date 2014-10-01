@@ -14,6 +14,7 @@ function loadDeviceState($scope, deviceId) {
   $scope.state = { outputs: {} };
   $scope.stateStream.addEventListener('message', function (e) {
     $scope.$apply(function () {
+      console.log("LoadDeviceState", e);
       $scope.state = angular.fromJson(e.data);
     });
   }, false);
@@ -21,21 +22,6 @@ function loadDeviceState($scope, deviceId) {
     if ($scope.stateStream) $scope.stateStream.close();
     off();
   });
-}
-
-function setDeviceUpdater($scope) {
-  $scope.updateDevice = function () {
-    $scope.device = {};
-    $scope.system.device = null;
-    var devices = Device.query({ name: $scope.n.deviceName }, function () {
-      if (devices.length !== 2) {
-        return;
-      }
-      $scope.device = devices[0];
-      $scope.system.device = devices[0]._id;
-      loadDeviceState($scope, $scope.system.device);
-    });
-  }
 }
 
 angular.module('pcs.controllers', [])
@@ -175,13 +161,14 @@ angular.module('pcs.controllers', [])
         });
   }])
   .controller('NewSystemCtrl', ['$scope', '$routeParams', '$location',
-		  'Site', 'System',
-      function($scope, $routeParams, $location, Site, System) {
+		  'Site', 'System', 'Device',
+      function($scope, $routeParams, $location, Site, System, Device) {
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
         $scope.system = new System();
         $scope.system.site = $routeParams.siteId;
         $scope.site = Site.get({ siteId: $routeParams.siteId });
+        $scope.n = { deviceName: "" };
         $scope.save = function () {
           console.log('Saving ' + $scope.system.name);
           $scope.system.$save({}, function () {
@@ -193,12 +180,22 @@ angular.module('pcs.controllers', [])
             console.log(res);
           });
         }
-        setDeviceUpdater($scope);
+        $scope.updateDevice = function () {
+          $scope.device = {};
+          $scope.system.device = null;
+          var devices = Device.query({ name: $scope.n.deviceName }, function () {
+            if (devices.length !== 2) {
+              return;
+            }
+            $scope.device = devices[0];
+            $scope.system.device = devices[0]._id;
+            loadDeviceState($scope, $scope.system.device);
+          });
+        }
   }])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
       'Device', 'State',
-      function($scope, $routeParams, Site, System, Device, State
-        ) {
+      function($scope, $routeParams, Site, System, Device, State) {
         $scope.device = {};
         $scope.state = { outputs: {} };
         $scope.n = {};
