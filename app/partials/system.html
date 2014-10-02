@@ -31,6 +31,7 @@
         </div>
       </div>
       <button name="submit" class="btn btn-sm btn-primary" ng-disabled="systemForm.$pristine" ng-click="save()">{{(system._id) ? 'Изменить' : 'Сохранить'}}</button>
+      <div class="clearfix"></div>
     </div>
     <div class="col-lg-3" ng-if="!!system.device && operator.admin">
       <div class="form-group">
