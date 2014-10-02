@@ -15,7 +15,9 @@ function loadDeviceState($scope, deviceId) {
   $scope.stateStream.addEventListener('message', function (e) {
     $scope.$apply(function () {
       console.log("LoadDeviceState", e);
-      $scope.state = angular.fromJson(e.data);
+      if (e.data !== "undefined") {
+        $scope.state = angular.fromJson(e.data);
+      }
     });
   }, false);
   var off = $scope.$on('$locationChangeStart', function (e, next, current) {
@@ -167,6 +169,8 @@ angular.module('pcs.controllers', [])
         $scope.setNewURL(null);
         $scope.system = new System();
         $scope.system.site = $routeParams.siteId;
+        $scope.system.outputs = [];
+        $scope.system.setpoints = {};
         $scope.site = Site.get({ siteId: $routeParams.siteId });
         $scope.n = { deviceName: "" };
         $scope.save = function () {
@@ -179,6 +183,24 @@ angular.module('pcs.controllers', [])
           }, function (res) {
             console.log(res);
           });
+        }
+        $scope.addOutput = function () {
+          console.log("scope.n.out", $scope.n.out, $scope.system);
+          $scope.system.outputs.push($scope.n.out);
+          $scope.n.out = null;
+        }
+        $scope.dropOutput = function (i) {
+          $scope.system.outputs.splice(i);
+          $scope.systemForm.$setDirty();
+        }
+        $scope.addSetpoint = function () {
+          $scope.system.setpoints[$scope.n.set] = $scope.n.setValue;
+          $scope.n.set = null;
+          $scope.n.setValue = null;
+        }
+        $scope.dropSetpoint = function (key) {
+          delete $scope.system.setpoints[key];
+          $scope.systemForm.$setDirty();
         }
         $scope.updateDevice = function () {
           $scope.device = {};
@@ -214,6 +236,7 @@ angular.module('pcs.controllers', [])
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
         $scope.addOutput = function () {
+          console.log("scope.n.out", $scope.n.out, $scope.system);
           $scope.system.outputs.push($scope.n.out);
           $scope.n.out = null;
         }
@@ -234,6 +257,18 @@ angular.module('pcs.controllers', [])
             $scope.systemForm.$setPristine();
           }, function (res) {
             console.log(res);
+          });
+        }
+        $scope.updateDevice = function () {
+          $scope.device = {};
+          $scope.system.device = null;
+          var devices = Device.query({ name: $scope.n.deviceName }, function () {
+            if (devices.length !== 2) {
+              return;
+            }
+            $scope.device = devices[0];
+            $scope.system.device = devices[0]._id;
+            loadDeviceState($scope, $scope.system.device);
           });
         }
   }])

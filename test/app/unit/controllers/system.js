@@ -64,6 +64,51 @@ describe("Device Controllers", function() {
       expect(scope.n).toEqual({ deviceName: "" });
     });
 
+    describe("#addOutput", function() {
+      it("add to system outputs", function() {
+        controller('NewSystemCtrl', { $scope: scope, $routeParams: routeParams });
+        scope.system = { outputs: [] };
+        scope.n.out = "some";
+        scope.addOutput();
+        expect(scope.system.outputs.length).toEqual(1);
+        expect(scope.n.out).toEqual(null);
+      });
+    });
+
+    describe("#dropOutput", function() {
+      it("remove from system outputs", function() {
+        controller('NewSystemCtrl', { $scope: scope, $routeParams: routeParams });
+        scope.system = { outputs: ["some", "output"] };
+        scope.systemForm = { $setDirty: jasmine.createSpy() };
+        scope.dropOutput(1);
+        expect(scope.system.outputs).toEqual(["some"]);
+        expect(scope.systemForm.$setDirty).toHaveBeenCalled();
+      });
+    });
+
+    describe("#addSetpoint", function() {
+      it("add to system setpoints", function() {
+        controller('NewSystemCtrl', { $scope: scope, $routeParams: routeParams });
+        scope.system = { setpoints: { "some": "setpoint" } };
+        scope.n.set = "other";
+        scope.n.setValue = "setpoint";
+        scope.addSetpoint();
+        expect(scope.system.setpoints).toEqual({ "some": "setpoint", "other":"setpoint" });
+        expect(scope.n.set).toEqual(null);
+      });
+    });
+
+    describe("#dropSetpoint", function() {
+      it("remove from system outputs", function() {
+        controller('NewSystemCtrl', { $scope: scope, $routeParams: routeParams });
+        scope.system = { setpoints: { "some": "setpoint", "other":"setpoint" } };
+        scope.systemForm = { $setDirty: jasmine.createSpy() };
+        scope.dropSetpoint("some");
+        expect(scope.system.setpoints).toEqual({ "other":"setpoint" });
+        expect(scope.systemForm.$setDirty).toHaveBeenCalled();
+      });
+    });
+
     describe("#save", function() {
       beforeEach(function() {
         scope.systemForm = {
@@ -71,8 +116,8 @@ describe("Device Controllers", function() {
         };
         spyOn(scope.systemForm, '$setPristine');
 
-        httpBackend.expectPOST('/sites/2/systems', { name: "hello", site: 2, device: 3 }).
-          respond({_id: 33, name: "hello", site: 2, device: 3});
+        httpBackend.expectPOST('/sites/2/systems', {site:2,outputs:[],setpoints:{},name:"hello",device:3}).
+          respond({_id: 33, name: "hello", site: 2, device: 3,outputs:[],setpoints:{}});
       });
 
       it("should save system", function() {
