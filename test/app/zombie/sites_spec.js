@@ -114,7 +114,7 @@ describe("sites", function() {
     describe("#edit", function() {
       it("should allow change site", function(done) {
         browser.fill("name", "");
-        browser.fill("name", knownSite.name = "auto filled site name");
+        browser.fill("name", /*knownSite.name =*/ "auto filled site name");
         expect(browser.query("form[name='siteForm'] > button:disabled")).toBe(null);
         browser.pressButton("form[name='siteForm'] > button", function() {
           expect(browser.query("form[name='siteForm'] > button:disabled")).not.toBe(null);
