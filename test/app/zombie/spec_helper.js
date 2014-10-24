@@ -51,6 +51,7 @@ describe("ASUTP.IO", function() {
     }
   });*/
   require('./users_spec');
+  require('./devices_spec');
 
   afterAll(function(done) {
     seed.down(function() {
