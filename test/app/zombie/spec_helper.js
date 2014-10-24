@@ -52,6 +52,7 @@ describe("ASUTP.IO", function() {
   });*/
   require('./users_spec');
   require('./devices_spec');
+  require('./sites_spec');
 
   afterAll(function(done) {
     seed.down(function() {
