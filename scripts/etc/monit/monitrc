@@ -1,0 +1,12 @@
+#!monit
+set logfile /var/log/monit.log
+
+check process nodejs with pidfile "/var/run/pcs/pcsweb.pid"
+  start program = "/etc/init.d/pcsweb start"
+  stop program  = "/etc/init.d/pcsweb stop"
+  if failed port 3000 protocol HTTP
+    request /
+    with timeout 10 seconds
+    then restart
+
+
