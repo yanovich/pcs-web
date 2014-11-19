@@ -117,7 +117,7 @@ describe("sites", function() {
         browser.fill("name", /*knownSite.name =*/ "auto filled site name");
         expect(browser.query("form[name='siteForm'] > button:disabled")).toBe(null);
         browser.pressButton("form[name='siteForm'] > button", function() {
-          expect(browser.query("form[name='siteForm'] > button:disabled")).not.toBe(null);
+          expect(browser.query("form[name='siteForm'] > button:disabled")).toBe(null);
           browser.clickLink(".tp-menu-side > li > a[href='#/sites']", function() {
             expect(browser.url).toEqual(url + '/#/sites');
             var table = browser.queryAll("table.tp-data > tbody > tr");
