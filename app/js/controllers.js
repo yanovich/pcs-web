@@ -9,10 +9,10 @@
 
 function loadDeviceState($scope, deviceId) {
   if ($scope.stateStream) $scope.stateStream.close();
-  $scope.stateStream = new EventSource('/devices/' + deviceId
-      + '/states?stream=1&interval=10');
+  /*$scope.stateStream = new EventSource('/devices/' + deviceId
+      + '/states?stream=1&interval=10');*/
   $scope.state = { outputs: {} };
-  $scope.stateStream.addEventListener('message', function (e) {
+ /* $scope.stateStream.addEventListener('message', function (e) {
     $scope.$apply(function () {
       console.log("LoadDeviceState", e);
       if (e.data !== "undefined") {
@@ -23,7 +23,7 @@ function loadDeviceState($scope, deviceId) {
   var off = $scope.$on('$locationChangeStart', function (e, next, current) {
     if ($scope.stateStream) $scope.stateStream.close();
     off();
-  });
+  });*/
 }
 
 angular.module('pcs.controllers', [])
