@@ -123,7 +123,7 @@ describe("Device Controllers", function() {
       controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
       expect(scope.setpoints).toBeDefined();
     });
-
+/*
     describe("load device state", function() {
       beforeEach(function() {
         EventSource = function(url) {
@@ -179,6 +179,7 @@ describe("Device Controllers", function() {
         expect(onSpy).toHaveBeenCalled();
       });
     });
+    */
 
     describe("#save", function() {
       beforeEach(function() {

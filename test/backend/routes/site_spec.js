@@ -179,13 +179,11 @@ describe('Site\'s routes', function() {
         req = utils.adminRequest();
       });
 
-      it("should update site data", function(done) {
+      it("should deprecate update site name", function(done) {
         var res = {
           locals: {},
-          json: function(st) {
-            expect(st._id).toEqual(site._id);
-            expect(st.name).toEqual("Some name");
-            expect(st.some_field).toBeUndefined();
+          json: function(code) {
+            expect(code).toEqual(500);
             done();
           },
         };

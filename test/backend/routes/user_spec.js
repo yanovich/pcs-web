@@ -163,14 +163,33 @@ describe('User\'s routes', function() {
           json: function(user) {
             expect(user._id).toEqual(req.session.operatorId);
             expect(user.name).toEqual("Some name");
-            expect(user.email).toEqual("mail@mail.com");
+            expect(user.email).toEqual(operator.email);
+            done();
+          },
+        };
+        req.body = {
+          name: "Some name",
+          email: operator.email,
+          password: "111111111",
+          confirmation: "111111111",
+        };
+        req.user = operator;
+        utils.executer(Routes.update.slice(0), req, res);
+      });
+
+      it("should deprecate update operator email", function(done) {
+        var req = utils.operatorRequest(),
+        res = {
+          locals: {},
+          json: function(code) {
+            expect(code).toEqual(500);
             done();
           },
         };
         req.body = {
           name: "Some name",
           email: "mail@mail.com",
-          password: "111111111", 
+          password: "111111111",
           confirmation: "111111111",
         };
         req.user = operator;
@@ -184,7 +203,6 @@ describe('User\'s routes', function() {
               json: function(user) {
                 expect(user._id).toEqual(req.session.operatorId);
                 expect(user.name).toEqual(operator.name);
-                expect(user.email).toEqual(operator.email);
                 expect(user.admin).toBeFalsy();
                 done();
               },
@@ -192,7 +210,7 @@ describe('User\'s routes', function() {
         req.user = operator;
         req.body = {
           name: "Some name",
-          email: "mail@mail.com",
+          email: operator.email,
           admin: "true"
         };
         utils.executer(Routes.update.slice(0), req, res);
@@ -223,14 +241,14 @@ describe('User\'s routes', function() {
           json: function(user) {
             expect(user._id).toEqual(req.session.operatorId);
             expect(user.name).toEqual("Some name");
-            expect(user.email).toEqual("mail@mail.com");
+            expect(user.email).toEqual(admin.email);
             done();
           },
         };
         req.body = {
           name: "Some name",
-          email: "mail@mail.com",
-          password: "111111111", 
+          email: admin.email,
+          password: "111111111",
           confirmation: "111111111",
         };
         req.user = admin;
@@ -252,7 +270,7 @@ describe('User\'s routes', function() {
         req.user = admin;
         req.body = {
           name: "Some name",
-          email: "mail@mail.com",
+          email: admin.email,
           admin: "false"
         };
         utils.executer(Routes.update.slice(0), req, res);
@@ -281,14 +299,14 @@ describe('User\'s routes', function() {
           json: function(user) {
             expect(user._id).toEqual(operator._id);
             expect(user.name).toEqual("Some name");
-            expect(user.email).toEqual("mail@mail.com");
+            expect(user.email).toEqual(operator.email);
             expect(operator.admin).toBeTruthy();
             done();
           },
         };
         req.body = {
           name: "Some name",
-          email: "mail@mail.com",
+          email: operator.email,
           admin: "true"
         };
         req.user = operator;

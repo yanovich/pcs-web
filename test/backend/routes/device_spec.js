@@ -179,13 +179,11 @@ describe('Device\'s routes', function() {
         req = utils.adminRequest();
       });
 
-      it("should update device data", function(done) {
+      it("should deprecate update device name", function(done) {
         var res = {
           locals: {},
-          json: function(dev) {
-            expect(dev._id).toEqual(device._id);
-            expect(dev.name).toEqual("Some name");
-            expect(dev.some_field).toBeUndefined();
+          json: function(code) {
+            expect(code).toEqual(500);
             done();
           },
         };

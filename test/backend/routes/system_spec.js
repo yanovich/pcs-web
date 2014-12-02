@@ -254,7 +254,6 @@ describe('System\'s routes', function() {
           },
         };
         req.body = {
-          name: "Some name",
           setpoints: {
             d1: 10,
             f3: "DDD1",
@@ -315,7 +314,7 @@ describe('System\'s routes', function() {
           locals: {},
           json_ng: function(st) {
             expect(st._id).toEqual(system._id);
-            expect(st.name).toEqual("Some name");
+            expect(st.name).toEqual(system.name);
             expect(st.device).toEqual(device._id);
             expect(st.site).toEqual(system.site);
             expect(st.outputs).toEqual(system.outputs);
@@ -326,7 +325,6 @@ describe('System\'s routes', function() {
         };
         req.body = system;
         req.system = system;
-        req.body.name = "Some name";
         req.body.setpoints = { someset: 1 };
         utils.executer(Routes.update.slice(0), req, res);
       });
@@ -392,7 +390,7 @@ describe('System\'s routes', function() {
           done();
         });
       });
-      
+
       it("should retrieve error if site is not specified", function(done) {
         var res = {
           locals: {},
