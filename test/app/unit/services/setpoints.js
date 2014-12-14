@@ -10,7 +10,7 @@ describe("Setpoints Service", function() {
   var resource;
 
   beforeEach(function() {
-    resource = jasmine.createSpy();
+    resource = sinon.spy();
     angular.mock.module('pcs.services', function($provide) {
       $provide.value('$resource', resource);
     });
@@ -18,7 +18,7 @@ describe("Setpoints Service", function() {
 
   it("should create resource", function() {
     inject(function(Setpoints) {
-      expect(resource).toHaveBeenCalledWith('/devices/:deviceId/setpoints');
+      expect(resource).to.have.been.calledWith('/devices/:deviceId/setpoints');
     });
   });
 });

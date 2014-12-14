@@ -22,14 +22,24 @@
   },
   "devDependencies": {
     "bower": "^1.3.12",
+    "chai": "^1.10.0",
     "expect.js": "*",
-    "jasmine-node": "^1.14.5",
     "jasmine-before-all": "^0.1.0",
-    "karma": "*",
+    "jasmine-node": "^1.14.5",
+    "karma": "^0.12.28",
+    "karma-chai": "^0.1.0",
+    "karma-chai-sinon": "^0.1.4",
     "karma-firefox-launcher": "^0.1.3",
     "karma-jasmine": "^0.1.5",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon": "^1.0.4",
+    "karma-sinon-chai": "^0.2.0",
+    "mocha": "^2.0.1",
     "protractor": "*",
     "q": "*",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.6.0",
     "zombie": "^2.0.4"
   },
   "scripts": {
@@ -40,4 +50,3 @@
     "test": "npm run test-backend && npm run test-angular-unit && npm run test-e2e"
   }
 }
-

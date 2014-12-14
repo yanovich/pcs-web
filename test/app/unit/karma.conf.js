@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Fri Sep 12 2014 15:16:18 GMT+0300 (FET)
+// Generated on Sun Dec 14 2014 21:24:48 GMT+0300 (MSK)
 
 module.exports = function(config) {
   config.set({
@@ -10,12 +10,11 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['mocha', 'chai-sinon'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      //bower_components
       'app/bower_components/jquery/jquery.js',
       'app/bower_components/angular/angular.js',
       'app/bower_components/angular-loader/angular-loader.js',
@@ -25,10 +24,8 @@ module.exports = function(config) {
       'app/bower_components/bootstrap/dist/js/bootstrap.js',
       'app/bower_components/moment/moment.js',
       'app/bower_components/moment/lang/ru.js',
-
-      //project files
       'app/js/*.js',
-      'test/app/unit/**/*.js',
+      'test/app/unit/**/*.js'
     ],
 
 
@@ -68,8 +65,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    //browsers: ['PhantomJS'],
-    browsers: ['Firefox'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode

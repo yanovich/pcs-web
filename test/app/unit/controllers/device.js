@@ -29,34 +29,31 @@ describe("Device Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
     }));
 
     it("should call page with params", function() {
       controller('NewDeviceCtrl', { $scope: scope });
-      expect(scope.page).toHaveBeenCalledWith(1, 1, 0);
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
 
     it("should call setNewURL with params", function() {
       controller('NewDeviceCtrl', { $scope: scope });
-      expect(scope.setNewURL).toHaveBeenCalledWith(null);
+      expect(scope.setNewURL).to.have.been.calledWith(null);
     });
 
     it("should create device", function() {
       controller('NewDeviceCtrl', { $scope: scope });
-      expect(scope.device).toBeDefined();
+      expect(scope.device).to.exist();
     });
 
     describe("#save", function() {
       beforeEach(function() {
         scope.deviceForm = {
-          $setPristine: function() {},
+          $setPristine: sinon.spy(),
         };
-        spyOn(scope.deviceForm, '$setPristine');
 
         httpBackend.expectPOST('/devices', { name: "hello" }).respond({_id: 2, name: "hello"});
       });
@@ -72,7 +69,7 @@ describe("Device Controllers", function() {
         scope.device.name = "hello";
         scope.save();
         httpBackend.flush();
-        expect(scope.deviceForm.$setPristine).toHaveBeenCalled();
+        expect(scope.deviceForm.$setPristine).to.have.been.called;
       });
 
       it("should change location path", function() {
@@ -80,7 +77,7 @@ describe("Device Controllers", function() {
         scope.device.name = "hello";
         scope.save();
         httpBackend.flush();
-        expect(location.path()).toEqual('/devices/2');
+        expect(location.path()).to.equal('/devices/2');
       });
     });
   });
@@ -92,13 +89,10 @@ describe("Device Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
-        $on: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
+        $on: sinon.spy(),
       };
-      spyOn(scope, "$on");
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
       routeParams = { deviceId: 2 };
       httpBackend.expectGET('/devices/2').respond({_id: 2, name: "hello"});
       httpBackend.expectGET('/devices/2/setpoints').respond({_id: 2, name: "hello"});
@@ -106,77 +100,77 @@ describe("Device Controllers", function() {
 
     it("should call page with params", function() {
       controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.page).toHaveBeenCalledWith(1, 1, 0);
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
 
     it("should call setNewURL with params", function() {
       controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.setNewURL).toHaveBeenCalledWith('#/devices/new');
+      expect(scope.setNewURL).to.have.been.calledWith('#/devices/new');
     });
 
     it("should create device", function() {
       controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.device).toBeDefined();
+      expect(scope.device).to.exist();
     });
 
     it("should create setpoints", function() {
       controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.setpoints).toBeDefined();
+      expect(scope.setpoints).to.exist();
     });
 /*
     describe("load device state", function() {
       beforeEach(function() {
         EventSource = function(url) {
           this.url = url;
-          this.addEventListener = jasmine.createSpy();
-          this.close = jasmine.createSpy();
+          this.addEventListener = sinon.spy();
+          this.close = sinon.spy();
         };
       });
 
       it("should define state", function() {
         controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-        expect(scope.state).toBeDefined();
-        expect(scope.state.outputs).toBeDefined();
+        expect(scope.state).to.exist();
+        expect(scope.state.outputs).to.exist();
       });
 
       it("should connect to event source", function() {
         controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-        expect(scope.stateStream).toBeDefined();
-        expect(scope.stateStream.url).toEqual("/devices/2/states?stream=1&interval=10");
+        expect(scope.stateStream).to.exist();
+        expect(scope.stateStream.url).to.equal("/devices/2/states?stream=1&interval=10");
       });
 
       it("should close old stream", function() {
         var oldStream = scope.stateStream = new EventSource("aaaa");
-        scope.stateStream.close = jasmine.createSpy();
+        scope.stateStream.close = sinon.spy();
         controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-        expect(scope.stateStream).toBeDefined();
-        expect(scope.stateStream.url).toEqual("/devices/2/states?stream=1&interval=10");
-        expect(oldStream.close).toHaveBeenCalled();
+        expect(scope.stateStream).to.exist();
+        expect(scope.stateStream.url).to.equal("/devices/2/states?stream=1&interval=10");
+        expect(oldStream.close).to.have.been.called();
       });
 
       it("should add event listener", function() {
         controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
-        expect(scope.stateStream.addEventListener).toHaveBeenCalledWith("message", jasmine.any(Function), false);
+        expect(scope.stateStream.addEventListener).to.have.been.calledWith("message", sinon.match.func, false);
       });
 
       it("should update state when message received", function() {
-        scope.$apply = jasmine.createSpy();
+        scope.$apply = sinon.spy();
         controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
         scope.stateStream.addEventListener.calls[0].args[1]({ data: JSON.stringify({'outputs':{'a1':10}}) });
-        expect(scope.$apply).toHaveBeenCalled();
+        expect(scope.$apply).to.have.been.called();
         scope.$apply.calls[0].args[0]();
-        expect(scope.state).toBeDefined();
-        expect(scope.state.outputs).toBeDefined();
-        expect(scope.state.outputs.a1).toEqual(10);
+        expect(scope.state).to.exist();
+        expect(scope.state.outputs).to.exist();
+        expect(scope.state.outputs.a1).to.equal(10);
       });
 
       it("should close stream if location changed", function() {
-        var onSpy = jasmine.createSpy();
-        scope.$on = jasmine.createSpy().andReturn(onSpy);
+        var onSpy = sinon.spy();
+        scope.$on = sinon.spy().returns(onSpy);
         controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
         scope.$on.calls[0].args[1]();
-        expect(scope.stateStream.close).toHaveBeenCalled();
-        expect(onSpy).toHaveBeenCalled();
+        expect(scope.stateStream.close).to.have.been.called();
+        expect(onSpy).to.have.been.called();
       });
     });
     */
@@ -184,7 +178,7 @@ describe("Device Controllers", function() {
     describe("#save", function() {
       beforeEach(function() {
         scope.deviceForm = {};
-        scope.deviceForm.$setPristine = jasmine.createSpy();
+        scope.deviceForm.$setPristine = sinon.spy();
       });
 
       it("should save user", function() {
@@ -202,7 +196,7 @@ describe("Device Controllers", function() {
         scope.device.name = "world";
         scope.save();
         httpBackend.flush();
-        expect(scope.deviceForm.$setPristine).toHaveBeenCalled();
+        expect(scope.deviceForm.$setPristine).to.have.been.called;
       });
     });
   });
@@ -214,32 +208,30 @@ describe("Device Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
     }));
 
     it("should call setNewURL", function() {
       httpBackend.expectGET('/devices?page=1').respond([]);
       controller('DevicesCtrl', { $scope: scope });
-      expect(scope.setNewURL).toHaveBeenCalledWith('#/devices/new');
+      expect(scope.setNewURL).to.have.been.calledWith('#/devices/new');
     });
 
     it("should call page after load devices", function() {
       httpBackend.expectGET('/devices?page=1').respond([{_id: 1}, { count: 2 }]);
       controller('DevicesCtrl', { $scope: scope });
       httpBackend.flush();
-      expect(scope.page).toHaveBeenCalledWith(1, 25, 2);
+      expect(scope.page).to.have.been.calledWith(1, 25, 2);
     });
 
     it("should fill devices", function() {
       httpBackend.expectGET('/devices?page=1').respond([{_id: 1}, { count: 2 }]);
       controller('DevicesCtrl', { $scope: scope });
       httpBackend.flush();
-      expect(scope.devices.length).toEqual(1);
-      expect(scope.devices[0]._id).toEqual(1);
+      expect(scope.devices.length).to.equal(1);
+      expect(scope.devices[0]._id).to.equal(1);
     });
 
     it("should use page from query params", function() {

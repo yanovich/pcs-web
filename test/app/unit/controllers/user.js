@@ -29,34 +29,31 @@ describe("User Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
     }));
 
     it("should call page with params", function() {
       controller('NewUserCtrl', { $scope: scope });
-      expect(scope.page).toHaveBeenCalledWith(1, 1, 0);
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
 
     it("should call setNewURL with params", function() {
       controller('NewUserCtrl', { $scope: scope });
-      expect(scope.setNewURL).toHaveBeenCalledWith(null);
+      expect(scope.setNewURL).to.have.been.calledWith(null);
     });
 
     it("should create user", function() {
       controller('NewUserCtrl', { $scope: scope });
-      expect(scope.user).toBeDefined();
+      expect(scope.user).to.exist();
     });
 
     describe("#save", function() {
       beforeEach(function() {
         scope.userForm = {
-          $setPristine: function() {},
+          $setPristine: sinon.spy(),
         };
-        spyOn(scope.userForm, '$setPristine');
 
         httpBackend.expectPOST('/users', { name: "hello" }).respond({_id: 2, name: "hello"});
       });
@@ -72,7 +69,7 @@ describe("User Controllers", function() {
         scope.user.name = "hello";
         scope.save();
         httpBackend.flush();
-        expect(scope.userForm.$setPristine).toHaveBeenCalled();
+        expect(scope.userForm.$setPristine).to.have.been.called;
       });
 
       it("should change location path", function() {
@@ -80,7 +77,7 @@ describe("User Controllers", function() {
         scope.user.name = "hello";
         scope.save();
         httpBackend.flush();
-        expect(location.path()).toEqual('/users/2');
+        expect(location.path()).to.equal('/users/2');
       });
     });
   });
@@ -92,36 +89,33 @@ describe("User Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
       routeParams = { userId: 2 };
       httpBackend.expectGET('/users/2').respond({_id: 2, name: "hello"});
     }));
 
     it("should call page with params", function() {
       controller('UserCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.page).toHaveBeenCalledWith(1, 1, 0);
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
 
     it("should call setNewURL with params", function() {
       controller('UserCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.setNewURL).toHaveBeenCalledWith('#/users/new');
+      expect(scope.setNewURL).to.have.been.calledWith('#/users/new');
     });
 
     it("should create user", function() {
       controller('UserCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.user).toBeDefined();
+      expect(scope.user).to.exist();
     });
 
     describe("#save", function() {
       beforeEach(function() {
         scope.userForm = {
-          $setPristine: function() {},
+          $setPristine: sinon.spy(),
         };
-        spyOn(scope.userForm, '$setPristine');
       });
 
       it("should save user", function() {
@@ -139,7 +133,7 @@ describe("User Controllers", function() {
         scope.user.name = "world";
         scope.save();
         httpBackend.flush();
-        expect(scope.userForm.$setPristine).toHaveBeenCalled();
+        expect(scope.userForm.$setPristine).to.have.been.called;
       });
     });
   });
@@ -151,32 +145,30 @@ describe("User Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
     }));
 
     it("should call setNewURL", function() {
       httpBackend.expectGET('/users?page=1').respond([]);
       controller('UsersCtrl', { $scope: scope });
-      expect(scope.setNewURL).toHaveBeenCalledWith('#/users/new');
+      expect(scope.setNewURL).to.have.been.calledWith('#/users/new');
     });
 
     it("should call page after load users", function() {
       httpBackend.expectGET('/users?page=1').respond([{_id: 1}, { count: 2 }]);
       controller('UsersCtrl', { $scope: scope });
       httpBackend.flush();
-      expect(scope.page).toHaveBeenCalledWith(1, 25, 2);
+      expect(scope.page).to.have.been.calledWith(1, 25, 2);
     });
 
     it("should fill users", function() {
       httpBackend.expectGET('/users?page=1').respond([{_id: 1}, { count: 2 }]);
       controller('UsersCtrl', { $scope: scope });
       httpBackend.flush();
-      expect(scope.users.length).toEqual(1);
-      expect(scope.users[0]._id).toEqual(1);
+      expect(scope.users.length).to.equal(1);
+      expect(scope.users[0]._id).to.equal(1);
     });
 
     it("should use page from query params", function() {

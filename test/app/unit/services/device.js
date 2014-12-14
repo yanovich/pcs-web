@@ -10,7 +10,7 @@ describe("Device Service", function() {
   var resource;
 
   beforeEach(function() {
-    resource = jasmine.createSpy();
+    resource = sinon.spy();
     angular.mock.module('pcs.services', function($provide) {
       $provide.value('$resource', resource);
     });
@@ -18,7 +18,7 @@ describe("Device Service", function() {
 
   it("should create resource", function() {
     inject(function(Device) {
-      expect(resource).toHaveBeenCalledWith('/devices/:deviceId', { deviceId: '@_id' });
+      expect(resource).to.have.been.calledWith('/devices/:deviceId', { deviceId: '@_id' });
     });
   });
 });

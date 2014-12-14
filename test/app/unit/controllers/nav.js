@@ -34,8 +34,8 @@ describe("Nav Controllers", function() {
     it("should define isActive", function() {
       location.path("/aaa");
       controller('NavCtrl', { $scope: scope });
-      expect(scope.isActive).toBeDefined();
-      expect(scope.isActive("#/aaa")).toBeTruthy();
+      expect(scope.isActive).to.exist();
+      expect(scope.isActive("#/aaa")).to.be.true;
     });
   });
 });

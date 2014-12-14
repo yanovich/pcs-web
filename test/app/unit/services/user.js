@@ -11,8 +11,7 @@ describe("User Service", function() {
 
   beforeEach(function() {
     service = {};
-    service.resource = function() {};
-    spyOn(service, 'resource');
+    service.resource = sinon.spy();
     angular.mock.module('pcs.services', function($provide) {
       $provide.value('$resource', service.resource);
     });
@@ -20,7 +19,7 @@ describe("User Service", function() {
 
   it("should create resource", function() {
     inject(function(User) {
-      expect(service.resource).toHaveBeenCalledWith('/users/:userId', { userId: '@_id' });
+      expect(service.resource).to.have.been.calledWith('/users/:userId', { userId: '@_id' });
     });
   });
 });

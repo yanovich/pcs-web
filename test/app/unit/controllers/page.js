@@ -33,31 +33,31 @@ describe("Page Controllers", function() {
 
     it("should define pager", function() {
       controller('PageCtrl', { $scope: scope });
-      expect(scope.pager).toBeDefined();
-      expect(scope.pager.first).toEqual(0);
-      expect(scope.pager.last).toEqual(0);
-      expect(scope.pager.count).toEqual(0);
-      expect(scope.pager.page).toEqual(1);
-      expect(scope.pager.show).toBeFalsy();
+      expect(scope.pager).to.exist();
+      expect(scope.pager.first).to.equal(0);
+      expect(scope.pager.last).to.equal(0);
+      expect(scope.pager.count).to.equal(0);
+      expect(scope.pager.page).to.equal(1);
+      expect(scope.pager.show).to.not.be.true;
     });
 
     it("should define moment", function() {
       moment = "haha"
       controller('PageCtrl', { $scope: scope });
-      expect(scope.moment).toEqual("haha");
+      expect(scope.moment).to.equal("haha");
     });
 
     it("should define operator", function() {
       controller('PageCtrl', { $scope: scope });
-      expect(scope.operator).toEqual({});
+      expect(scope.operator).to.eql({});
     });
 
     describe("#setNewURL", function() {
       it("should update newURL", function() {
         controller('PageCtrl', { $scope: scope });
-        expect(scope.newURL).toBeUndefined();
+        expect(scope.newURL).to.be.undefined;
         scope.setNewURL("HELLO");
-        expect(scope.newURL).toEqual("HELLO");
+        expect(scope.newURL).to.equal("HELLO");
       });
     });
 
@@ -68,37 +68,37 @@ describe("Page Controllers", function() {
 
       it("should update pager count", function() {
         scope.page(1, 23, 26);
-        expect(scope.pager.count).toEqual(26);
+        expect(scope.pager.count).to.equal(26);
       });
 
       it("should update pager page", function() {
         scope.page(1, 23, 26);
-        expect(scope.pager.page).toEqual(1);
+        expect(scope.pager.page).to.equal(1);
       });
 
       it("should update pager first", function() {
         scope.page(1, 23, 26);
-        expect(scope.pager.first).toEqual(1);
+        expect(scope.pager.first).to.equal(1);
         scope.page(2, 23, 26);
-        expect(scope.pager.first).toEqual(24);
+        expect(scope.pager.first).to.equal(24);
       });
 
       it("should update pager last", function() {
         scope.page(1, 23, 26);
-        expect(scope.pager.last).toEqual(23);
+        expect(scope.pager.last).to.equal(23);
         scope.page(2, 23, 26);
-        expect(scope.pager.last).toEqual(26);
+        expect(scope.pager.last).to.equal(26);
       });
 
       describe("update show attribute", function() {
         it("should show if count is specified", function() {
           scope.page(1, 23, 26);
-          expect(scope.pager.show).toBeTruthy();
+          expect(scope.pager.show).to.be.true;
         });
 
         it("should show if count is not specified", function() {
           scope.page(1, 23, 0);
-          expect(scope.pager.show).toBeFalsy();
+          expect(scope.pager.show).to.not.be.true;
         });
       });
 
@@ -106,12 +106,12 @@ describe("Page Controllers", function() {
         it("should set prev if page is more then 1", function() {
           location.path("/hello");
           scope.page(2, 23, 26);
-          expect(scope.pager.prev).toEqual('#/hello?page=1');
+          expect(scope.pager.prev).to.equal('#/hello?page=1');
         });
 
         it("should clear prev is page is 1", function() {
           scope.page(1, 23, 0);
-          expect(scope.pager.prev).toEqual('');
+          expect(scope.pager.prev).to.equal('');
         });
       });
 
@@ -119,12 +119,12 @@ describe("Page Controllers", function() {
         it("should set next if page is 1", function() {
           location.path("/hello");
           scope.page(1, 23, 26);
-          expect(scope.pager.next).toEqual('#/hello?page=2');
+          expect(scope.pager.next).to.equal('#/hello?page=2');
         });
 
         it("should clear next is page is more then 1", function() {
           scope.page(2, 23, 0);
-          expect(scope.pager.next).toEqual('');
+          expect(scope.pager.next).to.equal('');
         });
       });
     });

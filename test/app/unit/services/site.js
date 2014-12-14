@@ -11,8 +11,7 @@ describe("Site Service", function() {
 
   beforeEach(function() {
     service = {};
-    service.resource = function() {};
-    spyOn(service, 'resource');
+    service.resource = sinon.spy();
     angular.mock.module('pcs.services', function($provide) {
       $provide.value('$resource', service.resource);
     });
@@ -20,7 +19,7 @@ describe("Site Service", function() {
 
   it("should create resource", function() {
     inject(function(Site) {
-      expect(service.resource).toHaveBeenCalledWith('/sites/:siteId', { siteId: '@_id' });
+      expect(service.resource).to.have.been.calledWith('/sites/:siteId', { siteId: '@_id' });
     });
   });
 });

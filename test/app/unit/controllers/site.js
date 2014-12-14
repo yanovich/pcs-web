@@ -29,30 +29,30 @@ describe("Site Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: jasmine.createSpy(),
-        setNewURL: jasmine.createSpy(),
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
     }));
 
     it("should call page with params", function() {
       controller('NewSiteCtrl', { $scope: scope });
-      expect(scope.page).toHaveBeenCalledWith(1, 1, 0);
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
 
     it("should call setNewURL with params", function() {
       controller('NewSiteCtrl', { $scope: scope });
-      expect(scope.setNewURL).toHaveBeenCalledWith(null);
+      expect(scope.setNewURL).to.have.been.calledWith(null);
     });
 
     it("should create site", function() {
       controller('NewSiteCtrl', { $scope: scope });
-      expect(scope.site).toBeDefined();
+      expect(scope.site).to.exist();
     });
 
     describe("#save", function() {
       beforeEach(function() {
         scope.siteForm = {
-          $setPristine: jasmine.createSpy(),
+          $setPristine: sinon.spy(),
         };
 
         httpBackend.expectPOST('/sites', { name: "hello" }).respond({_id: 2, name: "hello"});
@@ -69,7 +69,7 @@ describe("Site Controllers", function() {
         scope.site.name = "hello";
         scope.save();
         httpBackend.flush();
-        expect(scope.siteForm.$setPristine).toHaveBeenCalled();
+        expect(scope.siteForm.$setPristine).to.have.been.called;
       });
 
       it("should change location path", function() {
@@ -77,7 +77,7 @@ describe("Site Controllers", function() {
         scope.site.name = "hello";
         scope.save();
         httpBackend.flush();
-        expect(location.path()).toEqual('/sites/2');
+        expect(location.path()).to.equal('/sites/2');
       });
     });
   });
@@ -89,11 +89,9 @@ describe("Site Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
       routeParams = { siteId: 2 };
       httpBackend.expectGET('/sites/2').respond({_id: 2, name: "hello"});
     }));
@@ -101,27 +99,27 @@ describe("Site Controllers", function() {
     it("should call setNewURL with params", function() {
       httpBackend.expectGET('/sites/2/systems?page=1').respond([{_id: 2}, {count: 10}]);
       controller('SiteCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.setNewURL).toHaveBeenCalledWith('#/sites/2/systems/new');
+      expect(scope.setNewURL).to.have.been.calledWith('#/sites/2/systems/new');
     });
 
     it("should create site", function() {
       httpBackend.expectGET('/sites/2/systems?page=1').respond([{_id: 2}, {count: 10}]);
       controller('SiteCtrl', { $scope: scope, $routeParams: routeParams });
-      expect(scope.site).toBeDefined();
+      expect(scope.site).to.exist();
     });
 
     describe("define systems", function() {
       it("should create systems", function() {
         httpBackend.expectGET('/sites/2/systems?page=1').respond([{_id: 2}, {count: 10}]);
         controller('SiteCtrl', { $scope: scope, $routeParams: routeParams });
-        expect(scope.systems).toBeDefined();
+        expect(scope.systems).to.exist();
       });
 
       it("should call page with params", function() {
         httpBackend.expectGET('/sites/2/systems?page=1').respond([{_id: 2}, {count: 10}]);
         controller('SiteCtrl', { $scope: scope, $routeParams: routeParams });
         httpBackend.flush();
-        expect(scope.page).toHaveBeenCalledWith(1, 25, 10);
+        expect(scope.page).to.have.been.calledWith(1, 25, 10);
       });
 
       it("should use page from uri query", function() {
@@ -134,9 +132,8 @@ describe("Site Controllers", function() {
     describe("#save", function() {
       beforeEach(function() {
         scope.siteForm = {
-          $setPristine: function() {},
+          $setPristine: sinon.spy(),
         };
-        spyOn(scope.siteForm, '$setPristine');
       });
 
       it("should save site", function() {
@@ -156,7 +153,7 @@ describe("Site Controllers", function() {
         scope.site.name = "world";
         scope.save();
         httpBackend.flush();
-        expect(scope.siteForm.$setPristine).toHaveBeenCalled();
+        expect(scope.siteForm.$setPristine).to.have.been.called;
       });
     });
   });
@@ -168,32 +165,30 @@ describe("Site Controllers", function() {
       location = $location;
       controller = $controller;
       scope = {
-        page: function() {},
-        setNewURL: function() {},
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
       };
-      spyOn(scope, "page");
-      spyOn(scope, "setNewURL");
     }));
 
     it("should call setNewURL", function() {
       httpBackend.expectGET('/sites?page=1').respond([]);
       controller('SitesCtrl', { $scope: scope });
-      expect(scope.setNewURL).toHaveBeenCalledWith('#/sites/new');
+      expect(scope.setNewURL).to.have.been.calledWith('#/sites/new');
     });
 
     it("should call page after load sites", function() {
       httpBackend.expectGET('/sites?page=1').respond([{_id: 1}, { count: 2 }]);
       controller('SitesCtrl', { $scope: scope });
       httpBackend.flush();
-      expect(scope.page).toHaveBeenCalledWith(1, 25, 2);
+      expect(scope.page).to.have.been.calledWith(1, 25, 2);
     });
 
     it("should fill sites", function() {
       httpBackend.expectGET('/sites?page=1').respond([{_id: 1}, { count: 2 }]);
       controller('SitesCtrl', { $scope: scope });
       httpBackend.flush();
-      expect(scope.sites.length).toEqual(1);
-      expect(scope.sites[0]._id).toEqual(1);
+      expect(scope.sites.length).to.equal(1);
+      expect(scope.sites[0]._id).to.equal(1);
     });
 
     it("should use page from query params", function() {
