@@ -2,7 +2,7 @@
   "name": "pcs-web",
   "description": "Process Controll Service web interface",
   "version": "0.0.1",
-  "author" : "Sergei Ianovich <ynvich@gmail.com>",
+  "author": "Sergei Ianovich <s@asutp.io>",
   "contributors": [
     "Sergey Gaichuk <sergey.gaichuk@asutp.io> (https://github.com/sergeygaychuk)"
   ],
