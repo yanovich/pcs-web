@@ -246,10 +246,8 @@ angular.module('pcs.controllers', [])
         $scope.setNewURL(null);
         $scope.user = new User();
         $scope.save = function () {
-          console.log('Saving ' + $scope.user.name);
           $scope.user.$save({}, function () {
             $scope.userForm.$setPristine();
-            console.log($scope.user);
             $location.path('/users/' + $scope.user._id).replace();
           }, function (res) {
             console.log(res);
@@ -261,13 +259,10 @@ angular.module('pcs.controllers', [])
         $scope.page(1, 1, 0);
         $scope.setNewURL('#/users/new');
         $scope.user = User.get({ userId: $routeParams.userId }, function () {
-          console.log($scope.user);
         });
         $scope.save = function () {
-          console.log('Saving ' + $scope.user._id);
           $scope.user.$save({}, function () {
             $scope.userForm.$setPristine();
-            console.log($scope.user);
           }, function (res) {
             console.log(res);
           });

@@ -1,4 +1,4 @@
-/* test/views/user.js -- test user pages, run it with mocha
+/* test/user_pages_test.js -- test user pages, run it with mocha
  * Copyright 2014 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
@@ -14,7 +14,7 @@ function t(key, options) {
   return global.i18n.t(key, options);
 }
 
-var User = require('../../models/user');
+var User = require('../models/user');
 var attrs = {}
 
 describe('User', function(){
@@ -44,27 +44,32 @@ describe('User', function(){
         .fill(t('user.password'), user.password)
         .pressButton(t('session.sign_in'))
         .then(function () {
-          browser.visit('/users/' + user._id.toString()).then(done, done);
+          browser.pressButton('nav button.dropdown-toggle').then(function () {
+            browser.clickLink('nav ul.dropdown-menu a').then(done, done);
+          }, done);
         }, done);
       }, done);
     })
 
     it('should display user', function () {
-      expect(browser.statusCode).to.be(200);
-      expect(browser.query("input[value='"+user.name+"']")).to.be.ok();
-      expect(browser.query('input[value="'+user.email+'"]')).to.be.ok();
-      expect(browser.text('.tp-menu-side li.active a')).to.contain(t('user.self.plural'));
+      expect(browser.url).to.eql(url + '/#/users/' + user._id);
+      expect(browser.query("input[name='name']").value).to.eql(user.name);
+      expect(browser.query("input[name='email']").value).to.eql(user.email);
+      expect(browser.query("input[name='admin']:disabled")).not.to.be(null);
+      expect(browser.query("input[name='admin']:checked:disabled")).to.be(null);
+      expect(browser.query("input[name='password']").value).to.eql("");
+      expect(browser.query("input[name='confirmation']").value).to.eql("");
+      expect(browser.text("form[name='userForm'] > button")).to.eql("Изменить");
+      expect(browser.query("form[name='userForm'] > button:disabled")).not.to.be(null);
     })
 
     describe('edit with valid data', function () {
       beforeEach(function (done) {
         user.name = 'Update Name';
-        user.email = 'u@example.com';
         user.password = 'newPassword';
         user.confirmation = 'newPassword';
         browser
         .fill(t('user.name'), user.name)
-        .fill(t('user.email'), user.email)
         .fill(t('user.password'), user.password)
         .fill(t('user.confirmation'), user.confirmation)
         .pressButton(t('action.put'))
@@ -72,13 +77,11 @@ describe('User', function(){
       })
 
       it('should show updated data', function (done) {
-        expect(browser.statusCode).to.be(200);
-        expect(browser.query("input[value='"+user.name+"']")).to.be.ok();
-        expect(browser.query('input[value="'+user.email+'"]')).to.be.ok();
-        expect(browser.queryAll('.tp-flash .alert.alert-success').length).to.be(1);
+        expect(browser.query("input[name='name']").value).to.eql(user.name);
+        expect(browser.query("input[name='email']").value).to.eql(user.email);
         User.findById(user._id, function (err, u) {
-          u.name.should.equal(user.name);
-          u.email.should.equal(user.email);
+          expect(u.name).to.be(user.name);
+          expect(u.email).to.be(user.email);
           u.authenticate(user.password, function (err, valid) {
             expect(valid).to.be(true);
             done();
@@ -88,20 +91,7 @@ describe('User', function(){
     })
 
     describe('edit with invalid data', function () {
-      beforeEach(function (done) {
-        browser
-        .fill(t('user.name'), '')
-        .fill(t('user.email'), '')
-        .pressButton(t('action.put'))
-        .then(done, done);
-      })
-
-      it('should display errors', function () {
-        expect(browser.statusCode).to.be(200);
-        expect(browser.query('.has-error label.help-block[for="name"]')).to.be.ok();
-        expect(browser.query('.has-error label.help-block[for="email"]')).to.be.ok();
-        expect(browser.queryAll('.tp-flash .alert.alert-danger').length).to.be(1);
-      })
+      it('should display errors')
     })
   })
 
@@ -125,45 +115,59 @@ describe('User', function(){
 
     describe('index page', function () {
       beforeEach(function (done) {
-        browser.visit('/users').then(done, done);
+        browser.clickLink(".tp-menu-side > li > a[href='#/users']", done);
       })
 
-      it('should list users with pagination', function () {
-        expect(browser.statusCode).to.be(200);
-        expect(browser.location.pathname).to.be('/users');
-        expect(browser.queryAll('table.tp-data tr').length).to.be(25);
-        expect(browser.query('a[href="/users?page=1"]')).to.be.ok();
-        User
-        .find().sort({ name: 1 }).limit(25)
-        .exec(function (err, users) {
-          users.forEach(function (u) {
-            expect(browser.text('table.tp-data td.tp-sender')).to.contain(u.name);
-            expect(browser.text('table.tp-data td.tp-email')).to.contain(u.email);
-          });
+      it('should list users with pagination', function (done) {
+        expect(browser.url).to.be(url + '/#/users');
+        var pager = browser.queryAll("div.page > b");
+        expect(pager.length).to.be(3);
+        expect(pager[0].textContent).to.be("1");
+        expect(pager[1].textContent).to.be("25");
+
+        var table = browser.queryAll('table.tp-data tr');
+        expect(table.length).to.be(25);
+
+        User.count(function (err, count) {
+          expect(pager[2].textContent).to.eql(count);
+          User.find().sort({ name: 1 }).limit(25).exec(function (err, users) {
+            var i;
+            for (i in users) {
+              var u = users[i];
+              var row = browser.queryAll("td", table[i]);
+              expect(browser.query("a[href='#/users/" + u._id + "']", row[1]).textContent).to.be(u.name);
+              expect(browser.query("span", row[2]).textContent).to.be(u.email);
+              if (u.admin) {
+                expect(browser.queryAll("span", row[3]).length).to.be(1);
+                expect(browser.text("span", row[3])).to.be("Администратор");
+              } else {
+                expect(browser.queryAll("span", row[3]).length).to.be(0);
+              }
+            }
+            done();
+          })
         })
       })
     })
 
     describe('bad profile page', function () {
-      beforeEach(function (done) {
-        var c = browser.console;
-        browser.console = { error: function () {} };
-        browser.visit('/users/bad').then(done, function () { browser.console = c; done(); });
-      })
-
-      it('should report error', function () {
-        expect(browser.statusCode).to.be(404);
-      })
+      it('should report error')
     })
 
     describe('profile page', function () {
       beforeEach(function (done) {
-        browser.visit('/users/' + user._id).then(done, done);
+        browser.visit('/#/users/' + user._id).then(done, done);
       })
 
       it('should render user profile', function () {
-        expect(browser.statusCode).to.be(200);
-        expect(browser.location.pathname).to.be('/users/' + user._id);
+        expect(browser.query("input[name='name']").value).to.eql(user.name);
+        expect(browser.query("input[name='email']").value).to.eql(user.email);
+        expect(browser.query("input[name='admin']")).not.to.be(null);
+        expect(browser.query("input[name='admin']:checked")).to.be(null);
+        expect(browser.query("input[name='password']").value).to.eql("");
+        expect(browser.query("input[name='confirmation']").value).to.eql("");
+        expect(browser.text("form[name='userForm'] > button")).to.eql("Изменить");
+        expect(browser.query("form[name='userForm'] > button:disabled")).not.to.be(null);
       })
 
       describe('admin attribute', function () {
@@ -185,17 +189,16 @@ describe('User', function(){
 
     describe('new users', function () {
       beforeEach(function (done) {
-        browser.visit('/users/new').then(done, done);
+        browser.visit('/#/users/new').then(done, done);
       })
 
       it('should index provide input form', function () {
-        expect(browser.statusCode).to.be(200);
-        expect(browser.location.pathname).to.be('/users/new');
+        expect(browser.url).to.be(url + '/#/users/new');
       })
 
       describe('with valid data', function () {
         var newUser = new User();
-        beforeEach(function (done) {
+        before(function (done) {
           newUser.name = 'New Name';
           newUser.email = 'new@example.com';
           newUser.password = 'newPassword';
@@ -210,13 +213,9 @@ describe('User', function(){
         })
 
         it('should show created user', function (done) {
-          expect(browser.statusCode).to.be(200);
-          expect(browser.query("input[value='"+newUser.name+"']")).to.be.ok();
-          expect(browser.query('input[value="'+newUser.email+'"]')).to.be.ok();
-          expect(browser.queryAll('.tp-flash .alert.alert-success').length).to.be(1);
           User.findOne({ email: newUser.email }, function (err, u) {
-            u.name.should.equal(newUser.name);
-            u.email.should.equal(newUser.email);
+            expect(u.name).to.be(newUser.name);
+            expect(u.email).to.be(newUser.email);
             u.authenticate(newUser.password, function (err, valid) {
               expect(valid).to.be(true);
               done();

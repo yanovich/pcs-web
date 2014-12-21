@@ -23,6 +23,8 @@ if (!port) {
 
 var userCounter = 0;
 
+User.find().remove(function() {});
+
 Factory.define('user', User, {
   password: 'password',
   confirmation: 'password',
