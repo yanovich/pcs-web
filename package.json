@@ -33,6 +33,7 @@
     "zombie": "*"
   },
   "scripts": {
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "test": "mocha"
   }
 }

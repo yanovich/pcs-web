@@ -5,6 +5,8 @@
  * Process Control Service Web Interface
  */
 
+process.env.NODE_ENV = 'test';
+
 var app = require('../../app')
 var port = app.get('port');
 var User = require('../../models/user');

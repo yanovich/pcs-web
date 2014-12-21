@@ -1,9 +1,8 @@
 #!/usr/bin/make -f
 
-REPORTER = dot
+REPORTER = spec
 
 test:
-	@NODE_ENV=test ./node_modules/mocha/bin/mocha \
-		--reporter $(REPORTER)
+	@./node_modules/.bin/mocha --reporter $(REPORTER)
 
 .PHONY: test
