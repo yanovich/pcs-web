@@ -13,9 +13,9 @@ function t(key, options) {
   return global.i18n.t(key, options);
 }
 
-var User = require('../../models/user');
+var User = require('../models/user');
 
-describe('authentication', function () {
+describe('Authentication', function () {
   var user;
 
   before( function (done) {
@@ -110,63 +110,15 @@ describe('authentication', function () {
     })
   })
 
-  describe('authorization', function() {
-    describe('of non-signed-in users', function () {
-      describe('accessing root page', function () {
-        beforeEach(function (done) {
-          browser
-          .visit('/')
-          .then(done, done)
-        })
-
-        it('should require sign in', function () {
-          expect(browser.location.pathname).to.be('/signin');
-        })
-      })
+  describe('and Authorization of root page', function() {
+    beforeEach(function (done) {
+      browser
+        .visit('/')
+        .then(done, done)
     })
 
-    describe('of non-root signed-in users', function () {
-      var otherUser;
-
-      before( function (done) {
-        Factory.create('user', function (u) { otherUser = u; done(); });
-      });
-
-      beforeEach(function (done) {
-        browser
-        .visit('/signin')
-        .then(function () {
-          browser
-          .fill(t('user.email'), user.email)
-          .fill(t('user.password'), user.password)
-          .pressButton(t('session.sign_in'))
-          .then(done, done)
-        })
-      })
-
-      describe('accessing user index', function () {
-        beforeEach(function (done) {
-          browser
-          .visit('/users')
-          .then(done, done)
-        })
-
-        it('should render profile', function () {
-          expect(browser.location.pathname).to.be('/users/' + user._id);
-        })
-      })
-
-      describe('accessing another user profile', function () {
-        beforeEach(function (done) {
-          browser
-          .visit('/users/' + otherUser._id)
-          .then(done, done)
-        })
-
-        it('should render own profile', function () {
-          expect(browser.location.pathname).to.be('/users/' + user._id);
-        })
-      })
+    it('should require sign in', function () {
+      expect(browser.location.pathname).to.be('/signin');
     })
   })
 });
