@@ -1,7 +1,7 @@
 {
   "name": "pcs-web",
   "description": "Process Controll Service web interface",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author" : "Sergei Ianovich <ynvich@gmail.com>",
   "license" : "AGPL-3.0",
   "repository" : {"type": "git", "url": "git://github.com:yanovich/pcs-web.git"},
