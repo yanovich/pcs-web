@@ -1,4 +1,4 @@
-/* test/models/state.js -- test State model
+/* test/state_model_test.js -- test State model
  * Copyright 2014 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
@@ -6,9 +6,15 @@
  */
 
 var expect = require('expect.js');
-var State = require('../../models/state');
+var State = require('../models/state');
 
-var stateAttrs = { content: "Example State" }
+var stateAttrs = {
+  stamp: new Date(),
+  outputs: {
+    m1: 1000,
+    g2: "ggg",
+  }
+}
 
 describe('State', function () {
   var state;
@@ -25,12 +31,23 @@ describe('State', function () {
     })
   })
 
-  it('should respond to content', function () {
-    expect(state.content).not.to.be.an('undefined');
-  });
-
   it('should respond to device', function () {
     expect(state.device).not.to.be.an('undefined');
+  });
+
+  it('should respond to stamp', function () {
+    expect(state.stamp).not.to.be.an('undefined');
+  });
+
+  it('should respond to outputs', function () {
+    expect(state.outputs).not.to.be.an('undefined');
+  });
+
+  it('should be valid', function (done) {
+    state.validate(function (err) {
+      expect(err).not.to.be.ok;
+      done();
+    });
   });
 });
 
