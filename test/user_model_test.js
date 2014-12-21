@@ -1,4 +1,4 @@
-/* test/models/user.js -- test User model
+/* test/user_model_test.js -- test User model
  * Copyright 2014 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
@@ -6,7 +6,7 @@
  */
 
 var expect = require('expect.js');
-var User = require('../../models/user');
+var User = require('../models/user');
 
 var userAttrs = { name: "Example User", email: "user@example.com",
       password: 'password', confirmation: 'password' }

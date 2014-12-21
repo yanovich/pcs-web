@@ -1,3 +1,2 @@
---recursive
 --require should
 --require test/support/server.js
