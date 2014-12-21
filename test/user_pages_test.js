@@ -212,7 +212,7 @@ describe('User', function(){
           .then(done, done)
         })
 
-        it('should show created user', function (done) {
+        it('should create user', function (done) {
           User.findOne({ email: newUser.email }, function (err, u) {
             expect(u.name).to.be(newUser.name);
             expect(u.email).to.be(newUser.email);
@@ -222,6 +222,8 @@ describe('User', function(){
             });
           });
         })
+
+        it('should show created user');
       })
     })
   })
