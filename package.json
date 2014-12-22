@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "author": "Sergei Ianovich <s@asutp.io>",
   "contributors": [
-    "Sergey Gaichuk <sergey.gaichuk@asutp.io> (https://github.com/sergeygaychuk)"
+    "Sergey Gaichuk <sg@asutp.io> (https://github.com/sergeygaychuk)"
   ],
   "license" : "AGPL-3.0",
-  "repository" : {"type": "git", "url": "git://github.com:yanovich/pcs-web.git"},
+  "repository" : {"type": "git", "url": "https://github.com/yanovich/pcs-web.git"},
   "dependencies": {
     "bcrypt": "0.7.7",
     "body-parser": "1.0.2",
@@ -30,7 +30,6 @@
     "Faker": "*",
     "karma": "*",
     "karma-cli": "*",
-    "karma-firefox-launcher": "*",
     "karma-phantomjs-launcher": "*",
     "karma-chai-sinon": "*",
     "karma-mocha": "*",
