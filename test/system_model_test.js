@@ -61,6 +61,13 @@ describe('System', function() {
   it('should respond to setpoints', function () {
     expect(system.setpoints).not.to.be.an('undefined');
   });
+
+  it('should be valid', function (done) {
+    system.validate(function (err) {
+      expect(err).to.be.an('undefined');
+      done();
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
