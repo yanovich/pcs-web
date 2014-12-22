@@ -101,6 +101,16 @@ describe('System', function() {
       });
     });
   });
+
+  describe('when site is not present', function () {
+    it('should not be valid', function (done) {
+      system.site = null;
+      system.validate(function(err) {
+        expect(err).not.to.be.an('undefined');
+        done();
+      });
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
