@@ -24,16 +24,24 @@
   },
   "devDependencies": {
     "async": "*",
+    "chai": "*",
     "expect.js": "*",
     "factory-lady": "*",
     "Faker": "*",
+    "karma": "*",
+    "karma-cli": "*",
+    "karma-firefox-launcher": "*",
+    "karma-phantomjs-launcher": "*",
+    "karma-chai-sinon": "*",
+    "karma-mocha": "*",
     "mocha": "*",
-    "should": "*",
-    "supertest": "*",
+    "phantomjs": "*",
+    "sinon": "*",
+    "sinon-chai": "*",
     "zombie": "*"
   },
   "scripts": {
     "postinstall": "bower install",
-    "test": "mocha"
+    "test": "mocha && karma start"
   }
 }
