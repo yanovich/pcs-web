@@ -45,6 +45,10 @@ describe('System', function() {
   it('should respond to device', function () {
     expect(system.device).not.to.be.an('undefined');
   });
+
+  it('should respond to site', function () {
+    expect(system.site).not.to.be.an('undefined');
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
