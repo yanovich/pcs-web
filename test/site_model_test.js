@@ -39,6 +39,19 @@ describe('Site', function () {
       });
     });
   });
+
+  describe('when name is too long', function () {
+    it('should not be valid', function (done) {
+      site.name = "";
+      for (var i = 0; i < 51; ++ i) {
+        site.name += "i";
+      }
+      site.validate(function(err) {
+        expect(err).not.to.be.an('undefined');
+        done();
+      });
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
