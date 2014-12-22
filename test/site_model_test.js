@@ -22,6 +22,13 @@ describe('Site', function () {
   it('should respond to name', function () {
     expect(site.name).not.to.be.an('undefined');
   });
+
+  it('should be valid', function (done) {
+    site.validate(function (err) {
+      expect(err).to.be.an('undefined');
+      done();
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
