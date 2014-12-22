@@ -57,6 +57,10 @@ describe('System', function() {
   it('should respond to outputs', function () {
     expect(system.outputs).not.to.be.an('undefined');
   });
+
+  it('should respond to setpoints', function () {
+    expect(system.setpoints).not.to.be.an('undefined');
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
