@@ -72,6 +72,12 @@ describe("System Controllers", function() {
       it("should save system", function() {
         scope.save();
       });
+
+      it("should set the form pristine", function() {
+        scope.save();
+        httpBackend.flush();
+        expect(scope.systemForm.$setPristine).to.have.been.called;
+      });
     });
   });
 });

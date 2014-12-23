@@ -179,7 +179,6 @@ angular.module('pcs.controllers', [])
         $scope.save = function () {
           $scope.system.$save({}, function () {
             $scope.systemForm.$setPristine();
-            console.log($scope.system);
             $location.path('/sites/' + $scope.site._id + '/systems/'
 		    + $scope.system._id).replace();
           }, function (res) {
