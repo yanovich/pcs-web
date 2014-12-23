@@ -82,5 +82,23 @@ describe("Site Controllers", function() {
       });
     });
   });
+
+  describe("SitesCtrl", function() {
+    var scope;
+
+    beforeEach(function() {
+      scope = {
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
+      };
+
+      httpBackend.expectGET('/sites?page=1').respond([]);
+      controller('SitesCtrl', { $scope: scope });
+    });
+
+    it("should call setNewURL", function() {
+      expect(scope.setNewURL).to.have.been.calledWith('#/sites/new');
+    });
+  });
 });
 // vim:ts=2 sts=2 sw=2 et:
