@@ -93,8 +93,9 @@ describe("Site Controllers", function() {
       };
       routeParams = { siteId: 2 };
       httpBackend.expectGET('/sites/2').respond({_id: 2, name: "hello"});
-      httpBackend.expectGET('/sites/2/systems?page=1').respond([{_id: 3}, {count: 1}]);
+      httpBackend.expectGET('/sites/2/systems?page=1').respond([{_id: 3}, {_id: 4}, {count: 2}]);
       controller('SiteCtrl', { $scope: scope, $routeParams: routeParams });
+      httpBackend.flush();
     });
 
     it("should call setNewURL with params", function() {
@@ -102,10 +103,15 @@ describe("Site Controllers", function() {
     });
 
     it("should load site", function() {
-      httpBackend.flush();
       expect(scope.site).to.exist();
       expect(scope.site._id).to.equal(2);
       expect(scope.site.name).to.equal("hello");
+    });
+
+    it("should load site systems", function() {
+      expect(scope.systems).to.exist();
+      expect(scope.systems[0]._id).to.equal(3);
+      expect(scope.systems[1]._id).to.equal(4);
     });
   });
 
