@@ -177,7 +177,6 @@ angular.module('pcs.controllers', [])
         $scope.system.site = $routeParams.siteId;
         $scope.site = Site.get({ siteId: $routeParams.siteId });
         $scope.save = function () {
-          console.log('Saving ' + $scope.system.name);
           $scope.system.$save({}, function () {
             $scope.systemForm.$setPristine();
             console.log($scope.system);

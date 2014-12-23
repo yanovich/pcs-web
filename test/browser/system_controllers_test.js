@@ -53,6 +53,26 @@ describe("System Controllers", function() {
       expect(scope.system).to.exist();
       expect(scope.system.site).to.equal(2);
     });
+
+    describe("#save", function() {
+      beforeEach(function() {
+        scope.systemForm = {
+          $setPristine: sinon.spy(),
+        };
+
+        httpBackend.expectPOST('/sites/2/systems', {
+          site: 2, name: "hello", device: 3
+        }).respond({
+          _id: 33, name: "hello", site: 2, device: 3, outputs: [], setpoints: {}
+        });
+        scope.system.name = "hello";
+        scope.system.device = 3;
+      });
+
+      it("should save system", function() {
+        scope.save();
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
