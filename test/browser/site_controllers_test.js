@@ -12,9 +12,10 @@ describe("Site Controllers", function() {
     angular.mock.module('pcs.controllers');
   });
 
-  var controller;
+  var location, controller;
 
-  beforeEach(inject(function($controller) {
+  beforeEach(inject(function($location, $controller) {
+    location = $location;
     controller = $controller;
   }));
 
@@ -72,6 +73,12 @@ describe("Site Controllers", function() {
         scope.save();
         httpBackend.flush();
         expect(scope.siteForm.$setPristine).to.have.been.called;
+      });
+
+      it("should change location path", function() {
+        scope.save();
+        httpBackend.flush();
+        expect(location.path()).to.equal('/sites/2');
       });
     });
   });
