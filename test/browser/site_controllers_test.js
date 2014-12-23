@@ -92,12 +92,17 @@ describe("Site Controllers", function() {
         setNewURL: sinon.spy(),
       };
 
-      httpBackend.expectGET('/sites?page=1').respond([]);
+      httpBackend.expectGET('/sites?page=1').respond([{_id: 1}, {_id: 2}, {count: 2}]);
       controller('SitesCtrl', { $scope: scope });
     });
 
     it("should call setNewURL", function() {
       expect(scope.setNewURL).to.have.been.calledWith('#/sites/new');
+    });
+
+    it("should setup pager", function() {
+      httpBackend.flush();
+      expect(scope.page).to.have.been.calledWith(1, 25, 2);
     });
   });
 });
