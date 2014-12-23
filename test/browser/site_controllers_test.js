@@ -100,6 +100,13 @@ describe("Site Controllers", function() {
     it("should call setNewURL with params", function() {
       expect(scope.setNewURL).to.have.been.calledWith('#/sites/2/systems/new');
     });
+
+    it("should load site", function() {
+      httpBackend.flush();
+      expect(scope.site).to.exist();
+      expect(scope.site._id).to.equal(2);
+      expect(scope.site.name).to.equal("hello");
+    });
   });
 
   describe("SitesCtrl", function() {
