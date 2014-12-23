@@ -56,6 +56,10 @@ describe("System Controllers", function() {
       expect(scope.system.site).to.equal(2);
     });
 
+    it("should init binding buffer", function() {
+      expect(scope.n).to.eql({});
+    });
+
     describe("#updateDevice", function() {
       describe("when device not found", function() {
         it ("should clear device", function() {
