@@ -117,6 +117,21 @@ describe("Site Controllers", function() {
     it("should setup pager for systems", function() {
       expect(scope.page).to.have.been.calledWith(1, 25, 2);
     });
+
+    describe("#save", function() {
+      beforeEach(function() {
+        scope.siteForm = {
+          $setPristine: sinon.spy(),
+        };
+
+        httpBackend.expectPOST('/sites/2', { _id: 2, name: "world" }).respond({_id: 2, name: "world"});
+        scope.site.name = "world";
+      });
+
+      it("should save site", function() {
+        scope.save();
+      });
+    });
   });
 
   describe("SitesCtrl", function() {
