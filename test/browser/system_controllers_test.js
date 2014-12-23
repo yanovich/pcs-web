@@ -182,6 +182,17 @@ describe("System Controllers", function() {
           expect(scope.device).to.eql({});
         });
       });
+
+      describe("when device found", function() {
+        it("should assign device", function() {
+          scope.n.deviceName = "b";
+          httpBackend.expectGET('/devices?name=b').respond([{_id: 2, name: "device"}, {count: 1}]);
+          scope.updateDevice();
+          httpBackend.flush();
+          expect(scope.system.device).to.equal(2);
+          expect(JSON.stringify(scope.device)).to.eql(JSON.stringify({_id: 2, name: "device"}));
+        });
+      });
     });
   });
 });
