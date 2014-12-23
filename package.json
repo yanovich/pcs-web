@@ -33,6 +33,7 @@
     "karma-phantomjs-launcher": "*",
     "karma-chai-sinon": "*",
     "karma-mocha": "*",
+    "karma-mocha-reporter": "*",
     "mocha": "*",
     "phantomjs": "*",
     "sinon": "*",
