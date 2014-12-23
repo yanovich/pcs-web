@@ -140,11 +140,15 @@ describe("Device Controllers", function() {
       routeParams = { deviceId: 2 };
       httpBackend.expectGET('/devices/2').respond({_id: 2, name: "hello"});
       httpBackend.expectGET('/devices/2/setpoints').respond({a: 1, b: 2});
+      controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
     });
 
     it("should clear pager", function() {
-      controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
       expect(scope.page).to.have.been.calledWith(1, 1, 0);
+    });
+
+    it("should call setNewURL with params", function() {
+      expect(scope.setNewURL).to.have.been.calledWith('#/devices/new');
     });
   });
 });
