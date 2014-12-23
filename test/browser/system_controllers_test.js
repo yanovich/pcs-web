@@ -164,6 +164,10 @@ describe("System Controllers", function() {
       expect(scope.site._id).to.equal(2);
       expect(scope.site.name).to.equal("site");
     });
+
+    it("should init binding buffer", function() {
+      expect(scope.n.deviceName).to.exist();
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
