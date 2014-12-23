@@ -1,0 +1,49 @@
+/* test/browser/system_controllers_test.js -- test System angular controllers
+ * Copyright 2014 Sergei Ianovich
+ *
+ * Licensed under AGPL-3.0 or later, see LICENSE
+ * Process Control Service Web Interface
+ */
+'use strict';
+
+describe("System Controllers", function() {
+  beforeEach(function() {
+    angular.mock.module('pcs.services');
+    angular.mock.module('pcs.controllers');
+  });
+
+  var httpBackend;
+
+  beforeEach(inject(function($httpBackend) {
+    httpBackend = $httpBackend;
+  }));
+
+  afterEach(function(){
+    httpBackend.verifyNoOutstandingExpectation();
+  });
+
+  var controller;
+
+  beforeEach(inject(function($controller) {
+    controller = $controller;
+  }));
+
+  describe("NewSystemCtrl", function() {
+    var scope, routeParams;
+
+    beforeEach(function() {
+      routeParams = { siteId: 2 };
+      scope = {
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
+      };
+      httpBackend.expectGET('/sites/2').respond({_id: 2, name: "site"});
+      controller('NewSystemCtrl', { $scope: scope, $routeParams: routeParams });
+    });
+
+    it("should clear pager", function() {
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
+    });
+  });
+});
+// vim:ts=2 sts=2 sw=2 et:
