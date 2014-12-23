@@ -67,6 +67,12 @@ describe("Site Controllers", function() {
       it("should save site", function() {
         scope.save();
       });
+
+      it("should set the form pristine", function() {
+        scope.save();
+        httpBackend.flush();
+        expect(scope.siteForm.$setPristine).to.have.been.called;
+      });
     });
   });
 });
