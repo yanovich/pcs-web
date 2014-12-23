@@ -113,6 +113,10 @@ describe("Site Controllers", function() {
       expect(scope.systems[0]._id).to.equal(3);
       expect(scope.systems[1]._id).to.equal(4);
     });
+
+    it("should setup pager for systems", function() {
+      expect(scope.page).to.have.been.calledWith(1, 25, 2);
+    });
   });
 
   describe("SitesCtrl", function() {
