@@ -83,6 +83,25 @@ describe("Site Controllers", function() {
     });
   });
 
+  describe("SiteCtrl", function() {
+    var scope, routeParams;
+
+    beforeEach(function() {
+      scope = {
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
+      };
+      routeParams = { siteId: 2 };
+      httpBackend.expectGET('/sites/2').respond({_id: 2, name: "hello"});
+      httpBackend.expectGET('/sites/2/systems?page=1').respond([{_id: 3}, {count: 1}]);
+      controller('SiteCtrl', { $scope: scope, $routeParams: routeParams });
+    });
+
+    it("should call setNewURL with params", function() {
+      expect(scope.setNewURL).to.have.been.calledWith('#/sites/2/systems/new');
+    });
+  });
+
   describe("SitesCtrl", function() {
     var scope;
 
