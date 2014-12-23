@@ -77,5 +77,24 @@ describe("Device Controllers", function() {
       });
     });
   });
+
+  describe("DevicesCtrl", function() {
+    var scope, controller;
+
+    beforeEach(inject(function($controller) {
+      controller = $controller;
+      scope = {
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
+      };
+    }));
+
+    it("should setup pager", function() {
+      httpBackend.expectGET('/devices?page=1').respond([{_id: 1}, {_id: 2}, {count: 2}]);
+      controller('DevicesCtrl', { $scope: scope });
+      httpBackend.flush();
+      expect(scope.page).to.have.been.calledWith(1, 25, 2);
+    });
+  });
 });
 // vim:ts=2 sts=2 sw=2 et:
