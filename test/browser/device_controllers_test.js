@@ -127,5 +127,25 @@ describe("Device Controllers", function() {
       });
     });
   });
+
+  describe("DeviceCtrl", function() {
+    var scope, routeParams;
+
+    beforeEach(function() {
+      scope = {
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
+        $on: sinon.spy(),
+      };
+      routeParams = { deviceId: 2 };
+      httpBackend.expectGET('/devices/2').respond({_id: 2, name: "hello"});
+      httpBackend.expectGET('/devices/2/setpoints').respond({a: 1, b: 2});
+    });
+
+    it("should clear pager", function() {
+      controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
+    });
+  });
 });
 // vim:ts=2 sts=2 sw=2 et:
