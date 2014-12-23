@@ -22,9 +22,10 @@ describe("System Controllers", function() {
     httpBackend.verifyNoOutstandingExpectation();
   });
 
-  var controller;
+  var location, controller;
 
-  beforeEach(inject(function($controller) {
+  beforeEach(inject(function($location, $controller) {
+    location = $location;
     controller = $controller;
   }));
 
@@ -77,6 +78,12 @@ describe("System Controllers", function() {
         scope.save();
         httpBackend.flush();
         expect(scope.systemForm.$setPristine).to.have.been.called;
+      });
+
+      it("should change location path", function() {
+        scope.save();
+        httpBackend.flush();
+        expect(location.path()).to.equal('/sites/2/systems/33');
       });
     });
   });
