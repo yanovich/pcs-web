@@ -18,6 +18,16 @@ describe("Site Controllers", function() {
     controller = $controller;
   }));
 
+  var httpBackend;
+
+  beforeEach(inject(function($httpBackend) {
+    httpBackend = $httpBackend;
+  }));
+
+  afterEach(function(){
+    httpBackend.verifyNoOutstandingExpectation();
+  });
+
   describe("NewSiteCtrl", function() {
     var scope;
 
@@ -26,20 +36,37 @@ describe("Site Controllers", function() {
         page: sinon.spy(),
         setNewURL: sinon.spy(),
       };
-
-      controller('NewSiteCtrl', { $scope: scope });
     });
 
     it("should clear pager", function() {
+      controller('NewSiteCtrl', { $scope: scope });
       expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
 
     it("should clear setNewURL", function() {
+      controller('NewSiteCtrl', { $scope: scope });
       expect(scope.setNewURL).to.have.been.calledWith(null);
     });
 
     it("should create site in scope", function() {
+      controller('NewSiteCtrl', { $scope: scope });
       expect(scope.site).to.exist();
+    });
+
+    describe("#save", function() {
+      beforeEach(function() {
+        scope.siteForm = {
+          $setPristine: sinon.spy(),
+        };
+
+        httpBackend.expectPOST('/sites', { name: "hello" }).respond({_id: 2, name: "hello"});
+        controller('NewSiteCtrl', { $scope: scope });
+        scope.site.name = "hello";
+      });
+
+      it("should save site", function() {
+        scope.save();
+      });
     });
   });
 });

@@ -128,7 +128,6 @@ angular.module('pcs.controllers', [])
         $scope.setNewURL(null);
         $scope.site = new Site();
         $scope.save = function () {
-          console.log('Saving ' + $scope.site.name);
           $scope.site.$save({}, function () {
             $scope.siteForm.$setPristine();
             console.log($scope.site);
