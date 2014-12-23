@@ -87,13 +87,18 @@ describe("Device Controllers", function() {
         page: sinon.spy(),
         setNewURL: sinon.spy(),
       };
+
+      httpBackend.expectGET('/devices?page=1').respond([{_id: 1}, {_id: 2}, {count: 2}]);
+      controller('DevicesCtrl', { $scope: scope });
     }));
 
     it("should setup pager", function() {
-      httpBackend.expectGET('/devices?page=1').respond([{_id: 1}, {_id: 2}, {count: 2}]);
-      controller('DevicesCtrl', { $scope: scope });
       httpBackend.flush();
       expect(scope.page).to.have.been.calledWith(1, 25, 2);
+    });
+
+    it("should call setNewURL", function() {
+      expect(scope.setNewURL).to.have.been.calledWith('#/devices/new');
     });
   });
 });
