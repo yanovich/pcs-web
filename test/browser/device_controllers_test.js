@@ -22,17 +22,21 @@ describe("Device Controllers", function() {
     httpBackend.verifyNoOutstandingExpectation();
   });
 
-  describe("NewDeviceCtrl", function() {
-    var scope, location, controller;
+  var location, controller;
+  beforeEach(inject(function($location, $controller) {
+    location = $location;
+    controller = $controller;
+  }));
 
-    beforeEach(inject(function($location, $controller) {
-      location = $location;
-      controller = $controller;
+  describe("NewDeviceCtrl", function() {
+    var scope;
+
+    beforeEach(function() {
       scope = {
         page: sinon.spy(),
         setNewURL: sinon.spy(),
       };
-    }));
+    });
 
     it("should clear pager", function() {
       controller('NewDeviceCtrl', { $scope: scope });
@@ -79,16 +83,14 @@ describe("Device Controllers", function() {
   });
 
   describe("DevicesCtrl", function() {
-    var scope, location, controller;
+    var scope;
 
-    beforeEach(inject(function($location, $controller) {
-      location = $location;
-      controller = $controller;
+    beforeEach(function() {
       scope = {
         page: sinon.spy(),
         setNewURL: sinon.spy(),
       };
-    }));
+    });
 
     describe("first page", function() {
       beforeEach(function() {
