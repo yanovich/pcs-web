@@ -126,10 +126,16 @@ describe("Site Controllers", function() {
 
         httpBackend.expectPOST('/sites/2', { _id: 2, name: "world" }).respond({_id: 2, name: "world"});
         scope.site.name = "world";
+        scope.save();
+        httpBackend.flush();
       });
 
       it("should save site", function() {
-        scope.save();
+        expect(scope.site.name).to.equal("world");
+      });
+
+      it("should set the form pristine", function() {
+        expect(scope.siteForm.$setPristine).to.have.been.called;
       });
     });
   });
