@@ -37,6 +37,10 @@ describe("Site Controllers", function() {
     it("should clear setNewURL", function() {
       expect(scope.setNewURL).to.have.been.calledWith(null);
     });
+
+    it("should create site in scope", function() {
+      expect(scope.site).to.exist();
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
