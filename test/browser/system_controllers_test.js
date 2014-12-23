@@ -124,6 +124,7 @@ describe("System Controllers", function() {
 
     beforeEach(function() {
       scope = {
+        $on: sinon.spy(),
         page: sinon.spy(),
         setNewURL: sinon.spy(),
       };
@@ -137,7 +138,9 @@ describe("System Controllers", function() {
         setpoints: {a1: 5}
       });
       httpBackend.expectGET('/sites/2').respond({_id: 2, name: "site"});
+      httpBackend.expectGET('/devices/3').respond({_id: 3, name: "device"});
       controller('SystemCtrl', { $scope: scope, $routeParams: routeParams });
+      httpBackend.flush();
     });
 
     it("should clear pager", function() {
@@ -146,6 +149,14 @@ describe("System Controllers", function() {
 
     it("should clear setNewURL", function() {
       expect(scope.setNewURL).to.have.been.calledWith(null);
+    });
+
+    it("should load system", function() {
+      expect(scope.system).to.exist();
+      expect(scope.system._id).to.equal(1);
+      expect(scope.system.site).to.equal(2);
+      expect(scope.system.device).to.equal(3);
+      expect(scope.system.name).to.equal("hello");
     });
   });
 });
