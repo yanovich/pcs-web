@@ -118,5 +118,31 @@ describe("System Controllers", function() {
       });
     });
   });
+
+  describe("SystemCtrl", function() {
+    var scope, routeParams;
+
+    beforeEach(function() {
+      scope = {
+        page: sinon.spy(),
+        setNewURL: sinon.spy(),
+      };
+      routeParams = { siteId: 2, systemId: 1 };
+      httpBackend.expectGET('/sites/2/systems/1').respond({
+        _id: 1,
+        name: "hello",
+        site: 2,
+        device: 3,
+        outputs: [{a1: 10}],
+        setpoints: {a1: 5}
+      });
+      httpBackend.expectGET('/sites/2').respond({_id: 2, name: "site"});
+      controller('SystemCtrl', { $scope: scope, $routeParams: routeParams });
+    });
+
+    it("should clear pager", function() {
+      expect(scope.page).to.have.been.calledWith(1, 1, 0);
+    });
+  });
 });
 // vim:ts=2 sts=2 sw=2 et:
