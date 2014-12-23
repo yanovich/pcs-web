@@ -158,6 +158,12 @@ describe("System Controllers", function() {
       expect(scope.system.device).to.equal(3);
       expect(scope.system.name).to.equal("hello");
     });
+
+    it("should load site", function() {
+      expect(scope.site).to.exist();
+      expect(scope.site._id).to.equal(2);
+      expect(scope.site.name).to.equal("site");
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
