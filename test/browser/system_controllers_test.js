@@ -55,6 +55,21 @@ describe("System Controllers", function() {
       expect(scope.system.site).to.equal(2);
     });
 
+    describe("#updateDevice", function() {
+      describe("when device not found", function() {
+        it ("should clear device", function() {
+          scope.n.deviceName = "a";
+          scope.device = { _id: 2 };
+          scope.system.device = 2;
+          httpBackend.expectGET('/devices?name=a').respond([{count: 0}]);
+          scope.updateDevice();
+          httpBackend.flush();
+          expect(scope.system.device).to.equal(null);
+          expect(scope.device).to.eql({});
+        });
+      });
+    });
+
     describe("#save", function() {
       beforeEach(function() {
         scope.systemForm = {

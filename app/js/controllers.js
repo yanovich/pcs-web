@@ -23,7 +23,7 @@ function loadDeviceState($scope, deviceId) {
   });
 }
 
-function setDeviceUpdater($scope) {
+function setDeviceUpdater($scope, Device) {
   $scope.updateDevice = function () {
     $scope.device = {};
     $scope.system.device = null;
@@ -169,10 +169,11 @@ angular.module('pcs.controllers', [])
         });
   }])
   .controller('NewSystemCtrl', ['$scope', '$routeParams', '$location',
-		  'Site', 'System',
-      function($scope, $routeParams, $location, Site, System) {
+		  'Site', 'Device', 'System',
+      function($scope, $routeParams, $location, Site, Device, System) {
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
+        $scope.n = {};
         $scope.system = new System();
         $scope.system.site = $routeParams.siteId;
         $scope.site = Site.get({ siteId: $routeParams.siteId });
@@ -185,7 +186,7 @@ angular.module('pcs.controllers', [])
             console.log(res);
           });
         }
-        setDeviceUpdater($scope);
+        setDeviceUpdater($scope, Device);
   }])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
       'Device', 'State',
