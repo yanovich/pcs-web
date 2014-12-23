@@ -48,6 +48,11 @@ describe("System Controllers", function() {
     it("should clear setNewURL", function() {
       expect(scope.setNewURL).to.have.been.calledWith(null);
     });
+
+    it("should create system in scope", function() {
+      expect(scope.system).to.exist();
+      expect(scope.system.site).to.equal(2);
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
