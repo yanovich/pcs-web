@@ -23,9 +23,10 @@ describe("Device Controllers", function() {
   });
 
   describe("NewDeviceCtrl", function() {
-    var scope, controller;
+    var scope, location, controller;
 
-    beforeEach(inject(function($controller) {
+    beforeEach(inject(function($location, $controller) {
+      location = $location;
       controller = $controller;
       scope = {
         page: sinon.spy(),
@@ -67,6 +68,12 @@ describe("Device Controllers", function() {
         scope.save();
         httpBackend.flush();
         expect(scope.deviceForm.$setPristine).to.have.been.called;
+      });
+
+      it("should change location path", function() {
+        scope.save();
+        httpBackend.flush();
+        expect(location.path()).to.equal('/devices/2');
       });
     });
   });

@@ -88,7 +88,6 @@ angular.module('pcs.controllers', [])
         $scope.save = function () {
           $scope.device.$save({}, function () {
             $scope.deviceForm.$setPristine();
-            console.log($scope.device);
             $location.path('/devices/' + $scope.device._id).replace();
           }, function (res) {
             console.log(res);
