@@ -33,6 +33,10 @@ describe("Site Controllers", function() {
     it("should clear pager", function() {
       expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
+
+    it("should clear setNewURL", function() {
+      expect(scope.setNewURL).to.have.been.calledWith(null);
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
