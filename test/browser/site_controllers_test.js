@@ -110,6 +110,13 @@ describe("Site Controllers", function() {
       expect(scope.sites.length).to.equal(2);
       expect(scope.sites[0]._id).to.equal(1);
     });
+
+    it("should use page from query params", function() {
+      httpBackend.flush();
+      location.search({page: 2});
+      httpBackend.expectGET('/sites?page=2').respond([{_id: 1}, { count: 2 }]);
+      controller('SitesCtrl', { $scope: scope });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
