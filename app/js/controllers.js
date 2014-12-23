@@ -209,6 +209,7 @@ angular.module('pcs.controllers', [])
             loadDeviceState($scope, $scope.system.device);
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
+        setDeviceUpdater($scope, Device);
         $scope.addOutput = function () {
           $scope.system.outputs.push($scope.n.out);
           $scope.n.out = null;

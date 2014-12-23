@@ -168,6 +168,21 @@ describe("System Controllers", function() {
     it("should init binding buffer", function() {
       expect(scope.n.deviceName).to.exist();
     });
+
+    describe("#updateDevice", function() {
+      describe("when device not found", function() {
+        it ("should clear device", function() {
+          scope.n.deviceName = "a";
+          scope.device = { _id: 2 };
+          scope.system.device = 2;
+          httpBackend.expectGET('/devices?name=a').respond([{count: 0}]);
+          scope.updateDevice();
+          httpBackend.flush();
+          expect(scope.system.device).to.equal(null);
+          expect(scope.device).to.eql({});
+        });
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
