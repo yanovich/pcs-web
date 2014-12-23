@@ -155,6 +155,30 @@ describe("Device Controllers", function() {
       httpBackend.flush();
       expect(scope.device).to.exist();
       expect(scope.device._id).to.equal(2);
+      expect(scope.device.name).to.equal("hello");
+    });
+
+    it("should load setpoints", function() {
+      httpBackend.flush();
+      expect(scope.setpoints).to.exist();
+      expect(scope.setpoints.a).to.equal(1);
+    });
+
+    describe("#save", function() {
+      beforeEach(function() {
+        scope.deviceForm = {};
+        scope.deviceForm.$setPristine = sinon.spy();
+
+        httpBackend.flush();
+        httpBackend.expectPOST('/devices/2', { _id: 2, name: "world" }).respond({_id: 2, name: "world"});
+        scope.device.name = "world";
+        scope.save();
+        httpBackend.flush();
+      });
+
+      it("should save device", function() {
+        expect(scope.device.name).to.equal("world");
+      });
     });
   });
 });

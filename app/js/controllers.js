@@ -105,10 +105,8 @@ angular.module('pcs.controllers', [])
         });
         loadDeviceState($scope, $routeParams.deviceId);
         $scope.save = function () {
-          console.log('Saving ' + $scope.device._id);
           $scope.device.$save({}, function () {
             $scope.deviceForm.$setPristine();
-            console.log($scope.device);
           }, function (res) {
             console.log(res);
           });
