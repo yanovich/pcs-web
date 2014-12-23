@@ -79,32 +79,50 @@ describe("Device Controllers", function() {
   });
 
   describe("DevicesCtrl", function() {
-    var scope, controller;
+    var scope, location, controller;
 
-    beforeEach(inject(function($controller) {
+    beforeEach(inject(function($location, $controller) {
+      location = $location;
       controller = $controller;
       scope = {
         page: sinon.spy(),
         setNewURL: sinon.spy(),
       };
-
-      httpBackend.expectGET('/devices?page=1').respond([{_id: 1}, {_id: 2}, {count: 2}]);
-      controller('DevicesCtrl', { $scope: scope });
     }));
 
-    it("should setup pager", function() {
-      httpBackend.flush();
-      expect(scope.page).to.have.been.calledWith(1, 25, 2);
+    describe("first page", function() {
+      beforeEach(function() {
+        httpBackend.expectGET('/devices?page=1').respond([{_id: 1}, {_id: 2}, {count: 2}]);
+        controller('DevicesCtrl', { $scope: scope });
+      });
+
+      it("should setup pager", function() {
+        httpBackend.flush();
+        expect(scope.page).to.have.been.calledWith(1, 25, 2);
+      });
+
+      it("should call setNewURL", function() {
+        expect(scope.setNewURL).to.have.been.calledWith('#/devices/new');
+      });
+
+      it("should fill devices", function() {
+        httpBackend.flush();
+        expect(scope.devices.length).to.equal(2);
+        expect(scope.devices[0]._id).to.equal(1);
+      });
     });
 
-    it("should call setNewURL", function() {
-      expect(scope.setNewURL).to.have.been.calledWith('#/devices/new');
-    });
+    describe("second page", function() {
+      beforeEach(function() {
+        location.search({page: 2});
+        httpBackend.expectGET('/devices?page=2').respond([{_id: 26}, {_id: 27}, {count: 2}]);
+        controller('DevicesCtrl', { $scope: scope });
+      });
 
-    it("should fill devices", function() {
-      httpBackend.flush();
-      expect(scope.devices.length).to.equal(2);
-      expect(scope.devices[0]._id).to.equal(1);
+      it("should setup pager", function() {
+        httpBackend.flush();
+        expect(scope.page).to.have.been.calledWith(2, 25, 2);
+      });
     });
   });
 });
