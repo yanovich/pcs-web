@@ -205,6 +205,16 @@ describe("System Controllers", function() {
         expect(scope.n.out).to.eql(null);
       });
     });
+
+    describe("#dropOutput", function() {
+      it("should remove from system outputs", function() {
+        scope.system = { outputs: ["some", "output"] };
+        scope.systemForm = { $setDirty: sinon.spy() };
+        scope.dropOutput(1);
+        expect(scope.system.outputs).to.eql(["some"]);
+        expect(scope.systemForm.$setDirty).to.have.been.called;
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
