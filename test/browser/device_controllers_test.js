@@ -49,11 +49,24 @@ describe("Device Controllers", function() {
     });
 
     describe("#save", function() {
-      it("should save device", function() {
+      beforeEach(function() {
+        scope.deviceForm = {
+          $setPristine: sinon.spy(),
+        };
+
         httpBackend.expectPOST('/devices', { name: "hello" }).respond({_id: 2, name: "hello"});
         controller('NewDeviceCtrl', { $scope: scope });
         scope.device.name = "hello";
+      });
+
+      it("should save device", function() {
         scope.save();
+      });
+
+      it("should set the form pristine", function() {
+        scope.save();
+        httpBackend.flush();
+        expect(scope.deviceForm.$setPristine).to.have.been.called;
       });
     });
   });
