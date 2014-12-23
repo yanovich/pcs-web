@@ -27,6 +27,11 @@ describe("Device Controllers", function() {
       controller('NewDeviceCtrl', { $scope: scope });
       expect(scope.page).to.have.been.calledWith(1, 1, 0);
     });
+
+    it("should clear setNewURL", function() {
+      controller('NewDeviceCtrl', { $scope: scope });
+      expect(scope.setNewURL).to.have.been.calledWith(null);
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
