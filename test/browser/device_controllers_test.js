@@ -179,6 +179,10 @@ describe("Device Controllers", function() {
       it("should save device", function() {
         expect(scope.device.name).to.equal("world");
       });
+
+      it("should set the form pristine", function() {
+        expect(scope.deviceForm.$setPristine).to.have.been.called;
+      });
     });
   });
 });
