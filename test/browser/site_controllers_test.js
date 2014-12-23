@@ -104,6 +104,12 @@ describe("Site Controllers", function() {
       httpBackend.flush();
       expect(scope.page).to.have.been.calledWith(1, 25, 2);
     });
+
+    it("should load sites", function() {
+      httpBackend.flush();
+      expect(scope.sites.length).to.equal(2);
+      expect(scope.sites[0]._id).to.equal(1);
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
