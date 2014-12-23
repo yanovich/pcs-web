@@ -150,6 +150,12 @@ describe("Device Controllers", function() {
     it("should call setNewURL with params", function() {
       expect(scope.setNewURL).to.have.been.calledWith('#/devices/new');
     });
+
+    it("should load device", function() {
+      httpBackend.flush();
+      expect(scope.device).to.exist();
+      expect(scope.device._id).to.equal(2);
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
