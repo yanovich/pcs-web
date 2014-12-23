@@ -32,6 +32,11 @@ describe("Device Controllers", function() {
       controller('NewDeviceCtrl', { $scope: scope });
       expect(scope.setNewURL).to.have.been.calledWith(null);
     });
+
+    it("should create device in scope", function() {
+      controller('NewDeviceCtrl', { $scope: scope });
+      expect(scope.device).to.exist();
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
