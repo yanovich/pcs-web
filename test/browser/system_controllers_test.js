@@ -194,6 +194,17 @@ describe("System Controllers", function() {
         });
       });
     });
+
+    describe("#addOutput", function() {
+      it("should add to system outputs", function() {
+        scope.system = { outputs: [] };
+        scope.n.out = "some";
+        scope.addOutput();
+        expect(scope.system.outputs.length).to.equal(1);
+        expect(scope.system.outputs[0]).to.equal("some");
+        expect(scope.n.out).to.eql(null);
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
