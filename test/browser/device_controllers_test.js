@@ -12,6 +12,16 @@ describe("Device Controllers", function() {
     angular.mock.module('pcs.controllers');
   });
 
+  var httpBackend;
+
+  beforeEach(inject(function($httpBackend) {
+    httpBackend = $httpBackend;
+  }));
+
+  afterEach(function(){
+    httpBackend.verifyNoOutstandingExpectation();
+  });
+
   describe("NewDeviceCtrl", function() {
     var scope, controller;
 
@@ -36,6 +46,15 @@ describe("Device Controllers", function() {
     it("should create device in scope", function() {
       controller('NewDeviceCtrl', { $scope: scope });
       expect(scope.device).to.exist();
+    });
+
+    describe("#save", function() {
+      it("should save device", function() {
+        httpBackend.expectPOST('/devices', { name: "hello" }).respond({_id: 2, name: "hello"});
+        controller('NewDeviceCtrl', { $scope: scope });
+        scope.device.name = "hello";
+        scope.save();
+      });
     });
   });
 });

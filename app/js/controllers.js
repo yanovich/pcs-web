@@ -86,7 +86,6 @@ angular.module('pcs.controllers', [])
         $scope.setNewURL(null);
         $scope.device = new Device();
         $scope.save = function () {
-          console.log('Saving ' + $scope.device.name);
           $scope.device.$save({}, function () {
             $scope.deviceForm.$setPristine();
             console.log($scope.device);
