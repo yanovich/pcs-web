@@ -67,6 +67,13 @@ describe("Page Controller", function() {
         scope.page(1, 23, 26);
         expect(scope.pager.page).to.equal(1);
       });
+
+      it("should update pager first", function() {
+        scope.page(1, 23, 26);
+        expect(scope.pager.first).to.equal(1);
+        scope.page(2, 23, 26);
+        expect(scope.pager.first).to.equal(24);
+      });
     });
   });
 });
