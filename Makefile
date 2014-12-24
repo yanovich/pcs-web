@@ -2,7 +2,12 @@
 
 REPORTER = spec
 
-test:
+test-mocha:
 	@./node_modules/.bin/mocha --reporter $(REPORTER)
 
-.PHONY: test
+test-karma:
+	@./node_modules/.bin/karma start
+
+test: test-mocha test-karma
+
+.PHONY: test test-mocha test-karma

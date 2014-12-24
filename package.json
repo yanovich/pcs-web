@@ -42,6 +42,6 @@
   },
   "scripts": {
     "postinstall": "bower install",
-    "test": "mocha && karma start"
+    "test": "mocha --reporter dot && karma start test/browser/karma.conf.js"
   }
 }
