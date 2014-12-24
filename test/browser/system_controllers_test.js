@@ -215,6 +215,17 @@ describe("System Controllers", function() {
         expect(scope.systemForm.$setDirty).to.have.been.called;
       });
     });
+
+    describe("#addSetpoint", function() {
+      it("add to system setpoints", function() {
+        scope.system = { setpoints: { "some": "setpoint" } };
+        scope.n.set = "other";
+        scope.n.setValue = "setpoint";
+        scope.addSetpoint();
+        expect(scope.system.setpoints).to.eql({ "some": "setpoint", "other":"setpoint" });
+        expect(scope.n.set).to.equal(null);
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
