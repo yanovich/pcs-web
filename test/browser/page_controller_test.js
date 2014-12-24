@@ -81,6 +81,13 @@ describe("Page Controller", function() {
         scope.page(2, 23, 26);
         expect(scope.pager.last).to.equal(26);
       });
+
+      describe("update show attribute", function() {
+        it("should show if count is positive", function() {
+          scope.page(1, 23, 26);
+          expect(scope.pager.show).to.be.true;
+        });
+      });
     });
   });
 });
