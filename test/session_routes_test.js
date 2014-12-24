@@ -19,6 +19,18 @@ describe('Session routes', function() {
       Routes.new(req, res);
       expect(res.render).was.calledWith("sessions/new", {title: 'Sign in'});
     });
+
+    it("should render html if bad user", function(done) {
+      var id = "507f1f77bcf86cd799439011";
+      var req = { session: { operatorId: id } },
+      res = { render: function(path, options) {
+        expect(path).to.eql("sessions/new");
+        expect(options).to.eql({title:'Sign in'});
+        done();
+      }};
+
+      Routes.new(req, res);
+    });
   });
 });
 
