@@ -261,6 +261,25 @@ describe('Device routes', function() {
       }};
       router(Routes.index, req, res);
     });
+
+    describe("when operator signed in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+      });
+
+      it("should deny non-admins", function(done) {
+        res = {
+          locals: {},
+          send: function(code) {
+            expect(code).to.eql(403);
+            done();
+          },
+        };
+        router(Routes.create, req, res);
+      });
+    });
   });
 });
 
