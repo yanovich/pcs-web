@@ -48,6 +48,14 @@ describe("Page Controller", function() {
     it("should define operator", function() {
       expect(scope.operator).to.eql({});
     });
+
+    describe("#setNewURL", function() {
+      it("should update newURL", function() {
+        expect(scope.newURL).to.be.undefined;
+        scope.setNewURL("HELLO");
+        expect(scope.newURL).to.equal("HELLO");
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
