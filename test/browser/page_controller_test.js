@@ -62,6 +62,11 @@ describe("Page Controller", function() {
         scope.page(1, 23, 26);
         expect(scope.pager.count).to.equal(26);
       });
+
+      it("should update count per page", function() {
+        scope.page(1, 23, 26);
+        expect(scope.pager.page).to.equal(1);
+      });
     });
   });
 });
