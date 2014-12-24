@@ -302,6 +302,20 @@ describe('Device routes', function() {
         };
         router(Routes.create, req, res);
       });
+
+      it("should fail when name is already taken", function(done) {
+        req.body = {
+          name: device.name,
+        }
+        res.json = function(code, err) {
+          expect(code).to.be(500);
+          expect(err).not.to.be.an('undefined');
+          done();
+        };
+        router(Routes.create, req, res);
+      });
+
+      it("should report when name is already taken");
     });
   });
 });
