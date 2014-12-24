@@ -7,6 +7,7 @@
 
 var expect = require('expect.js');
 var Routes = require('../routes/_auth');
+var User = require('../models/user');
 
 describe('Authentication helper', function() {
   describe("#authenticate", function() {
@@ -29,6 +30,27 @@ describe('Authentication helper', function() {
           }};
 
       Routes.authenticate(req, res, null);
+    });
+
+    it("should assign operator", function(done) {
+      var user = null;
+      var userAttrs = {
+        name: "Example User",
+        email: "user@example.com",
+        password: 'password',
+        confirmation: 'password',
+      };
+      (new User(userAttrs)).save(function(err, user) {
+        var req = { session: { operatorId: user._id } },
+            res = { locals: { } },
+            next = function() {
+              expect(res.locals.operator.toJSON()).to.eql(user.toJSON());
+              expect(req.operator.toJSON()).to.eql(user.toJSON());
+              done();
+            };
+
+        Routes.authenticate(req, res, next);
+      });
     });
   });
 });
