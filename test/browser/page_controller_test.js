@@ -114,7 +114,7 @@ describe("Page Controller", function() {
           expect(scope.pager.next).to.equal('#/hello?page=2');
         });
 
-        it("should clear next is page is the last", function() {
+        it("should clear next if page is the last", function() {
           scope.page(2, 23, 26);
           expect(scope.pager.next).to.equal('');
         });
