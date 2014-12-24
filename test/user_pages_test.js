@@ -20,10 +20,6 @@ var attrs = {}
 describe('User', function(){
   var user;
 
-  beforeEach(function () {
-    browser = new Browser({ site: global.url });
-  })
-
   before(function (done) {
     async.times(26, function (n, next) {
       Factory.create('user', function (u) { next(null, u); });
@@ -35,7 +31,8 @@ describe('User', function(){
   });
 
   describe('profile page', function () {
-    beforeEach(function (done) {
+    before(function (done) {
+      browser = new Browser({ site: global.url });
       browser
       .visit('/signin')
       .then(function () {
@@ -101,7 +98,8 @@ describe('User', function(){
       Factory.create('admin', function (a) { admin = a; done(); });
     })
 
-    beforeEach(function (done) {
+    before(function (done) {
+      browser = new Browser({ site: global.url });
       browser
       .visit('/signin')
       .then(function () {
@@ -154,7 +152,7 @@ describe('User', function(){
       it('should report error')
     })
 
-    describe('profile page', function () {
+    describe('user page', function () {
       beforeEach(function (done) {
         browser.visit('/#/users/' + user._id).then(done, done);
       })
