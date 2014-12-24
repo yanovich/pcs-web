@@ -19,6 +19,11 @@ describe('Site routes', function() {
     Factory.create('site', function (s) { site = s; done(); });
   });
 
+  var operator;
+  before(function(done) {
+    Factory.create('user', function (u) { operator = u; done(); });
+  });
+
   describe("#load", function() {
     it("should find by id and assign site to req", function(done) {
       var req = { },
@@ -49,6 +54,25 @@ describe('Site routes', function() {
         done();
       }};
       router(Routes.show, req, res);
+    });
+
+    describe("when operator logged in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+      });
+
+      it("should return 404 if no device", function(done) {
+        var res = {
+          locals: {},
+          send: function(code) {
+            expect(code).to.be(404);
+            done();
+          },
+        };
+        router(Routes.show, req, res);
+      });
     });
   });
 });
