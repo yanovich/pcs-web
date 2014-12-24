@@ -106,6 +106,14 @@ describe("Page Controller", function() {
           expect(scope.pager.prev).to.equal('');
         });
       });
+
+      describe("update next attribute", function() {
+        it("should set next if page is not the last", function() {
+          location.path("/hello");
+          scope.page(1, 23, 26);
+          expect(scope.pager.next).to.equal('#/hello?page=2');
+        });
+      });
     });
   });
 });
