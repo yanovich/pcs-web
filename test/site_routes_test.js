@@ -15,13 +15,14 @@ var siteAttrs = {
 };
 
 describe('Site routes', function() {
-  var site, count;
+  var site, count, last;
   before(function(done) {
     Factory.create('site', 26, function (l) {
       site = l[0];
       Site.count(function (err, c) {
         if (err) throw err;
         count = c;
+        last = (count + 24) / 25;
         done();
       });
     });
@@ -197,6 +198,22 @@ describe('Site routes', function() {
           done();
         };
         Site.find({}, "_id").sort({name: 1}).limit(25).exec(function(err, sites) {
+          original = sites.map(function(item) { return item._id.toString(); });
+          router(Routes.index, req, res);
+        });
+      });
+
+      it("should retrieve requested page", function(done) {
+        var original = [];
+        res.json_ng = function(sites) {
+          var fetched = sites.slice(0, -1).map(function(item) {
+            return item._id.toString();
+          });
+          expect(fetched).to.eql(original);
+          done();
+        };
+        req.query.page = last;
+        Site.find({}, "_id").sort({name: 1}).skip(25).limit(25).exec(function(err, sites) {
           original = sites.map(function(item) { return item._id.toString(); });
           router(Routes.index, req, res);
         });
