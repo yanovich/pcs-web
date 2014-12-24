@@ -11,6 +11,11 @@ expect = require('sinon-expect').enhance(expect, sinon, 'was');
 var Routes = require('../routes/session');
 
 describe('Session routes', function() {
+  var operator;
+  before(function(done) {
+    Factory.create('user', function (u) { operator = u; done(); });
+  });
+
   describe("#new", function() {
     it("should render signin html if no session", function() {
       var req = { session: {} },
@@ -40,6 +45,16 @@ describe('Session routes', function() {
         expect(path).to.eql("sessions/new");
         expect(options).to.eql({title:'Sign in'});
         expect(req.session.operatorId).to.be.an('undefined');
+        done();
+      }};
+
+      Routes.new(req, res);
+    });
+
+    it("should redirect to / if good user", function(done) {
+      var req = { session: { operatorId: operator._id } },
+      res = { redirect: function(path) {
+        expect(path).to.eql("/");
         done();
       }};
 
