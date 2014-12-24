@@ -11,6 +11,7 @@ var perPage = 25;
 
 module.exports.load = function (req, res, next, id) {
   Site.findOne({ _id: id }, function (err, site) {
+    if(err) return res.send(404, err);
     req.site = site;
     next();
   })
