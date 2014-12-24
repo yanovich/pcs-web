@@ -93,6 +93,14 @@ describe("Page Controller", function() {
           expect(scope.pager.show).to.not.be.true;
         });
       });
+
+      describe("update prev attribute", function() {
+        it("should set prev if page is more then 1", function() {
+          location.path("/hello");
+          scope.page(2, 23, 26);
+          expect(scope.pager.prev).to.equal('#/hello?page=1');
+        });
+      });
     });
   });
 });
