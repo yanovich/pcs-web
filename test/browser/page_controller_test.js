@@ -40,6 +40,11 @@ describe("Page Controller", function() {
       expect(scope.pager.page).to.equal(1);
       expect(scope.pager.show).to.not.be.true;
     });
+
+    it("should define moment", function() {
+      controller('PageCtrl', { $scope: scope });
+      expect(scope.moment).to.exist();
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
