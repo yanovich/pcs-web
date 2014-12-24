@@ -145,6 +145,22 @@ describe('Session routes', function() {
 
         Auth.authenticate(req, res, null);
       });
+
+      it("should redirect to saved location on signin", function(done) {
+        var req = {
+          body: { email: operator.email, password: 'password' },
+          session: { returnTo: 'some_url' }
+        };
+        var res = {
+          locals: {},
+          redirect: function(path) {
+            expect(path).to.be('some_url');
+            done();
+          }
+        };
+
+        router(Routes.create, req, res);
+      });
     });
   });
 });
