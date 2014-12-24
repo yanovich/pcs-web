@@ -15,9 +15,16 @@ var deviceAttrs = {
 };
 
 describe('Device routes', function() {
-  var device;
+  var device, count;
   before(function(done) {
-    Factory.create('device', function (d) { device = d; done(); });
+    Factory.create('device', 26, function (l) {
+      device = l[0];
+      Device.count(function (err, c) {
+        if (err) throw err;
+        count = c;
+        done();
+      });
+    });
   });
 
   var operator;
@@ -158,6 +165,27 @@ describe('Device routes', function() {
         done();
       }};
       router(Routes.index, req, res);
+    });
+
+    describe("when operator signed in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+        req.query = {};
+        res = {
+          locals: {},
+        };
+      });
+
+      it("should retrieve first page if not specified", function(done) {
+        res.json_ng = function(devices) {
+          expect(devices.length).to.be(26);
+          expect(devices[25].count).to.be(count);
+          done();
+        };
+        router(Routes.index, req, res);
+      });
     });
   });
 });
