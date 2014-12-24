@@ -114,6 +114,23 @@ describe('Session routes', function() {
 
       router(Routes.create, req, res);
     });
+
+    it("should redirect on signin success", function(done) {
+      var req = {
+        body: { email: operator.email, password: 'password' },
+        session: {}
+      };
+      var res = {
+        locals: {},
+        redirect: function(path) {
+          expect(path).to.be("/");
+          expect(req.session.operatorId).to.eql(operator._id);
+          done();
+        }
+      };
+
+      router(Routes.create, req, res);
+    });
   });
 });
 
