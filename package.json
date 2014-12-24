@@ -38,6 +38,7 @@
     "phantomjs": "*",
     "sinon": "*",
     "sinon-chai": "*",
+    "sinon-expect": "*",
     "zombie": "*"
   },
   "scripts": {
