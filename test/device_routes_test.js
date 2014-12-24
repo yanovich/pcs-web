@@ -190,13 +190,29 @@ describe('Device routes', function() {
       it("should sort results by name", function(done) {
         var original = [];
         res.json_ng = function(devices) {
-          var fetched = devices.slice(0, 25).map(function(item) {
+          var fetched = devices.slice(0, -1).map(function(item) {
             return item._id.toString();
           });
           expect(fetched).to.eql(original);
           done();
         };
         Device.find({}, "_id").sort({name: 1}).limit(25).exec(function(err, devices) {
+          original = devices.map(function(item) { return item._id.toString(); });
+          router(Routes.index, req, res);
+        });
+      });
+
+      it("should retrieve requested page", function(done) {
+        var original = [];
+        res.json_ng = function(devices) {
+          var fetched = devices.slice(0, -1).map(function(item) {
+            return item._id.toString();
+          });
+          expect(fetched).to.eql(original);
+          done();
+        };
+        req.query.page = 2;
+        Device.find({}, "_id").sort({name: 1}).skip(25).limit(25).exec(function(err, devices) {
           original = devices.map(function(item) { return item._id.toString(); });
           router(Routes.index, req, res);
         });
