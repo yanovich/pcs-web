@@ -218,7 +218,7 @@ describe('Device routes', function() {
         });
       });
 
-      it("should retrieve first page if query is less then 1", function(done) {
+      it("should retrieve first one if page is less then 1", function(done) {
         var original = [];
         res.json_ng = function(devices) {
           var fetched = devices.slice(0, -1).map(function(item) {
@@ -229,6 +229,22 @@ describe('Device routes', function() {
         };
         req.query.page = 0;
         Device.find({}, "_id").sort({name: 1}).limit(25).exec(function(err, devices) {
+          original = devices.map(function(item) { return item._id.toString(); });
+          router(Routes.index, req, res);
+        });
+      });
+
+      it("should retrieve last one if page is too big", function(done) {
+        var original = [];
+        res.json_ng = function(devices) {
+          var fetched = devices.slice(0, -1).map(function(item) {
+            return item._id.toString();
+          });
+          expect(fetched).to.eql(original);
+          done();
+        };
+        req.query.page = 3;
+        Device.find({}, "_id").sort({name: 1}).skip(25).limit(25).exec(function(err, devices) {
           original = devices.map(function(item) { return item._id.toString(); });
           router(Routes.index, req, res);
         });
