@@ -233,6 +233,22 @@ describe('Site routes', function() {
           router(Routes.index, req, res);
         });
       });
+
+      it("should retrieve last one if page is too big", function(done) {
+        var original = [];
+        res.json_ng = function(sites) {
+          var fetched = sites.slice(0, -1).map(function(item) {
+            return item._id.toString();
+          });
+          expect(fetched).to.eql(original);
+          done();
+        };
+        req.query.page = last + 1;
+        Site.find({}, "_id").sort({name: 1}).skip(25).limit(25).exec(function(err, sites) {
+          original = sites.map(function(item) { return item._id.toString(); });
+          router(Routes.index, req, res);
+        });
+      });
     });
   });
 });
