@@ -186,6 +186,21 @@ describe('Device routes', function() {
         };
         router(Routes.index, req, res);
       });
+
+      it("should sort results by name", function(done) {
+        var original = [];
+        res.json_ng = function(devices) {
+          var fetched = devices.slice(0, 25).map(function(item) {
+            return item._id.toString();
+          });
+          expect(fetched).to.eql(original);
+          done();
+        };
+        Device.find({}, "_id").sort({name: 1}).limit(25).exec(function(err, devices) {
+          original = devices.map(function(item) { return item._id.toString(); });
+          router(Routes.index, req, res);
+        });
+      });
     });
   });
 });
