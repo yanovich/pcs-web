@@ -280,6 +280,29 @@ describe('Device routes', function() {
         router(Routes.create, req, res);
       });
     });
+
+    describe("when administrator signed in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: admin._id } };
+        res = {
+          locals: {},
+        };
+      });
+
+      it("should create device with valid params", function(done) {
+        req.body = {
+          name: 'created device',
+        }
+        res.json = function(device) {
+          expect(device._id).not.to.be.an('undefined');
+          expect(device.name).to.be(req.body.name);
+          done();
+        };
+        router(Routes.create, req, res);
+      });
+    });
   });
 });
 
