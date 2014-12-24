@@ -22,7 +22,7 @@ module.exports.load = function (req, res, next, id) {
 function requireAdmin(req, res, next) {
   if (req.operator.admin)
     return next();
-  res.send(401);
+  res.send(403);
 }
 
 var exportFields = '_id name';
