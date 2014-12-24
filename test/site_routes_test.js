@@ -73,6 +73,21 @@ describe('Site routes', function() {
         };
         router(Routes.show, req, res);
       });
+
+      it("should return only accessible fields", function(done) {
+        var res = {
+          locals: {},
+          json_ng: function(st) {
+            expect(Object.keys(st)).to.eql(['_id', 'name']);
+            expect(st._id).to.eql(site._id);
+            expect(st.name).to.eql(site.name);
+            done();
+          },
+        };
+        req.site = site;
+        req.site.some_field = true;
+        router(Routes.show, req, res);
+      });
     });
   });
 });
