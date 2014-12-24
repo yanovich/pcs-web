@@ -38,7 +38,7 @@ var dev = {
       name: 'File',
       options: {
         level: 'info',
-        filename: 'pcsweb_dev.log',
+        filename: '/tmp/pcsweb_dev.log',
         maxsize: 10 * 1024 * 1024, //10 Mb
       },
     },
