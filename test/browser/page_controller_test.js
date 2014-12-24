@@ -87,6 +87,11 @@ describe("Page Controller", function() {
           scope.page(1, 23, 26);
           expect(scope.pager.show).to.be.true;
         });
+
+        it("should show if count is zero", function() {
+          scope.page(1, 23, 0);
+          expect(scope.pager.show).to.not.be.true;
+        });
       });
     });
   });
