@@ -56,6 +56,13 @@ describe("Page Controller", function() {
         expect(scope.newURL).to.equal("HELLO");
       });
     });
+
+    describe("#page", function() {
+      it("should update pager count", function() {
+        scope.page(1, 23, 26);
+        expect(scope.pager.count).to.equal(26);
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
