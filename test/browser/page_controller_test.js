@@ -100,6 +100,11 @@ describe("Page Controller", function() {
           scope.page(2, 23, 26);
           expect(scope.pager.prev).to.equal('#/hello?page=1');
         });
+
+        it("should clear prev is page is 1", function() {
+          scope.page(1, 23, 26);
+          expect(scope.pager.prev).to.equal('');
+        });
       });
     });
   });
