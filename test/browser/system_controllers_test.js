@@ -256,6 +256,12 @@ describe("System Controllers", function() {
       it("should save system", function() {
         scope.save();
       });
+
+      it("should clear form", function() {
+        scope.save();
+        httpBackend.flush();
+        expect(scope.systemForm.$setPristine).to.have.been.called;
+      });
     });
   });
 });
