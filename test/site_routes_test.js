@@ -186,6 +186,21 @@ describe('Site routes', function() {
         };
         router(Routes.index, req, res);
       });
+
+      it("should sort results by name", function(done) {
+        var original = [];
+        res.json_ng = function(sites) {
+          var fetched = sites.slice(0, -1).map(function(item) {
+            return item._id.toString();
+          });
+          expect(fetched).to.eql(original);
+          done();
+        };
+        Site.find({}, "_id").sort({name: 1}).limit(25).exec(function(err, sites) {
+          original = sites.map(function(item) { return item._id.toString(); });
+          router(Routes.index, req, res);
+        });
+      });
     });
   });
 });
