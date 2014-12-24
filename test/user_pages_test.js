@@ -168,6 +168,19 @@ describe('User', function(){
         expect(browser.query("form[name='userForm'] > button:disabled")).not.to.be(null);
       })
 
+      describe('changing name attribute', function () {
+        it('should update user', function (done) {
+          browser.fill("name", user.name + '!');
+          expect(browser.query("form[name='userForm'] > button:disabled")).to.be(null);
+          browser.pressButton(t('action.put')).then(function () {
+            User.findById(user._id, function (err, u) {
+              expect(u.name).to.be(user.name + '!');
+              done();
+            });
+          }, done);
+        })
+      })
+
       describe('admin attribute', function () {
         beforeEach(function (done) {
           browser
