@@ -9,6 +9,7 @@ var expect = require('expect.js');
 var sinon = require('sinon');
 expect = require('sinon-expect').enhance(expect, sinon, 'was');
 var Routes = require('../routes/session');
+var router = require('./support/router');
 
 describe('Session routes', function() {
   var operator;
@@ -59,6 +60,25 @@ describe('Session routes', function() {
       }};
 
       Routes.new(req, res);
+    });
+  });
+
+  describe("#create", function() {
+    it("should fail if email is unknown", function(done) {
+      var req = { body: { email: 'nouser@example.com' } },
+          res = {
+            locals: {},
+            render: function(path, options) {
+              expect(path).to.eql("sessions/new");
+              expect(options).to.eql({title:'Sign in'});
+              expect(res.locals).to.eql({
+                err: { errors: { password: { type: 'signin' } } }
+              });
+              done();
+            }
+          };
+
+      router(Routes.create, req, res);
     });
   });
 });
