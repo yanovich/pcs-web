@@ -19,6 +19,17 @@ describe('Authentication helper', function() {
 
       Routes.authenticate(req, res, null);
     });
+
+    it("should return 500 code if user is not found", function(done) {
+      var req = { session: { operatorId: 2220 } },
+          res = { send: function(code, msg) {
+            expect(code).to.eql(500);
+            expect(msg).to.eql('Sorry, internal server error.');
+            done();
+          }};
+
+      Routes.authenticate(req, res, null);
+    });
   });
 });
 
