@@ -15,15 +15,14 @@ var deviceAttrs = {
 };
 
 describe('Device routes', function() {
-  var admin;
-  beforeEach(function(done) {
-    Device.find().remove(function() {
-      (new Device(deviceAttrs)).save(function(err, newDevice) {
-        if (err) throw err;
-        device = newDevice;
-        return done();
-      });
-    });
+  var device;
+  before(function(done) {
+    Factory.create('device', function (d) { device = d; done(); });
+  });
+
+  var operator;
+  before(function(done) {
+    Factory.create('user', function (u) { operator = u; done(); });
   });
 
   describe("#load", function() {
@@ -56,6 +55,25 @@ describe('Device routes', function() {
         done();
       }};
       router(Routes.show, req, res);
+    });
+
+    describe("when operator logged in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+      });
+
+      it("should return 404 if no device", function(done) {
+        var res = {
+          locals: {},
+          send: function(code) {
+            expect(code).to.be(404);
+            done();
+          },
+        };
+        router(Routes.show, req, res);
+      });
     });
   });
 });

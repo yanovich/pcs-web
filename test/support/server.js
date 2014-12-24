@@ -24,6 +24,7 @@ if (!port) {
 var userCounter = 0;
 
 User.find().remove(function() {});
+Device.find().remove(function() {});
 
 Factory.define('user', User, {
   password: 'password',
@@ -43,8 +44,7 @@ Factory.define('admin', User, {
 var deviceCounter = 0;
 
 Factory.define('device', Device, {
-  name: function (cb) { cb('Example Device ' + ++deviceCounter) },
-  filepath: function (cb) { cb('/tmp/dev' + deviceCounter) }
+  name: function (cb) { cb('Example Device ' + ++deviceCounter) }
 })
 
 global.url = 'http://localhost:' + port;
