@@ -8,6 +8,7 @@
 var expect = require('expect.js');
 var Device = require('../models/device');
 var Routes = require('../routes/device');
+var router = require('./support/router');
 
 var deviceAttrs = {
   name: "Some device",
@@ -44,6 +45,17 @@ describe('Device routes', function() {
         }
       };
       Routes.load({}, res, null, 0);
+    });
+  });
+
+  describe("#show", function() {
+    it("should deny access to non-signed-in users", function(done) {
+      var req = { session: {} },
+      res = { redirect: function(url) {
+        expect(url).to.eql("/signin");
+        done();
+      }};
+      router(Routes.show, req, res);
     });
   });
 });
