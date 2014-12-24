@@ -8,15 +8,23 @@
 var expect = require('expect.js');
 var Routes = require('../routes/site');
 var router = require('./support/router');
+var Site = require('../models/site');
 
 var siteAttrs = {
   name: "Some site",
 };
 
 describe('Site routes', function() {
-  var site;
+  var site, count;
   before(function(done) {
-    Factory.create('site', function (s) { site = s; done(); });
+    Factory.create('site', 26, function (l) {
+      site = l[0];
+      Site.count(function (err, c) {
+        if (err) throw err;
+        count = c;
+        done();
+      });
+    });
   });
 
   var operator;
@@ -157,6 +165,27 @@ describe('Site routes', function() {
         done();
       }};
       router(Routes.index, req, res);
+    });
+
+    describe("when operator signed in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+        req.query = {};
+        res = {
+          locals: {},
+        };
+      });
+
+      it("should retrieve first page if not specified", function(done) {
+        res.json_ng = function(sites) {
+          expect(sites.length).to.be(26);
+          expect(sites[25].count).to.be(count);
+          done();
+        };
+        router(Routes.index, req, res);
+      });
     });
   });
 });
