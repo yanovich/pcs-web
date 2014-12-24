@@ -226,6 +226,16 @@ describe("System Controllers", function() {
         expect(scope.n.set).to.equal(null);
       });
     });
+
+    describe("#dropSetpoint", function() {
+      it("remove from system outputs", function() {
+        scope.system = { setpoints: { "some": "setpoint", "other":"setpoint" } };
+        scope.systemForm = { $setDirty: sinon.spy() };
+        scope.dropSetpoint("some");
+        expect(scope.system.setpoints).to.eql({ "other":"setpoint" });
+        expect(scope.systemForm.$setDirty).to.have.been.called;
+      });
+    });
   });
 });
 // vim:ts=2 sts=2 sw=2 et:
