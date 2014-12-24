@@ -7,6 +7,7 @@
 
 var expect = require('expect.js');
 var Routes = require('../routes/site');
+var router = require('./support/router');
 
 var siteAttrs = {
   name: "Some site",
@@ -37,6 +38,17 @@ describe('Site routes', function() {
         }
       };
       Routes.load({}, res, null, 0);
+    });
+  });
+
+  describe("#show", function() {
+    it("should deny access to non-signed-in users", function(done) {
+      var req = { session: {} },
+      res = { redirect: function(url) {
+        expect(url).to.eql("/signin");
+        done();
+      }};
+      router(Routes.show, req, res);
     });
   });
 });
