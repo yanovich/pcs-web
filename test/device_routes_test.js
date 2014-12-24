@@ -74,6 +74,21 @@ describe('Device routes', function() {
         };
         router(Routes.show, req, res);
       });
+
+      it("should return only accessible fields", function(done) {
+        var res = {
+          locals: {},
+          json_ng: function(dev) {
+            expect(Object.keys(dev)).to.eql(['_id', 'name']);
+            expect(dev._id).to.eql(device._id);
+            expect(dev.name).to.eql(device.name);
+            done();
+          },
+        };
+        req.device = device;
+        req.device.some_field = true;
+        router(Routes.show, req, res);
+      });
     });
   });
 });

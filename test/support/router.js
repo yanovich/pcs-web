@@ -9,11 +9,11 @@
 function router(actions, req, res) {
   if (actions.length == 0)
     return;
-  var action = actions.shift(),
-  next = function() {
-    router(actions, req, res);
-  };
-  action(req, res, next);
+  actions = actions.slice(0);
+  var action = actions.shift();
+  action(req, res, function() {
+        router(actions, req, res);
+  });
 }
 
 module.exports = router;
