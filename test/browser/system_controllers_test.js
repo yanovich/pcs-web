@@ -134,7 +134,7 @@ describe("System Controllers", function() {
         name: "hello",
         site: 2,
         device: 3,
-        outputs: [{a1: 10}],
+        outputs: ["a1"],
         setpoints: {a1: 5}
       });
       httpBackend.expectGET('/sites/2').respond({_id: 2, name: "site"});
@@ -234,6 +234,27 @@ describe("System Controllers", function() {
         scope.dropSetpoint("some");
         expect(scope.system.setpoints).to.eql({ "other":"setpoint" });
         expect(scope.systemForm.$setDirty).to.have.been.called;
+      });
+    });
+
+    describe("#save", function() {
+      beforeEach(function() {
+        scope.systemForm = {};
+        scope.systemForm.$setPristine = sinon.spy();
+        scope.$on = sinon.spy();
+        httpBackend.expectPOST('/sites/2/systems/1', {
+          _id: 1,
+          name: "world",
+          site: 2,
+          device: 3,
+          outputs: ["a1"],
+          setpoints: {"a1":5}
+        }).respond({_id: 1, name: "world"});
+        scope.system.name = "world";
+      });
+
+      it("should save system", function() {
+        scope.save();
       });
     });
   });
