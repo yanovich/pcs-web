@@ -163,6 +163,22 @@ describe('Session routes', function() {
       });
     });
   });
+
+  describe("#destroy", function() {
+    it("should clear session", function(done) {
+      var req = { session: { operatorId: operator._id }, };
+      var res = {
+        locals: {},
+        redirect: function(path) {
+          expect(req.session.operatorId).to.be.an('undefined');
+          expect(path).to.eql("/signin");
+          done();
+        }
+      };
+
+      router(Routes.destroy, req, res);
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
