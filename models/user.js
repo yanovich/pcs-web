@@ -51,7 +51,7 @@ user_schema.virtual('confirmation').set(function (value) {
 
 user_schema.methods = {
   authenticate: function (password, cb) {
-    bcrypt.compare(password, this.hash, cb);
+    bcrypt.compare(password ? password : '', this.hash, cb);
   },
 
   encrypt: function (password, cb) {

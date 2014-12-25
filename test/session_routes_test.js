@@ -80,6 +80,23 @@ describe('Session routes', function() {
 
       router(Routes.create, req, res);
     });
+
+    it("should fail if no password", function(done) {
+      var req = { body: { email: operator.email } },
+          res = {
+            locals: {},
+            render: function(path, options) {
+              expect(path).to.eql("sessions/new");
+              expect(options).to.eql({title:'Sign in'});
+              expect(res.locals).to.eql({
+                err: { errors: { password: { type: 'signin' } } }
+              });
+              done();
+            }
+          };
+
+      router(Routes.create, req, res);
+    });
   });
 });
 
