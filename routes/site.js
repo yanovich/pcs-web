@@ -17,12 +17,6 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
-function requireAdmin(req, res, next) {
-  if (req.operator.admin)
-    return next();
-  res.send(401);
-}
-
 var exportFields = '_id name';
 
 function showSite(req, res) {
@@ -87,14 +81,14 @@ module.exports.show = [ auth.authenticate,
                         showSite];
 
 module.exports.update = [ auth.authenticate,
-                          requireAdmin,
+                          auth.requireAdmin,
                           updateSite];
 
 module.exports.index = [ auth.authenticate,
                          indexSites];
 
 module.exports.create = [ auth.authenticate,
-                          requireAdmin,
+                          auth.requireAdmin,
                           createSite];
 
 // vim:ts=2 sts=2 sw=2 et:
