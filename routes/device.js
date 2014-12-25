@@ -19,12 +19,6 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
-function requireAdmin(req, res, next) {
-  if (req.operator.admin)
-    return next();
-  res.send(403);
-}
-
 var exportFields = '_id name';
 
 function showDevice(req, res) {
@@ -84,14 +78,14 @@ module.exports.show = [ auth.authenticate,
                         showDevice];
 
 module.exports.update = [ auth.authenticate,
-                          requireAdmin,
+                          auth.requireAdmin,
                           updateDevice];
 
 module.exports.index = [ auth.authenticate,
                          indexDevices];
 
 module.exports.create = [ auth.authenticate,
-                          requireAdmin,
+                          auth.requireAdmin,
                           createDevice];
 
 // vim:ts=2 sts=2 sw=2 et:

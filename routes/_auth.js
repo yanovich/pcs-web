@@ -25,5 +25,12 @@ module.exports.authenticate = function (req, res, next) {
   })
 }
 
+module.exports.requireAdmin = function (req, res, next) {
+  if (!req.operator)
+    return res.send(401);
+  if (req.operator.admin)
+    return next();
+  res.send(403);
+}
 
 // vim:ts=2 sts=2 sw=2 et:
