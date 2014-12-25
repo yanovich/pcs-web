@@ -164,7 +164,9 @@ mongoose.connection.on('error', function (e) {
 })
 
 mongoose.connection.on('connected', function () {
-  console.log('Connected to mongodb at "' + config.dbUrl +'"');
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('Connected to mongodb at "' + config.dbUrl +'"');
+  }
 })
 
 process.on('exit', function() {
