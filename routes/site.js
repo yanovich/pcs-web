@@ -32,15 +32,7 @@ function showSite(req, res) {
 var siteFields = ['name'];
 
 function updateSite(req, res) {
-  siteFields.forEach(function (f) {
-    req.site[f] = req.body[f];
-  });
-  req.site.save(function (err) {
-    if (err) {
-      return res.json(500, err);
-    }
-    res.json(req.site);
-  });
+  res.json(500, 'Not implemented');
 }
 
 function indexSites(req, res) {
