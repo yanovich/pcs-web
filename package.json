@@ -27,7 +27,7 @@
     "chai": "*",
     "expect.js": "*",
     "factory-lady": "*",
-    "Faker": "*",
+    "faker": "*",
     "karma": "*",
     "karma-cli": "*",
     "karma-phantomjs-launcher": "*",
