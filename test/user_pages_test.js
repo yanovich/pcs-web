@@ -7,7 +7,6 @@
 
 var expect = require('expect.js');
 var Browser = require('zombie');
-var async = require('async');
 
 var browser;
 function t(key, options) {
@@ -21,10 +20,7 @@ describe('User', function(){
   var user;
 
   before(function (done) {
-    async.times(26, function (n, next) {
-      Factory.create('user', function (u) { next(null, u); });
-    },
-    function (err, users) {
+    Factory.create('user', 26, function (users) {
       user = users[0];
       done();
     });

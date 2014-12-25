@@ -11,7 +11,9 @@ var app = require('../../app')
 var port = app.get('port');
 var User = require('../../models/user');
 var Device = require('../../models/device');
-var Factory = require('factory-lady');
+
+var async = require('async');
+var FactoryLady = require('factory-lady');
 var Faker = require('Faker');
 
 if (!port) {
@@ -26,14 +28,14 @@ var userCounter = 0;
 User.find().remove(function() {});
 Device.find().remove(function() {});
 
-Factory.define('user', User, {
+FactoryLady.define('user', User, {
   password: 'password',
   confirmation: 'password',
   name: function (cb) { cb(Faker.Name.findName()) },
   email: function (cb) { cb('user-' + ++userCounter + '@example.com') }
 })
 
-Factory.define('admin', User, {
+FactoryLady.define('admin', User, {
   password: 'password',
   confirmation: 'password',
   admin: true,
@@ -43,9 +45,23 @@ Factory.define('admin', User, {
 
 var deviceCounter = 0;
 
-Factory.define('device', Device, {
+FactoryLady.define('device', Device, {
   name: function (cb) { cb('Example Device ' + ++deviceCounter) }
 })
+
+Factory = {
+  create: function (key, count, cb) {
+    if (typeof(count) === 'function')
+      return FactoryLady.create(key, count);
+
+    async.times(count, function (n, next) {
+      FactoryLady.create(key, function (o) { next(null, o); });
+    }, function (err, items) {
+      if (err) throw err;
+      cb(items);
+    });
+  }
+};
 
 global.url = 'http://localhost:' + port;
 global.i18n = app.i18n;
