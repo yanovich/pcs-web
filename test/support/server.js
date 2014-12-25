@@ -47,13 +47,16 @@ FactoryLady.define('admin', User, {
   email: function (cb) { cb('admin-' + ++userCounter + '@example.com') }
 })
 
+var deviceCounter = 0;
+
 FactoryLady.define('device', Device, {
-  name: function (cb) { cb(faker.lorem.sentence(2, 1)) }
+  name: function (cb) { cb(faker.lorem.words(1) + ++deviceCounter) }
 })
 
+var siteCounter = 0;
 
 FactoryLady.define('site', Site, {
-  name: function (cb) { cb(faker.lorem.sentence(1, 1)) }
+  name: function (cb) { cb(faker.lorem.words(1) + ++siteCounter) }
 })
 Factory = {
   create: function (key, count, cb) {
