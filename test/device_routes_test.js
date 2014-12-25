@@ -25,6 +25,11 @@ describe('Device routes', function() {
     Factory.create('user', function (u) { operator = u; done(); });
   });
 
+  var admin;
+  before(function(done) {
+    Factory.create('admin', function (a) { admin = a; done(); });
+  });
+
   describe("#load", function() {
     it("should find by id and assign device to req", function(done) {
       var req = { },
@@ -117,6 +122,29 @@ describe('Device routes', function() {
             done();
           },
         };
+        router(Routes.update, req, res);
+      });
+    });
+
+    describe("when administrator signed in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: admin._id } };
+      });
+
+      it("should fail", function(done) {
+        var res = {
+          locals: {},
+          json: function(code) {
+            expect(code).to.eql(500);
+            done();
+          },
+        };
+        req.body = {
+          name: "Some name",
+        };
+        req.device = device;
         router(Routes.update, req, res);
       });
     });

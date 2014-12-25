@@ -40,15 +40,7 @@ function showDevice(req, res) {
 var deviceFields = ['name'];
 
 function updateDevice(req, res) {
-  deviceFields.forEach(function (f) {
-    req.device[f] = req.body[f];
-  });
-  req.device.save(function (err) {
-    if (err) {
-      return res.json(500, err);
-    }
-    res.json(req.device);
-  });
+  res.json(500, 'Not implemented');
 }
 
 function indexDevices(req, res) {
