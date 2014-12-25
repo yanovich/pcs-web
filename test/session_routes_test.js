@@ -9,6 +9,7 @@ var expect = require('expect.js');
 var sinon = require('sinon');
 expect = require('sinon-expect').enhance(expect, sinon, 'was');
 var Routes = require('../routes/session');
+var Auth = require('../routes/_auth');
 var router = require('./support/router');
 
 describe('Session routes', function() {
@@ -130,6 +131,20 @@ describe('Session routes', function() {
       };
 
       router(Routes.create, req, res);
+    });
+
+    describe("friendly redirect", function() {
+      it("should save request location", function(done) {
+        var req = { session: {}, url: 'some_url' },
+        res = {
+          redirect: function(path) {
+            expect(req.session.returnTo).to.eql('some_url');
+            done();
+          }
+        };
+
+        Auth.authenticate(req, res, null);
+      });
     });
   });
 });
