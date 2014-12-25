@@ -18,12 +18,17 @@ function sessionNew(req, res) {
     return renderNew();
 
   User.findOne({ _id: req.session.operatorId }, function (err, user) {
-    if (err)
-      return res.send(500, 'Sorry, internal server error.');
+    if (err) {
+      if (err.name !== 'CastError')
+        console.log(err);
+      req.session.operatorId = undefined;
+      return renderNew();
+    }
 
     if (user)
       return res.redirect('/');
 
+    req.session.operatorId = undefined;
     return renderNew();
   })
 }

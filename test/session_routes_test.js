@@ -20,12 +20,26 @@ describe('Session routes', function() {
       expect(res.render).was.calledWith("sessions/new", {title: 'Sign in'});
     });
 
-    it("should render html if bad user", function(done) {
+    it("should render signin html if missing user", function(done) {
       var id = "507f1f77bcf86cd799439011";
       var req = { session: { operatorId: id } },
       res = { render: function(path, options) {
         expect(path).to.eql("sessions/new");
         expect(options).to.eql({title:'Sign in'});
+        expect(req.session.operatorId).to.be.an('undefined');
+        done();
+      }};
+
+      Routes.new(req, res);
+    });
+
+    it("should render signin html if bad user", function(done) {
+      var id = "bad";
+      var req = { session: { operatorId: id } },
+      res = { render: function(path, options) {
+        expect(path).to.eql("sessions/new");
+        expect(options).to.eql({title:'Sign in'});
+        expect(req.session.operatorId).to.be.an('undefined');
         done();
       }};
 
