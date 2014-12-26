@@ -11,6 +11,8 @@ var per_page = 25;
 
 module.exports.load = function (req, res, next, id) {
   User.findOne({ _id: id }, function (err, user) {
+    if (err || !user)
+      return res.send(404);
     req.user = user;
     next();
   })

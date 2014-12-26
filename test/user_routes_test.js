@@ -25,6 +25,16 @@ describe('User routes', function() {
         done();
       }, id);
     });
+
+    it("should respond with not found code", function(done) {
+      var res = {
+        send: function(code) {
+          expect(code).to.eql(404);
+          done();
+        }
+      };
+      Routes.load({}, res, null, 0);
+    });
   });
 });
 
