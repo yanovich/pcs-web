@@ -1,4 +1,4 @@
-/* test/backend/routes/user_spec.js -- test User's routes
+/* test/user_routes_test.js -- test User routes
  * Copyright 2014 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
@@ -16,6 +16,12 @@ describe('User routes', function() {
   before(function(done) {
     Factory.create('user', function (u) { user = u; done(); });
   });
+
+  var operator;
+  before(function(done) {
+    Factory.create('user', function (u) { operator = u; done(); });
+  });
+
   describe("#load", function() {
     it("should find by id and assign user to req", function(done) {
       var req = { user: null },
@@ -46,6 +52,25 @@ describe('User routes', function() {
         done();
       }};
       router(Routes.show, req, res);
+    });
+
+    describe("when operator logged in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+      });
+
+      it("should return 404 if no user", function(done) {
+        var res = {
+          locals: {},
+          send: function(code) {
+            expect(code).to.be(404);
+            done();
+          },
+        };
+        router(Routes.show, req, res);
+      });
     });
   });
 });

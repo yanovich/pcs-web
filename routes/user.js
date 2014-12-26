@@ -25,6 +25,8 @@ function requireAdmin(req, res, next) {
 }
 
 function requireAdminOrSelf(req, res, next) {
+  if (!req.user)
+    return res.send(404);
   if (req.operator.admin)
     return next();
   if (req.operator._id.equals(req.user._id))
