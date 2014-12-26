@@ -146,6 +146,7 @@ describe('User routes', function() {
             User.findOne({ email: operator.email }, function (err, u) {
               if (err) throw err;
               expect(u.name).to.eql(req.body.name);
+              operator.name = req.body.name;
               done();
             });
           },
@@ -153,7 +154,7 @@ describe('User routes', function() {
         req.user = operator;
         req.body = {
           email: operator.email,
-          name: "new name",
+          name: "update.operator",
         };
         router(Routes.update, req, res);
       });
@@ -174,7 +175,7 @@ describe('User routes', function() {
         req.user = operator;
         req.body = {
           email: operator.email,
-          name: "new name",
+          name: operator.name,
           admin: 1,
         };
         router(Routes.update, req, res);
@@ -198,7 +199,7 @@ describe('User routes', function() {
         req.user = operator;
         req.body = {
           email: 'new_user@example.com',
-          name: "new name",
+          name: operator.name,
         };
         router(Routes.update, req, res);
       });
@@ -221,7 +222,7 @@ describe('User routes', function() {
         req.user = operator;
         req.body = {
           email: operator.email,
-          name: "new name",
+          name: operator.name,
           password: "1111111",
           confirmation: "1111111",
         };
@@ -246,7 +247,7 @@ describe('User routes', function() {
         req.user = operator;
         req.body = {
           email: operator.email,
-          name: "new name",
+          name: operator.name,
           password: "1111111",
           confirmation: "1111112",
         };
