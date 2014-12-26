@@ -71,6 +71,18 @@ describe('User routes', function() {
         };
         router(Routes.show, req, res);
       });
+
+      it("should deny others profiles to non-admin", function(done) {
+        req.user = user;
+        var res = {
+          locals: {},
+          send: function(code) {
+            expect(code).to.be(403);
+            done();
+          },
+        };
+        router(Routes.show, req, res);
+      });
     });
   });
 });

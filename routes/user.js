@@ -31,7 +31,7 @@ function requireAdminOrSelf(req, res, next) {
     return next();
   if (req.operator._id.equals(req.user._id))
     return next();
-  res.redirect('/users/' + req.operator._id);
+  res.send(403);
 }
 
 var exportFields = '_id name email admin';
