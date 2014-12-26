@@ -41,5 +41,25 @@ angular.module('pcs.services', ['ngResource'])
           }
         };
       }])
-
+  .factory('DeviceHelper', ['ServerEvents',
+      function(ServerEvents) {
+        var utils = {
+          loadDeviceState: function($scope, deviceId) {
+            if ($scope.stateStream) $scope.stateStream.close();
+            $scope.stateStream = ServerEvents.create('/devices/' + deviceId
+              + '/states?stream=1&interval=10');
+            $scope.state = { outputs: {} };
+            $scope.stateStream.addEventListener('message', function (e) {
+              $scope.$apply(function () {
+                $scope.state = angular.fromJson(e.data);
+              });
+            }, false);
+            var off = $scope.$on('$locationChangeStart', function (e, next, current) {
+              if ($scope.stateStream) $scope.stateStream.close();
+              off();
+            });
+          }
+        };
+        return utils;
+      }])
 // vim:ts=2 sts=2 sw=2 et:
