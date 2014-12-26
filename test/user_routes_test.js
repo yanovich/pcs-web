@@ -8,6 +8,7 @@
 
 var expect = require('expect.js');
 
+var User = require('../models/user');
 var Routes = require('../routes/user');
 var router = require('./support/router');
 
@@ -129,6 +130,26 @@ describe('User routes', function() {
           },
         };
         req.user = user;
+        router(Routes.update, req, res);
+      });
+
+      it("should modify self name", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: operator.email }, function (err, u) {
+              if (err) throw err;
+              expect(u.name).to.eql(req.body.name);
+              done();
+            });
+          },
+        };
+        req.user = operator;
+        req.body = {
+          email: operator.email,
+          name: "new name",
+        };
         router(Routes.update, req, res);
       });
     });
