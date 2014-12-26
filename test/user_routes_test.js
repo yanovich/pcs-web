@@ -207,7 +207,7 @@ describe('User routes', function() {
               if (err) throw err;
               operator.authenticate(req.body.password, function (err, valid) {
                 if (err) throw err;
-                expect(valid).to.be.ok;
+                expect(valid).to.be.okt;
               });
               done();
             });
@@ -222,6 +222,33 @@ describe('User routes', function() {
         };
         router(Routes.update, req, res);
       });
+
+      it("should match password to confirmation", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: operator.email }, function (err, u) {
+              if (err) throw err;
+              operator.authenticate(req.body.password, function (err, valid) {
+                if (err) throw err;
+                expect(valid).not.to.be.ok;
+              });
+              done();
+            });
+          },
+        };
+        req.user = operator;
+        req.body = {
+          email: operator.email,
+          name: "new name",
+          password: "1111111",
+          confirmation: "1111112",
+        };
+        router(Routes.update, req, res);
+      });
+
+      it("should report validation errors");
     });
   });
 });
