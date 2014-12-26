@@ -268,17 +268,18 @@ describe('User routes', function() {
           locals: {},
           json: function(u) {
             expect(u.name).to.eql(req.body.name);
-            User.findOne({ email: operator.email }, function (err, u) {
+            User.findOne({ email: admin.email }, function (err, u) {
               if (err) throw err;
               expect(u.name).to.eql(req.body.name);
-              expect(u.admin).to.eql(operator.admin);
+              admin.name = req.body.name;
+              expect(u.admin).to.eql(admin.admin);
               done();
             });
           },
         };
-        req.user = operator;
+        req.user = admin;
         req.body = {
-          email: operator.email,
+          email: admin.email,
           name: 'update admin',
           admin: true,
         };
@@ -290,18 +291,18 @@ describe('User routes', function() {
           locals: {},
           json: function(u) {
             expect(u.name).to.eql(req.body.name);
-            User.findOne({ email: operator.email }, function (err, u) {
+            User.findOne({ email: admin.email }, function (err, u) {
               if (err) throw err;
               expect(u.name).to.eql(req.body.name);
-              expect(u.admin).to.eql(operator.admin);
+              expect(u.admin).to.eql(admin.admin);
               done();
             });
           },
         };
-        req.user = operator;
+        req.user = admin;
         req.body = {
-          email: operator.email,
-          name: operator.name,
+          email: admin.email,
+          name: admin.name,
           admin: false,
         };
         router(Routes.update, req, res);
