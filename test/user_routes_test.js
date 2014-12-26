@@ -317,6 +317,7 @@ describe('User routes', function() {
             User.findOne({ email: user.email }, function (err, u) {
               if (err) throw err;
               expect(u.name).to.eql(req.body.name);
+              user.name = req.body.name;
               expect(u.admin).to.eql(user.admin);
               done();
             });
@@ -326,6 +327,28 @@ describe('User routes', function() {
         req.body = {
           email: user.email,
           name: 'update.user',
+          admin: user.admin,
+        };
+        router(Routes.update, req, res);
+      });
+
+      it("should not modify user emails", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: user.email }, function (err, u) {
+              if (err) throw err;
+              expect(u.name).to.eql(req.body.name);
+              expect(u.admin).to.eql(user.admin);
+              done();
+            });
+          },
+        };
+        req.user = user;
+        req.body = {
+          email: 'new_user@example.com',
+          name: user.name,
           admin: user.admin,
         };
         router(Routes.update, req, res);
