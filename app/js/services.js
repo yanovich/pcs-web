@@ -62,4 +62,23 @@ angular.module('pcs.services', ['ngResource'])
         };
         return utils;
       }])
+  .factory('SystemHelper', ['Device', 'DeviceHelper',
+      function(Device, DeviceHelper) {
+        return {
+          setDeviceUpdater: function($scope) {
+            $scope.updateDevice = function () {
+              $scope.device = {};
+              $scope.system.device = null;
+              var devices = Device.query({ name: $scope.n.deviceName }, function () {
+                if (devices.length !== 2) {
+                  return;
+                }
+                $scope.device = devices[0];
+                $scope.system.device = devices[0]._id;
+                DeviceHelper.loadDeviceState($scope, $scope.system.device);
+              });
+            }
+          }
+        };
+      }])
 // vim:ts=2 sts=2 sw=2 et:

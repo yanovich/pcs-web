@@ -7,21 +7,6 @@
 
 'use strict';
 
-function setDeviceUpdater($scope, Device, DeviceHelper) {
-  $scope.updateDevice = function () {
-    $scope.device = {};
-    $scope.system.device = null;
-    var devices = Device.query({ name: $scope.n.deviceName }, function () {
-      if (devices.length !== 2) {
-        return;
-      }
-      $scope.device = devices[0];
-      $scope.system.device = devices[0]._id;
-      DeviceHelper.loadDeviceState($scope, $scope.system.device);
-    });
-  }
-}
-
 angular.module('pcs.controllers', [])
   .controller('NavCtrl', ['$scope', '$location', function($scope, $location) {
     $scope.isActive = function (viewLocation) {
@@ -153,9 +138,9 @@ angular.module('pcs.controllers', [])
         });
   }])
   .controller('NewSystemCtrl', ['$scope', '$routeParams', '$location',
-		  'Site', 'Device', 'System', 'DeviceHelper',
-      function($scope, $routeParams, $location, Site, Device, System,
-              DeviceHelper) {
+		  'Site', 'System', 'SystemHelper',
+      function($scope, $routeParams, $location, Site, System,
+              SystemHelper) {
         $scope.page(1, 1, 0);
         $scope.setNewURL(null);
         $scope.n = {};
@@ -171,12 +156,12 @@ angular.module('pcs.controllers', [])
             console.log(res);
           });
         }
-        setDeviceUpdater($scope, Device, DeviceHelper);
+        SystemHelper.setDeviceUpdater($scope);
   }])
   .controller('SystemCtrl', ['$scope', '$routeParams', 'Site', 'System',
-      'Device', 'State', 'DeviceHelper',
+      'Device', 'State', 'DeviceHelper', 'SystemHelper',
       function($scope, $routeParams, Site, System, Device, State,
-        DeviceHelper) {
+        DeviceHelper, SystemHelper) {
         $scope.device = {};
         $scope.state = { outputs: {} };
         $scope.n = {};
@@ -194,7 +179,7 @@ angular.module('pcs.controllers', [])
             DeviceHelper.loadDeviceState($scope, $scope.system.device);
           });
         $scope.site = Site.get({ siteId: $routeParams.siteId });
-        setDeviceUpdater($scope, Device, DeviceHelper);
+        SystemHelper.setDeviceUpdater($scope);
         $scope.addOutput = function () {
           $scope.system.outputs.push($scope.n.out);
           $scope.n.out = null;
