@@ -308,6 +308,28 @@ describe('User routes', function() {
         };
         router(Routes.update, req, res);
       });
+
+      it("should modify user names", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: user.email }, function (err, u) {
+              if (err) throw err;
+              expect(u.name).to.eql(req.body.name);
+              expect(u.admin).to.eql(user.admin);
+              done();
+            });
+          },
+        };
+        req.user = user;
+        req.body = {
+          email: user.email,
+          name: 'update.user',
+          admin: user.admin,
+        };
+        router(Routes.update, req, res);
+      });
     });
   });
 });
