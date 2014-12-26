@@ -23,6 +23,11 @@ describe('User routes', function() {
     Factory.create('user', function (u) { operator = u; done(); });
   });
 
+  var admin;
+  before(function(done) {
+    Factory.create('admin', function (u) { admin = u; done(); });
+  });
+
   describe("#load", function() {
     it("should find by id and assign user to req", function(done) {
       var req = { user: null },
@@ -249,6 +254,36 @@ describe('User routes', function() {
       });
 
       it("should report validation errors");
+    });
+
+    describe("when administrator signed in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: admin._id } };
+      });
+
+      it("should modify own name", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: operator.email }, function (err, u) {
+              if (err) throw err;
+              expect(u.name).to.eql(req.body.name);
+              expect(u.admin).to.eql(operator.admin);
+              done();
+            });
+          },
+        };
+        req.user = operator;
+        req.body = {
+          email: operator.email,
+          name: 'update admin',
+          admin: true,
+        };
+        router(Routes.update, req, res);
+      });
     });
   });
 });
