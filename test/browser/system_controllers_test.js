@@ -30,7 +30,7 @@ describe("System Controllers", function() {
   }));
 
   describe("NewSystemCtrl", function() {
-    var scope, routeParams;
+    var scope, routeParams, systemHelper;
 
     beforeEach(function() {
       routeParams = { siteId: 2 };
@@ -39,8 +39,11 @@ describe("System Controllers", function() {
         page: sinon.spy(),
         setNewURL: sinon.spy(),
       };
+      systemHelper = {
+        setDeviceUpdater: sinon.spy()
+      };
       httpBackend.expectGET('/sites/2').respond({_id: 2, name: "site"});
-      controller('NewSystemCtrl', { $scope: scope, $routeParams: routeParams });
+      controller('NewSystemCtrl', { $scope: scope, $routeParams: routeParams, SystemHelper: systemHelper });
     });
 
     it("should clear pager", function() {
@@ -60,30 +63,8 @@ describe("System Controllers", function() {
       expect(scope.n).to.eql({});
     });
 
-    describe("#updateDevice", function() {
-      describe("when device not found", function() {
-        it ("should clear device", function() {
-          scope.n.deviceName = "a";
-          scope.device = { _id: 2 };
-          scope.system.device = 2;
-          httpBackend.expectGET('/devices?name=a').respond([{count: 0}]);
-          scope.updateDevice();
-          httpBackend.flush();
-          expect(scope.system.device).to.equal(null);
-          expect(scope.device).to.eql({});
-        });
-      });
-
-      describe("when device found", function() {
-        it("should assign device", function() {
-          scope.n.deviceName = "b";
-          httpBackend.expectGET('/devices?name=b').respond([{_id: 2, name: "device"}, {count: 1}]);
-          scope.updateDevice();
-          httpBackend.flush();
-          expect(scope.system.device).to.equal(2);
-          expect(JSON.stringify(scope.device)).to.eql(JSON.stringify({_id: 2, name: "device"}));
-        });
-      });
+    it("should create updateDevice method", function() {
+      expect(systemHelper.setDeviceUpdater).to.have.been.calledWith(scope);
     });
 
     describe("#save", function() {
