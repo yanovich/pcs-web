@@ -101,7 +101,7 @@ describe("System Controllers", function() {
   });
 
   describe("SystemCtrl", function() {
-    var scope, routeParams;
+    var scope, routeParams, deviceHelper, systemHelper;
 
     beforeEach(function() {
       scope = {
@@ -120,7 +120,14 @@ describe("System Controllers", function() {
       });
       httpBackend.expectGET('/sites/2').respond({_id: 2, name: "site"});
       httpBackend.expectGET('/devices/3').respond({_id: 3, name: "device"});
-      controller('SystemCtrl', { $scope: scope, $routeParams: routeParams });
+      deviceHelper = {
+        loadDeviceState: sinon.spy()
+      };
+      systemHelper = {
+        setDeviceUpdater: sinon.spy()
+      };
+      controller('SystemCtrl', { $scope: scope, $routeParams: routeParams,
+                 DeviceHelper: deviceHelper, SystemHelper: systemHelper });
       httpBackend.flush();
     });
 
@@ -150,30 +157,12 @@ describe("System Controllers", function() {
       expect(scope.n.deviceName).to.exist();
     });
 
-    describe("#updateDevice", function() {
-      describe("when device not found", function() {
-        it ("should clear device", function() {
-          scope.n.deviceName = "a";
-          scope.device = { _id: 2 };
-          scope.system.device = 2;
-          httpBackend.expectGET('/devices?name=a').respond([{count: 0}]);
-          scope.updateDevice();
-          httpBackend.flush();
-          expect(scope.system.device).to.equal(null);
-          expect(scope.device).to.eql({});
-        });
-      });
+    it("should load device state", function() {
+      expect(deviceHelper.loadDeviceState).to.have.been.calledWith(scope, 3);
+    });
 
-      describe("when device found", function() {
-        it("should assign device", function() {
-          scope.n.deviceName = "b";
-          httpBackend.expectGET('/devices?name=b').respond([{_id: 2, name: "device"}, {count: 1}]);
-          scope.updateDevice();
-          httpBackend.flush();
-          expect(scope.system.device).to.equal(2);
-          expect(JSON.stringify(scope.device)).to.eql(JSON.stringify({_id: 2, name: "device"}));
-        });
-      });
+    it("should create device update function", function() {
+      expect(systemHelper.setDeviceUpdater).to.have.been.calledWith(scope);
     });
 
     describe("#addOutput", function() {
