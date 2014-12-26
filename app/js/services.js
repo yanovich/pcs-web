@@ -33,5 +33,13 @@ angular.module('pcs.services', ['ngResource'])
       function ($resource) {
         return $resource('/users/:userId', { userId: '@_id' });
       }])
+  .factory('ServerEvents', [
+      function() {
+        return {
+          create: function(url) {
+            return new EventSource(url);
+          }
+        };
+      }])
 
 // vim:ts=2 sts=2 sw=2 et:
