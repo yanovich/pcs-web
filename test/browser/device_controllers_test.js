@@ -129,7 +129,7 @@ describe("Device Controllers", function() {
   });
 
   describe("DeviceCtrl", function() {
-    var scope, routeParams;
+    var scope, routeParams, deviceHelper;
 
     beforeEach(function() {
       scope = {
@@ -138,9 +138,10 @@ describe("Device Controllers", function() {
         $on: sinon.spy(),
       };
       routeParams = { deviceId: 2 };
+      deviceHelper = { loadDeviceState: sinon.spy() };
       httpBackend.expectGET('/devices/2').respond({_id: 2, name: "hello"});
       httpBackend.expectGET('/devices/2/setpoints').respond({a: 1, b: 2});
-      controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams });
+      controller('DeviceCtrl', { $scope: scope, $routeParams: routeParams, DeviceHelper: deviceHelper });
     });
 
     it("should clear pager", function() {
@@ -162,6 +163,10 @@ describe("Device Controllers", function() {
       httpBackend.flush();
       expect(scope.setpoints).to.exist();
       expect(scope.setpoints.a).to.equal(1);
+    });
+
+    it("should load device state", function() {
+      expect(deviceHelper.loadDeviceState).to.have.been.calledWith(scope, 2);
     });
 
     describe("#save", function() {
