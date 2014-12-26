@@ -83,6 +83,23 @@ describe('User routes', function() {
         };
         router(Routes.show, req, res);
       });
+
+      it("should return only accessible fields", function(done) {
+        var res = {
+          locals: {},
+          json_ng: function(u) {
+            expect(Object.keys(u)).to.eql(['_id', 'name', 'email', 'admin']);
+            expect(u._id).to.eql(operator._id);
+            expect(u.name).to.eql(operator.name);
+            expect(u.email).to.eql(operator.email);
+            expect(u.admin).to.eql(operator.admin);
+            done();
+          },
+        };
+        req.user = operator;
+        req.user.some_field = true;
+        router(Routes.show, req, res);
+      });
     });
   });
 });
