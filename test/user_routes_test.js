@@ -152,6 +152,28 @@ describe('User routes', function() {
         };
         router(Routes.update, req, res);
       });
+
+      it("should not modify admin status", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: operator.email }, function (err, u) {
+              if (err) throw err;
+              expect(u.name).to.eql(req.body.name);
+              expect(u.admin).to.eql(operator.admin);
+              done();
+            });
+          },
+        };
+        req.user = operator;
+        req.body = {
+          email: operator.email,
+          name: "new name",
+          admin: 1,
+        };
+        router(Routes.update, req, res);
+      });
     });
   });
 });
