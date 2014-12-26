@@ -174,6 +174,29 @@ describe('User routes', function() {
         };
         router(Routes.update, req, res);
       });
+
+      it("should not modify email", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u).not.to.be(500);
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: operator.email }, function (err, u) {
+              if (err) throw err;
+              expect(u.email).to.eql(operator.email);
+              expect(u.name).to.eql(req.body.name);
+              expect(u.admin).to.eql(operator.admin);
+              done();
+            });
+          },
+        };
+        req.user = operator;
+        req.body = {
+          email: 'new_user@example.com',
+          name: "new name",
+        };
+        router(Routes.update, req, res);
+      });
     });
   });
 });

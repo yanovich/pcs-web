@@ -46,10 +46,10 @@ function showUser(req, res) {
   res.json_ng(user);
 }
 
-var userFields = ['name', 'email', 'password', 'confirmation'];
+var userUpdateFields = ['name', 'password', 'confirmation'];
 
 function updateUser(req, res) {
-  userFields.forEach(function (f) {
+  userUpdateFields.forEach(function (f) {
     req.user[f] = req.body[f];
   });
   if (req.operator.admin && !req.operator._id.equals(req.user._id))
@@ -82,6 +82,9 @@ function indexUsers(req, res) {
     });
   });
 }
+
+var userFields = userUpdateFields.slice(0);
+userFields.push('email');
 
 function createUser(req, res) {
   req.user = new User();
