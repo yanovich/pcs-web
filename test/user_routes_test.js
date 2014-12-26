@@ -133,7 +133,7 @@ describe('User routes', function() {
         router(Routes.update, req, res);
       });
 
-      it("should modify self name", function(done) {
+      it("should modify own name", function(done) {
         var res = {
           locals: {},
           json: function(u) {
@@ -194,6 +194,31 @@ describe('User routes', function() {
         req.body = {
           email: 'new_user@example.com',
           name: "new name",
+        };
+        router(Routes.update, req, res);
+      });
+
+      it("should modify own password", function(done) {
+        var res = {
+          locals: {},
+          json: function(u) {
+            expect(u.name).to.eql(req.body.name);
+            User.findOne({ email: operator.email }, function (err, u) {
+              if (err) throw err;
+              operator.authenticate(req.body.password, function (err, valid) {
+                if (err) throw err;
+                expect(valid).to.be.ok;
+              });
+              done();
+            });
+          },
+        };
+        req.user = operator;
+        req.body = {
+          email: operator.email,
+          name: "new name",
+          password: "1111111",
+          confirmation: "1111111",
         };
         router(Routes.update, req, res);
       });
