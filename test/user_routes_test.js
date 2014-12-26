@@ -112,6 +112,26 @@ describe('User routes', function() {
       }};
       router(Routes.update, req, res);
     });
+
+    describe("when operator signed in", function() {
+      var req;
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+      });
+
+      it("should deny non-admins", function(done) {
+        var res = {
+          locals: {},
+          send: function(code) {
+            expect(code).to.eql(403);
+            done();
+          },
+        };
+        req.user = user;
+        router(Routes.update, req, res);
+      });
+    });
   });
 });
 
