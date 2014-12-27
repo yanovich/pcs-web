@@ -549,6 +549,21 @@ describe('User routes', function() {
         };
         router(Routes.create, req, res);
       });
+
+      it("should fail when name is already taken", function(done) {
+        req.body = {
+          name: 'created user',
+          email: user.email,
+          password: '12345678',
+          confirmation: '12345678',
+        }
+        res.json = function(code, err) {
+          expect(code).to.be(500);
+          expect(err).not.to.be.an('undefined');
+          done();
+        };
+        router(Routes.create, req, res);
+      });
     });
   });
 });
