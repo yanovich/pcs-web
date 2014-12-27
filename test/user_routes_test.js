@@ -564,6 +564,8 @@ describe('User routes', function() {
         };
         router(Routes.create, req, res);
       });
+
+      it("should report validation errors");
     });
   });
 });
