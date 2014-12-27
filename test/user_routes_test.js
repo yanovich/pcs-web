@@ -13,11 +13,6 @@ var Routes = require('../routes/user');
 var router = require('./support/router');
 
 describe('User routes', function() {
-  var user;
-  before(function(done) {
-    Factory.create('user', function (u) { user = u; done(); });
-  });
-
   var operator;
   before(function(done) {
     Factory.create('user', function (u) { operator = u; done(); });
@@ -26,6 +21,18 @@ describe('User routes', function() {
   var admin;
   before(function(done) {
     Factory.create('admin', function (u) { admin = u; done(); });
+  });
+
+  var user, count;
+  before(function(done) {
+    Factory.create('user', 26, function (l) {
+      user = l[0];
+      User.count(function (err, c) {
+        if (err) throw err;
+        count = c;
+        done();
+      });
+    });
   });
 
   describe("#load", function() {
@@ -401,6 +408,27 @@ describe('User routes', function() {
         },
       };
       router(Routes.index, req, res);
+    });
+
+    describe("when administrator signed in", function() {
+      var req, res;
+
+      beforeEach(function() {
+        req = { session: { operatorId: admin._id } };
+        req.query = {};
+        res = {
+          locals: {},
+        };
+      });
+
+      it("should retrieve first page if not specified", function(done) {
+        res.json_ng = function(users) {
+          expect(users.length).to.be(26);
+          expect(users[25].count).to.be(count);
+          done();
+        };
+        router(Routes.index, req, res);
+      });
     });
   });
 });
