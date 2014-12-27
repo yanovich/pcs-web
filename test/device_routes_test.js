@@ -15,13 +15,14 @@ var deviceAttrs = {
 };
 
 describe('Device routes', function() {
-  var device, count;
+  var device, count, last;
   before(function(done) {
     Factory.create('device', 26, function (l) {
       device = l[0];
       Device.count(function (err, c) {
         if (err) throw err;
         count = c;
+        last = Math.floor((count + 24) / 25);
         done();
       });
     });
@@ -243,8 +244,8 @@ describe('Device routes', function() {
           expect(fetched).to.eql(original);
           done();
         };
-        req.query.page = 3;
-        Device.find({}, "_id").sort({name: 1}).skip(25).limit(25).exec(function(err, devices) {
+        req.query.page = last + 1;
+        Device.find({}, "_id").sort({name: 1}).skip((last - 1) * 25).limit(25).exec(function(err, devices) {
           original = devices.map(function(item) { return item._id.toString(); });
           router(Routes.index, req, res);
         });

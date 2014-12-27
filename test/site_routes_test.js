@@ -22,7 +22,7 @@ describe('Site routes', function() {
       Site.count(function (err, c) {
         if (err) throw err;
         count = c;
-        last = (count + 24) / 25;
+        last = Math.floor((count + 24) / 25);
         done();
       });
     });
@@ -244,7 +244,7 @@ describe('Site routes', function() {
           done();
         };
         req.query.page = last + 1;
-        Site.find({}, "_id").sort({name: 1}).skip(25).limit(25).exec(function(err, sites) {
+        Site.find({}, "_id").sort({name: 1}).skip((last -1) * 25).limit(25).exec(function(err, sites) {
           original = sites.map(function(item) { return item._id.toString(); });
           router(Routes.index, req, res);
         });
