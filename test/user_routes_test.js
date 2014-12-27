@@ -517,6 +517,39 @@ describe('User routes', function() {
       };
       router(Routes.create, req, res);
     });
+
+    describe("when administrator signed in", function() {
+      var req, res;
+
+      beforeEach(function() {
+        req = { session: { operatorId: admin._id } };
+        res = {
+          locals: {},
+        };
+      });
+
+      it("should create user with valid params", function(done) {
+        req.body = {
+          name: 'created user',
+          email: 'created.user@example.com',
+          password: '12345678',
+          confirmation: '12345678',
+        };
+        res.json = function(u) {
+          expect(u._id).not.to.be.an('undefined');
+          expect(u.name).to.be(req.body.name);
+          expect(u.email).to.be(req.body.email);
+          User.findOne({ _id: u._id }, function (err, z) {
+            expect(err).not.to.be.ok;
+            expect(z).to.be.ok;
+            expect(z.name).to.be(req.body.name);
+            expect(z.email).to.be(req.body.email);
+            done();
+          });
+        };
+        router(Routes.create, req, res);
+      });
+    });
   });
 });
 
