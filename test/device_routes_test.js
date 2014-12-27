@@ -259,7 +259,7 @@ describe('Device routes', function() {
         expect(url).to.eql("/signin");
         done();
       }};
-      router(Routes.index, req, res);
+      router(Routes.create, req, res);
     });
 
     describe("when operator signed in", function() {
