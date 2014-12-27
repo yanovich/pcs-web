@@ -23,13 +23,14 @@ describe('User routes', function() {
     Factory.create('admin', function (u) { admin = u; done(); });
   });
 
-  var user, count;
+  var user, count, last;
   before(function(done) {
     Factory.create('user', 26, function (l) {
       user = l[0];
       User.count(function (err, c) {
         if (err) throw err;
         count = c;
+        last = Math.floor((count + 24) / 25);
         done();
       });
     });
@@ -472,6 +473,22 @@ describe('User routes', function() {
         };
         req.query.page = 0;
         User.find({}, "_id").sort({name: 1}).limit(25).exec(function(err, users) {
+          original = users.map(function(item) { return item._id.toString(); });
+          router(Routes.index, req, res);
+        });
+      });
+
+      it("should retrieve last one if page is too big", function(done) {
+        var original = [];
+        res.json_ng = function(users) {
+          var fetched = users.slice(0, -1).map(function(item) {
+            return item._id.toString();
+          });
+          expect(fetched).to.eql(original);
+          done();
+        };
+        req.query.page = last + 1;
+        User.find({}, "_id").sort({name: 1}).skip((last - 1) * 25).limit(25).exec(function(err, users) {
           original = users.map(function(item) { return item._id.toString(); });
           router(Routes.index, req, res);
         });
