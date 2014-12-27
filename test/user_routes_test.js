@@ -505,6 +505,18 @@ describe('User routes', function() {
       }};
       router(Routes.create, req, res);
     });
+
+    it("should deny access to non-admin users", function(done) {
+      var req = { session: { operatorId: operator._id } },
+      res = {
+        locals: {},
+        send: function(code) {
+          expect(code).to.eql(403);
+          done();
+        },
+      };
+      router(Routes.create, req, res);
+    });
   });
 });
 
