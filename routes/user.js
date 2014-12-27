@@ -18,12 +18,6 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
-function requireAdmin(req, res, next) {
-  if (req.operator.admin)
-    return next();
-  res.redirect('/users/' + req.operator._id);
-}
-
 function requireAdminOrSelf(req, res, next) {
   if (!req.user)
     return res.send(404);
@@ -110,11 +104,11 @@ module.exports.update = [ auth.authenticate,
                           updateUser];
 
 module.exports.index = [ auth.authenticate,
-                         requireAdmin,
+                         auth.requireAdmin,
                          indexUsers];
 
 module.exports.create = [ auth.authenticate,
-                          requireAdmin,
+                          auth.requireAdmin,
                           createUser];
 
 // vim:ts=2 sts=2 sw=2 et:
