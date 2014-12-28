@@ -82,6 +82,16 @@ describe('State routes', function () {
             expect(c).to.be(500);
             expect(listeners).to.be.empty;
           });
+
+          it('should abort when no device', function () {
+            var c;
+            res.send = function (code) {
+              c = code;
+            };
+            listeners.data('{ "a": 3 }');
+            expect(c).to.be(500);
+            expect(listeners).to.be.empty;
+          });
         });
       });
     });
