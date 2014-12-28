@@ -148,7 +148,8 @@ function createSystem(req, res) {
 module.exports.show = [ auth.authenticate,
                         showSystem];
 
-module.exports.setpoints = [ showSetpoints ];
+module.exports.setpoints = [ auth.authenticate,
+                             showSetpoints ];
 
 module.exports.update = [ auth.authenticate,
                           updateSystem];
