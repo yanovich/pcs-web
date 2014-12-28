@@ -41,6 +41,32 @@ describe('State routes', function () {
       req.headers = { 'content-type': 'text/html' }
       Routes.create(req, res, done);
     });
+
+    describe('with correct request params', function () {
+      var listeners;
+      beforeEach(function () {
+        listeners = {};
+        req.on = function (key, value) {
+          if (!listeners[key])
+            listeners[key] = value;
+          else
+            throw 'redefinition of ' + key;
+        };
+        req.once = req.on;
+        req.removeListener = function (key, value) {
+          expect(listeners[key]).to.eql(value);
+          delete listeners[key];
+        };
+        Routes.create(req, res, null);
+      });
+
+      it('should add listeners', function () {
+        expect(listeners.data).to.be.ok;
+        expect(listeners.end).to.be.ok;
+        expect(listeners.error).to.be.ok;
+        expect(listeners.close).to.be.ok;
+      });
+    });
   });
 });
 
