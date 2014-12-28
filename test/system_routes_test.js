@@ -29,6 +29,11 @@ describe('System routes', function() {
     });
   });
 
+  var operator;
+  before(function(done) {
+    Factory.create('user', function (u) { operator = u; done(); });
+  });
+
   describe("#load", function() {
     it("should respond with not found code", function(done) {
       var res = {
@@ -48,6 +53,21 @@ describe('System routes', function() {
         expect(url).to.eql("/signin");
         done();
       }};
+      router(Routes.show, req, res);
+    });
+
+    it("should return only accessible fields", function(done) {
+      var req = { session: { operatorId: operator._id } };
+      var res = {
+        locals: {},
+        json_ng: function(st) {
+          expect(Object.keys(st)).not.to.contain('some_field');
+          expect(st._id).to.be(system._id);
+          done();
+        },
+      };
+      req.system = system;
+      req.system.some_field = true;
       router(Routes.show, req, res);
     });
   });
