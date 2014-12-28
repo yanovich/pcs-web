@@ -114,17 +114,21 @@ describe('User', function(){
         .fill(t('user.email'), admin.email)
         .fill(t('user.password'), admin.password)
         .pressButton(t('session.sign_in'))
-        .then(done, done);
+        .then(function () {
+          console.timeEnd('signin');
+          done();
+        }, done);
       }, done);
     })
 
     describe('index page', function () {
       beforeEach(function (done) {
-        console.timeEnd('signin');
+        console.time('index');
         browser.clickLink(".tp-menu-side > li > a[href='#/users']", done);
       })
 
       it('should list users with pagination', function (done) {
+        console.timeEnd('index');
         expect(browser.url).to.be(url + '/#/users');
         var pager = browser.queryAll("div.page > b");
         expect(pager.length).to.be(3);
@@ -161,14 +165,16 @@ describe('User', function(){
     })
 
     describe('user page', function () {
-      beforeEach(function (done) {
-        console.time('signin');
-        browser.visit('/#/users/' + user._id).then(done, done);
+      before(function (done) {
+        browser.location = '#/users/' + user._id;
         console.time('profile');
+        browser.wait(function () {
+          console.timeEnd('profile');
+          done();
+        });
       })
 
       it('should render user profile', function () {
-        console.timeEnd('profile');
         expect(browser.query("input[name='name']").value).to.eql(user.name);
         expect(browser.query("input[name='email']").value).to.eql(user.email);
         expect(browser.query("input[name='admin']")).not.to.be(null);
@@ -181,10 +187,11 @@ describe('User', function(){
 
       describe('changing name attribute', function () {
         it('should update user', function (done) {
-          console.timeEnd('profile');
+          console.time('update');
           browser.fill("name", user.name + '!');
           expect(browser.query("form[name='userForm'] > button:disabled")).to.be(null);
           browser.pressButton(t('action.put')).then(function () {
+            console.timeEnd('update');
             User.findById(user._id, function (err, u) {
               expect(u.name).to.be(user.name + '!');
               done();
@@ -195,11 +202,14 @@ describe('User', function(){
 
       describe('admin attribute', function () {
         beforeEach(function (done) {
-          console.timeEnd('profile');
+          console.time('update');
           browser
           .check(t('user.admin'))
           .pressButton(t('action.put'))
-          .then(done, done);
+          .then(function () {
+            console.timeEnd('update');
+            done();
+          }, done);
         })
 
         it('should assign admin', function (done) {
@@ -213,10 +223,14 @@ describe('User', function(){
 
     describe('new users', function () {
       beforeEach(function (done) {
-        browser.visit('/#/users/new').then(done, done);
+        console.time('signin');
+        browser.location = '#/users/new';
+        console.time('new');
+        browser.wait(done);
       })
 
       it('should index provide input form', function () {
+        console.timeEnd('new');
         expect(browser.url).to.be(url + '/#/users/new');
       })
 
@@ -237,6 +251,7 @@ describe('User', function(){
         })
 
         it('should create user', function (done) {
+          console.timeEnd('new');
           User.findOne({ email: newUser.email }, function (err, u) {
             expect(u.name).to.be(newUser.name);
             expect(u.email).to.be(newUser.email);
