@@ -66,6 +66,14 @@ describe('State routes', function () {
         expect(listeners.error).to.be.ok;
         expect(listeners.close).to.be.ok;
       });
+
+      describe('adds onData which', function () {
+        describe('before receiveing device', function () {
+          it('should ignore newlines', function () {
+            listeners.data('\n');
+          });
+        });
+      });
     });
   });
 });
