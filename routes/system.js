@@ -84,7 +84,7 @@ function updateSetpoints(req, res) {
     if (err) {
       return res.json(500, err);
     }
-    res.json_ng(req.system);
+    res.json(req.system);
   });
 }
 

@@ -16,14 +16,23 @@ describe('System routes', function() {
     Factory.create('site', function (s) { site = s; done(); });
   });
 
-  var device;
+  var device, device2;
   before(function(done) {
-    Factory.create('device', function (d) { device = d; done(); });
+    Factory.create('device', 2, function (l) {
+      device = l[0];
+      device2 = l[1];
+      done();
+    });
   });
 
   var system;
   before(function(done) {
-    Factory.create('system', {site: site._id, device: device._id}, function (l) {
+    Factory.create('system', {
+      site: site._id,
+      device: device._id,
+      outputs: [ 'a' ],
+      setpoints: { a: 1 },
+    }, function (l) {
       system = l;
       done();
     });
@@ -103,6 +112,37 @@ describe('System routes', function() {
         done();
       }};
       router(Routes.update, req, res);
+    });
+
+    describe("when operator signed in", function() {
+      var req, res = {};
+
+      beforeEach(function() {
+        req = { session: { operatorId: operator._id } };
+        res.locals = {};
+      });
+
+      it("should limit access to existing setpoints", function (done) {
+        res.json = function(s) {
+          expect(s.name).to.eql(system.name);
+          System.findOne({ site: system.site, name: system.name }, function (err, s) {
+            if (err) throw err;
+            expect(s.device).to.eql(system.device);
+            expect(s.setpoints.a).to.be(2);
+            done();
+          });
+        }
+        req.system = system;
+        req.body = {
+          name: system.name,
+          device: device2._id,
+          outputs: system.outputs,
+          setpoints: { a: 2 },
+        };
+        router(Routes.update, req, res);
+      });
+
+      it("should ensure setpoints match 1-for-1");
     });
   });
 });
