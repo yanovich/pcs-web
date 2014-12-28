@@ -24,9 +24,21 @@ describe('State routes', function () {
   });
 
   describe("#create", function() {
+    var req, res;
+
+    beforeEach(function () {
+      req = { method: 'PUT', headers: {'content-type': 'application/x-device-data' } };
+      res = {};
+    });
+
     it("should check HTTP PUT method", function(done) {
-      var req = { method: 'GET' };
-      var res = {};
+      req.method = 'POST';
+      Routes.create(req, res, done);
+    });
+
+    it("should check content type", function(done) {
+      req.method = 'PUT';
+      req.headers = { 'content-type': 'text/html' }
       Routes.create(req, res, done);
     });
   });
