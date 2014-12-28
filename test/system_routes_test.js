@@ -81,6 +81,18 @@ describe('System routes', function() {
       }};
       router(Routes.setpoints, req, res);
     });
+
+    it("should be protected against cross-site scripting", function(done) {
+      var req = { session: { operatorId: operator._id } };
+      var res = {
+        locals: {},
+        json_ng: function() {
+          done();
+        },
+      };
+      req.device = device;
+      router(Routes.setpoints, req, res);
+    });
   });
 });
 

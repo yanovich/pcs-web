@@ -56,7 +56,7 @@ function showSetpoints(req, res) {
           });
         }
       });
-      res.json(setpoints);
+      res.json_ng(setpoints);
     });
 }
 
