@@ -92,6 +92,16 @@ describe('State routes', function () {
             expect(c).to.be(500);
             expect(listeners).to.be.empty;
           });
+
+          it('should abort when bad device', function () {
+            var c;
+            res.send = function (code) {
+              c = code;
+            };
+            listeners.data('{ "device": 3 }');
+            expect(c).to.be(500);
+            expect(listeners).to.be.empty;
+          });
         });
       });
     });
