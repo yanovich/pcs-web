@@ -72,6 +72,16 @@ describe('State routes', function () {
           it('should ignore newlines', function () {
             listeners.data('\n');
           });
+
+          it('should abort when bad JSON', function () {
+            var c;
+            res.send = function (code) {
+              c = code;
+            };
+            listeners.data('{ device: 3');
+            expect(c).to.be(500);
+            expect(listeners).to.be.empty;
+          });
         });
       });
     });

@@ -39,7 +39,11 @@ module.exports.create = function (req, res, next) {
       input = JSON.parse(chunk.toString(), {});
     }
     catch (e) {
-      res.write(toString());
+      if (!device)
+        res.send(500);
+      else
+        res.end();
+      cleanup();
       return;
     }
 
