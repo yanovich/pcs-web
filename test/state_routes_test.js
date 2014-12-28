@@ -22,6 +22,14 @@ describe('State routes', function () {
       router(Routes.index, req, res);
     });
   });
+
+  describe("#create", function() {
+    it("should check HTTP PUT method", function(done) {
+      var req = { method: 'GET' };
+      var res = {};
+      Routes.create(req, res, done);
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
