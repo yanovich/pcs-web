@@ -40,6 +40,17 @@ describe('System routes', function() {
       Routes.load({}, res, null, 0);
     });
   });
+
+  describe("#show", function() {
+    it("should deny access to non-signed-in users", function(done) {
+      var req = { session: {} },
+      res = { redirect: function(url) {
+        expect(url).to.eql("/signin");
+        done();
+      }};
+      router(Routes.show, req, res);
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
