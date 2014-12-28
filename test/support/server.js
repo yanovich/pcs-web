@@ -12,6 +12,7 @@ var port = app.get('port');
 var User = require('../../models/user');
 var Device = require('../../models/device');
 var Site = require('../../models/site');
+var System = require('../../models/system');
 
 var async = require('async');
 var FactoryLady = require('factory-lady');
@@ -31,6 +32,7 @@ var userCounter = 0;
 User.find().remove(function() {});
 Device.find().remove(function() {});
 Site.find().remove(function() {});
+System.find().remove(function() {});
 
 FactoryLady.define('user', User, {
   password: 'password',
@@ -58,13 +60,26 @@ var siteCounter = 0;
 FactoryLady.define('site', Site, {
   name: function (cb) { cb(faker.lorem.words(1) + ++siteCounter) }
 })
+
+var systemCounter = 0;
+
+FactoryLady.define('system', System, {
+  name: function (cb) { cb(faker.lorem.words(1) + ++systemCounter) }
+})
+
 Factory = {
-  create: function (key, count, cb) {
+  create: function (name, keys, count, cb) {
+    if (typeof(keys) !== 'object') {
+      if (cb) throw 'keys should be an Object';
+      cb = count;
+      count = keys;
+      keys = {};
+    }
     if (typeof(count) === 'function')
-      return FactoryLady.create(key, count);
+      return FactoryLady.create(name, keys, count);
 
     async.times(count, function (n, next) {
-      FactoryLady.create(key, function (o) { next(null, o); });
+      FactoryLady.create(name, keys, function (o) { next(null, o); });
     }, function (err, items) {
       if (err) throw err;
       cb(items);

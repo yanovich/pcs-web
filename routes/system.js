@@ -12,6 +12,9 @@ var perPage = 25;
 
 module.exports.load = function (req, res, next, id) {
   System.findOne({ _id: id }, function (err, system) {
+    if (err || !system)
+      return res.send(404);
+
     req.system = system;
     next();
   })
