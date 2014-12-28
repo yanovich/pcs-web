@@ -156,6 +156,17 @@ describe('System routes', function() {
       router(Routes.index, req, res);
     });
   });
+
+  describe("#create", function() {
+    it("should deny access to non-signed-in users", function(done) {
+      var req = { session: {} },
+      res = { redirect: function(url) {
+        expect(url).to.eql("/signin");
+        done();
+      }};
+      router(Routes.create, req, res);
+    });
+  });
 });
 
 // vim:ts=2 sts=2 sw=2 et:
