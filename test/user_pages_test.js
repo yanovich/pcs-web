@@ -103,7 +103,9 @@ describe('User', function(){
         .fill(t('user.email'), admin.email)
         .fill(t('user.password'), admin.password)
         .pressButton(t('session.sign_in'))
-        .then(done, done);
+        .then(function () {
+          done();
+        }, done);
       }, done);
     })
 
@@ -149,8 +151,11 @@ describe('User', function(){
     })
 
     describe('user page', function () {
-      beforeEach(function (done) {
-        browser.visit('/#/users/' + user._id).then(done, done);
+      before(function (done) {
+        browser.location = '#/users/' + user._id;
+        browser.wait(function () {
+          done();
+        });
       })
 
       it('should render user profile', function () {
@@ -182,7 +187,9 @@ describe('User', function(){
           browser
           .check(t('user.admin'))
           .pressButton(t('action.put'))
-          .then(done, done);
+          .then(function () {
+            done();
+          }, done);
         })
 
         it('should assign admin', function (done) {
@@ -196,7 +203,8 @@ describe('User', function(){
 
     describe('new users', function () {
       beforeEach(function (done) {
-        browser.visit('/#/users/new').then(done, done);
+        browser.location = '#/users/new';
+        browser.wait(done);
       })
 
       it('should index provide input form', function () {
