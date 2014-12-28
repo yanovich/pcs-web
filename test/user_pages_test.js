@@ -29,15 +29,21 @@ describe('User', function(){
   describe('profile page', function () {
     before(function (done) {
       browser = new Browser({ site: global.url });
+      console.time('load signin');
       browser
       .visit('/signin')
       .then(function () {
+        console.timeEnd('load signin');
+        console.time('signin');
         browser
         .fill(t('user.email'), user.email)
         .fill(t('user.password'), user.password)
         .pressButton(t('session.sign_in'))
         .then(function () {
+          console.timeEnd('signin');
+          console.time('profile');
           browser.pressButton('nav button.dropdown-toggle').then(function () {
+            console.timeEnd('profile');
             browser.clickLink('nav ul.dropdown-menu a').then(done, done);
           }, done);
         }, done);
@@ -61,6 +67,7 @@ describe('User', function(){
         user.name = 'Update Name';
         user.password = 'newPassword';
         user.confirmation = 'newPassword';
+        console.time('profile update');
         browser
         .fill(t('user.name'), user.name)
         .fill(t('user.password'), user.password)
@@ -70,6 +77,7 @@ describe('User', function(){
       })
 
       it('should show updated data', function (done) {
+        console.timeEnd('profile update');
         expect(browser.query("input[name='name']").value).to.eql(user.name);
         expect(browser.query("input[name='email']").value).to.eql(user.email);
         User.findById(user._id, function (err, u) {
@@ -96,9 +104,12 @@ describe('User', function(){
 
     before(function (done) {
       browser = new Browser({ site: global.url });
+      console.time('load signin');
       browser
       .visit('/signin')
       .then(function () {
+        console.timeEnd('load signin');
+        console.time('signin');
         browser
         .fill(t('user.email'), admin.email)
         .fill(t('user.password'), admin.password)
@@ -109,6 +120,7 @@ describe('User', function(){
 
     describe('index page', function () {
       beforeEach(function (done) {
+        console.timeEnd('signin');
         browser.clickLink(".tp-menu-side > li > a[href='#/users']", done);
       })
 
@@ -150,10 +162,13 @@ describe('User', function(){
 
     describe('user page', function () {
       beforeEach(function (done) {
+        console.time('signin');
         browser.visit('/#/users/' + user._id).then(done, done);
+        console.time('profile');
       })
 
       it('should render user profile', function () {
+        console.timeEnd('profile');
         expect(browser.query("input[name='name']").value).to.eql(user.name);
         expect(browser.query("input[name='email']").value).to.eql(user.email);
         expect(browser.query("input[name='admin']")).not.to.be(null);
@@ -166,6 +181,7 @@ describe('User', function(){
 
       describe('changing name attribute', function () {
         it('should update user', function (done) {
+          console.timeEnd('profile');
           browser.fill("name", user.name + '!');
           expect(browser.query("form[name='userForm'] > button:disabled")).to.be(null);
           browser.pressButton(t('action.put')).then(function () {
@@ -179,6 +195,7 @@ describe('User', function(){
 
       describe('admin attribute', function () {
         beforeEach(function (done) {
+          console.timeEnd('profile');
           browser
           .check(t('user.admin'))
           .pressButton(t('action.put'))
