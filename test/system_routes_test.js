@@ -166,6 +166,15 @@ describe('System routes', function() {
       }};
       router(Routes.create, req, res);
     });
+
+    it("should deny access to non-admin users", function(done) {
+      var req = { session: { operatorId: operator._id } },
+      res = { send: function(code) {
+        expect(code).to.be(403);
+        done();
+      }, locals: {} };
+      router(Routes.create, req, res);
+    });
   });
 });
 

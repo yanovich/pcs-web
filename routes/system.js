@@ -20,12 +20,6 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
-function requireAdmin(req, res, next) {
-  if (req.operator.admin)
-    return next();
-  res.send(401);
-}
-
 var exportFields = '_id device site name outputs setpoints';
 
 function showSystem(req, res) {
@@ -158,7 +152,7 @@ module.exports.index = [ auth.authenticate,
                          indexSystems];
 
 module.exports.create = [ auth.authenticate,
-                          requireAdmin,
+                          auth.requireAdmin,
                           createSystem];
 
 // vim:ts=2 sts=2 sw=2 et:
