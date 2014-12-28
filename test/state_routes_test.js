@@ -12,6 +12,11 @@ var Routes = require('../routes/state');
 var router = require('./support/router');
 
 describe('State routes', function () {
+  var device;
+  before(function(done) {
+    Factory.create('device', function (d) { device = d; done(); });
+  });
+
   describe("#index", function() {
     it("should deny access to non-signed-in users", function(done) {
       var req = { session: {} },
@@ -101,6 +106,20 @@ describe('State routes', function () {
             listeners.data('{ "device": 3 }');
             expect(c).to.be(500);
             expect(listeners).to.be.empty;
+          });
+        });
+
+        describe('after receiveing device', function () {
+          var code, response;
+          beforeEach(function (done) {
+            res.writeHead = function (c) { code = c; };
+            res.write = function (r) { response = r; done(); };
+            listeners.data('{ "device": "' + device._id + '" }');
+          });
+
+          it('should report success', function () {
+            expect(code).to.be(200);
+            expect(response).to.be('ok');
           });
         });
       });
