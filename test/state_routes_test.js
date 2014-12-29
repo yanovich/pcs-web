@@ -18,6 +18,28 @@ describe('State routes', function () {
     Factory.create('device', function (d) { device = d; done(); });
   });
 
+  var device1;
+  before(function(done) {
+    Factory.create('device', function (d) { device1 = d; done(); });
+  });
+
+  var site;
+  before(function(done) {
+    Factory.create('site', function (s) { site = s; done(); });
+  });
+
+  before(function(done) {
+    Factory.create('system',
+        { site: site._id, device: device1._id, setpoints: { a: 1 } },
+        function () { done(); });
+  });
+
+  before(function(done) {
+    Factory.create('system',
+        { site: site._id, device: device1._id, setpoints: { b: 2 } },
+        function () { done(); });
+  });
+
   describe("#index", function() {
     it("should deny access to non-signed-in users", function(done) {
       var req = { session: {} },
@@ -160,6 +182,23 @@ describe('State routes', function () {
               interval = setInterval(recount, 25);
               listeners.data('{ "a": 1, "b": 2 }');
             });
+          });
+        });
+
+        describe('after receiveing device with setpoints', function () {
+          var code, response;
+          beforeEach(function (done) {
+            res.writeHead = function (c) { code = c; };
+            res.write = function (r) { response = r; done(); };
+            listeners.data('{ "device": "' + device1._id + '" }');
+          });
+
+          it('should report setpoints', function (done) {
+            res.write = function (r) {
+              expect(r).to.eql(JSON.stringify({a: 1, b: 2}));
+              done();
+            };
+            listeners.data('{ "c": 3 }');
           });
         });
       });
