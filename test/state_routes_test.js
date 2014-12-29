@@ -8,6 +8,7 @@
 
 var expect = require('expect.js');
 
+var State = require('../models/state');
 var Routes = require('../routes/state');
 var router = require('./support/router');
 
@@ -135,6 +136,30 @@ describe('State routes', function () {
             res.end = function () { end = true; };
             listeners.data('{ "device');
             expect(listeners).to.be.empty;
+          });
+
+          it('should save state on good JSON', function (done) {
+            State.count({ device: device._id }, function (err, count) {
+              var interval, timer;
+              function recount () {
+                State.count({ device: device._id }, function (err, newCount) {
+                  expect(err).not.to.be.ok;
+                  if (newCount > count) {
+                    clearInterval(interval);
+                    clearTimeout(timer);
+                    done();
+                  }
+                });
+              };
+              expect(err).not.to.be.ok;
+              timer = setTimeout(function () {
+                clearInterval(interval);
+                expect(count).not.to.be(count);
+                done();
+              }, 300);
+              interval = setInterval(recount, 25);
+              listeners.data('{ "a": 1, "b": 2 }');
+            });
           });
         });
       });
