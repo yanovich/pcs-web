@@ -129,6 +129,13 @@ describe('State routes', function () {
             };
             listeners.data('\n');
           });
+
+          it('should abort on bad JSON', function () {
+            var end;
+            res.end = function () { end = true; };
+            listeners.data('{ "device');
+            expect(listeners).to.be.empty;
+          });
         });
       });
     });
