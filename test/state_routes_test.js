@@ -121,6 +121,14 @@ describe('State routes', function () {
             expect(code).to.be(200);
             expect(response).to.be('ok');
           });
+
+          it('should respond to newline', function (done) {
+            res.write = function (response) {
+              expect(response).to.be('\n');
+              done();
+            };
+            listeners.data('\n');
+          });
         });
       });
     });
