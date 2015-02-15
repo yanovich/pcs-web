@@ -8,6 +8,10 @@
 var User = require('../models/user');
 
 module.exports.loadOperatorFromSession = function (req, res, next) {
+  if (req.root && req.session.operator == req.root.email) {
+    req.operator = req.root;
+    return next();
+  }
   User.findOne({ email: req.session.operator }, function (err, user) {
     if (err) {
       console.log(err);
@@ -23,6 +27,10 @@ module.exports.loadOperatorFromSession = function (req, res, next) {
 module.exports.loadOperatorByEmail = function (req, res, next) {
   if (!req.body || !req.body.email) return next();
 
+  if (req.root && req.body.email.toLowerCase() == req.root.email) {
+    req.operator = req.root;
+    return next();
+  }
   User.findOne({ email: req.body.email }, function (err, user) {
     if (err)
       return res.send(500, 'Sorry, internal server error.');
@@ -36,6 +44,11 @@ module.exports.authenticate = function (req, res, next) {
   if (!req.session.operator) {
     req.session.returnTo = req.url;
     return res.redirect('/signin');
+  }
+
+  if (req.root && req.session.operator == req.root.email) {
+    res.locals.operator = req.operator = req.root;
+    return next();
   }
 
   User.findOne({ email: req.session.operator }, function (err, user) {

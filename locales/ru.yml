@@ -21,6 +21,7 @@ ru:
     self:
       plural: Объекты
   user:
+    root: Главный администратор
     self:
       plural: Пользователи
     name: Полное имя

@@ -24,6 +24,8 @@ var auth = require('./routes/_auth');
 var authUser = auth.authenticate;
 var states = require('./routes/state');
 
+var User = require('./models/user');
+
 var config = require('./config');
 
 var app = express();
@@ -98,6 +100,11 @@ app.use(function (req, res, next) {
 app.use(i18n.express());
 if (process.env.NODE_ENV === 'test')
   app.i18n = i18n.request();
+
+app.use(function (req, res, next) {
+  req.root = User.createRoot(config.saEmail, req.t('user.root'), config.saPasswordHash);
+  next();
+});
 
 app.get('/signin', sessions.new);
 app.post('/signin', sessions.create);

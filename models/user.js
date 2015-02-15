@@ -78,6 +78,13 @@ user_schema.index({ name: 1 });
 
 var User = mongoose.model('User', user_schema);
 
+User.createRoot = function (email, name, hash) {
+  var e = email.toLowerCase();
+  var root = new User({ email: e, name: name, hash: hash });
+  root.admin = true;
+  return root;
+};
+
 module.exports = User;
 
 // vim:ts=2 sts=2 sw=2 et:
