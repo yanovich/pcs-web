@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "async": "*",
-    "chai": "*",
-    "expect.js": "*",
+    "chai": "1.10.x",
+    "expect.js": "0.3.x",
     "factory-lady": "*",
     "faker": "*",
     "karma": "*",
@@ -36,10 +36,10 @@
     "karma-mocha-reporter": "*",
     "mocha": "*",
     "phantomjs": "*",
-    "sinon": "*",
-    "sinon-chai": "*",
-    "sinon-expect": "*",
-    "zombie": "*"
+    "sinon": "1.12.x",
+    "sinon-chai": "2.6.x",
+    "sinon-expect": "0.2.x",
+    "zombie": "2.5.x"
   },
   "scripts": {
     "postinstall": "bower install",
