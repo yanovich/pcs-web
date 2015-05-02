@@ -1,0 +1,22 @@
+// views/layouts/sign.jade -- signin page
+// Copyright 2015 Sergei Ianovich
+//
+// Licensed under AGPL-3.0 or later, see LICENSE
+// Process Control Service Web Interface
+
+doctype html
+html
+  head
+    title= title + ' - asutp.io'
+    link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/app.css')
+  body
+    header.banner-signin
+      a.navbar-brand(href='/') asutp.io
+    .container
+      block content
+    include ../_footer
+    script(src='/bower_components/jquery/jquery.js')
+    script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
+
+//- vim:ts=2 sts=2 sw=2 et:

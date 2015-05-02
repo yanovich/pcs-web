@@ -1,5 +1,5 @@
 /* routes/session.js
- * Copyright 2014 Sergei Ianovich
+ * Copyright 2015 Sergei Ianovich
  *
  * Licensed under AGPL-3.0 or later, see LICENSE
  * Process Control Service Web Interface

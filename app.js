@@ -105,6 +105,7 @@ app.del('/signout', sessions.destroy);
 
 app.param('user', users.load);
 app.get('/users', users.index);
+app.get('/signup', users.new);
 app.get('/users/:user', users.show);
 app.post('/users/:user', users.update);
 app.post('/users', users.create);

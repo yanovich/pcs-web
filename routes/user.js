@@ -28,6 +28,31 @@ function requireAdminOrSelf(req, res, next) {
   res.send(403);
 }
 
+function newUser(req, res) {
+  function renderRegistration () {
+    res.render('users/new', {
+      title: 'Sign up'
+    });
+  }
+  if (!req.session.operatorId)
+    return renderRegistration();
+
+  User.findOne({ _id: req.session.operatorId }, function (err, user) {
+    if (err) {
+      if (err.name !== 'CastError')
+        console.log(err);
+      req.session.operatorId = undefined;
+      return renderRegistration();
+    }
+
+    if (user)
+      return res.redirect('/');
+
+    req.session.operatorId = undefined;
+    return renderRegistration();
+  })
+}
+
 var exportFields = '_id name email admin';
 
 function showUser(req, res) {
@@ -81,19 +106,54 @@ var userFields = userUpdateFields.slice(0);
 userFields.push('email');
 
 function createUser(req, res) {
+  if (req.body) {
+    var html = req.body['_html'];
+    if (html) return signupUser(req, res);
+  }
+
+  auth.authenticate(req, res, function () {
+    auth.requireAdmin(req, res, function () {
+      req.user = new User();
+      userFields.forEach(function (f) {
+        req.user[f] = req.body[f];
+      });
+      if (req.operator.admin)
+        req.user.admin = !!req.body['admin'];
+      req.user.save(function (err) {
+        if (err) {
+          return res.json(500, err);
+        }
+        res.json(req.user);
+      });
+    })
+  });
+}
+
+function signupUser(req, res) {
+  function signupFail(validationError) {
+    res.locals.err = validationError;
+    res.render('users/new', {
+      title: 'Sign up'
+    });
+  }
+  if (req.session.operatorId)
+    return res.json(500, {error: 'Sorry, internal server error'});
+
   req.user = new User();
   userFields.forEach(function (f) {
     req.user[f] = req.body[f];
   });
-  if (req.operator.admin)
-    req.user.admin = !!req.body['admin'];
   req.user.save(function (err) {
     if (err) {
-      return res.json(500, err);
+      return signupFail(err);
     }
-    res.json(req.user);
+    req.session.messages = ['flash.create.success']
+    res.redirect('/signin');
   });
 }
+
+
+module.exports.new = [ newUser ];
 
 module.exports.show = [ auth.authenticate,
                         requireAdminOrSelf,
@@ -107,8 +167,6 @@ module.exports.index = [ auth.authenticate,
                          auth.requireAdmin,
                          indexUsers];
 
-module.exports.create = [ auth.authenticate,
-                          auth.requireAdmin,
-                          createUser];
+module.exports.create = [ createUser];
 
 // vim:ts=2 sts=2 sw=2 et:

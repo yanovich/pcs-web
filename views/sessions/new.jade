@@ -1,20 +1,16 @@
 // views/sessions/new.jade -- signin page
-// Copyright 2014 Sergei Ianovich
+// Copyright 2015 Sergei Ianovich
 //
 // Licensed under AGPL-3.0 or later, see LICENSE
 // Process Control Service Web Interface
 
-doctype html
-html
-  head
-    title= title + ' - asupt.io'
-    link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
-    link(rel='stylesheet', href='css/app.css')
-  body
-    header.banner-signin
-      a.navbar-brand(href='/') asutp.io
-    .container
+extends ../layouts/sign
+
+block content
       h2.form-signin-heading.text-center= t('session.prompt')
+      if messages && messages.length > 0
+        each message in messages
+          h2.form-signin-heading.text-center= t(message)
       form(method='post', action='/signin', accept-charset="UTF-8").form-signin
         label(for='email').hidden= t('user.email')
         input(id='email', name='email', type='text', placeholder=t('user.email')).form-control
@@ -27,8 +23,6 @@ html
               = t('mongoose.'+e('password').type)
         input(name='_csrf', value=csrf, type='hidden')
         input(type='submit',name='submit',value=t('session.sign_in')).btn.btn-lg.btn-primary.btn-block
-    include ../_footer
-    script(src='bower_components/jquery/jquery.js')
-    script(src='bower_components/bootstrap/dist/js/bootstrap.js')
+        a.btn.btn-link(href='/signup')= t('session.sign_up')
 
 //- vim:ts=2 sts=2 sw=2 et:

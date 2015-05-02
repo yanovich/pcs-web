@@ -34,7 +34,8 @@ ru:
     undefined: Создать
   session:
     prompt: Для работы в системе необходима регистрация
-    sign_in: Регистрация
+    sign_in: Вход
+    sign_up: Регистрация
     sign_out: Выход
   flash:
     create:
