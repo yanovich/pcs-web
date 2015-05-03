@@ -66,7 +66,7 @@ describe('System routes', function() {
     });
 
     it("should return only accessible fields", function(done) {
-      var req = { session: { operatorId: operator._id } };
+      var req = { session: { operator: operator.email } };
       var res = {
         locals: {},
         json_ng: function(st) {
@@ -92,7 +92,7 @@ describe('System routes', function() {
     });
 
     it("should be protected against cross-site scripting", function(done) {
-      var req = { session: { operatorId: operator._id } };
+      var req = { session: { operator: operator.email } };
       var res = {
         locals: {},
         json_ng: function() {
@@ -118,7 +118,7 @@ describe('System routes', function() {
       var req, res = {};
 
       beforeEach(function() {
-        req = { session: { operatorId: operator._id } };
+        req = { session: { operator: operator.email } };
         res.locals = {};
       });
 
@@ -168,7 +168,7 @@ describe('System routes', function() {
     });
 
     it("should deny access to non-admin users", function(done) {
-      var req = { session: { operatorId: operator._id } },
+      var req = { session: { operator: operator.email } },
       res = { send: function(code) {
         expect(code).to.be(403);
         done();

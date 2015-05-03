@@ -14,36 +14,19 @@ function sessionNew(req, res) {
       title: 'Sign in'
     });
   }
-  if (!req.session.operatorId)
+  if (!req.session.operator)
     return renderNew();
 
-  User.findOne({ _id: req.session.operatorId }, function (err, user) {
-    if (err) {
-      if (err.name !== 'CastError')
-        console.log(err);
-      req.session.operatorId = undefined;
-      return renderNew();
-    }
-
-    if (user)
+  auth.loadOperatorFromSession(req, res, function () {
+    if (req.operator)
       return res.redirect('/');
 
-    req.session.operatorId = undefined;
+    req.session.operator = undefined;
     return renderNew();
   })
 }
 
 module.exports.new = sessionNew;
-
-function loadOperatorByEmail(req, res, next) {
-  User.findOne({ email: req.body.email }, function (err, user) {
-    if (err)
-      return res.send(500, 'Sorry, internal server error.');
-
-    req.operator = user;
-    next();
-  })
-}
 
 function createSession(req, res) {
   function signinFail() {
@@ -60,7 +43,7 @@ function createSession(req, res) {
       return res.send(500, 'Sorry, internal server error.');
     if (!valid)
       return signinFail();
-    req.session.operatorId = req.operator._id;
+    req.session.operator = req.operator.email;
     if (req.session.returnTo) {
       var redirect = req.session.returnTo;
       req.session.returnTo = undefined;
@@ -71,11 +54,11 @@ function createSession(req, res) {
   });
 }
 
-module.exports.create = [loadOperatorByEmail,
+module.exports.create = [auth.loadOperatorByEmail,
                          createSession];
 
 function destroySession(req, res) {
-    req.session.operatorId = undefined;
+    req.session.operator = undefined;
     res.redirect('/signin');
 }
 

@@ -7,18 +7,45 @@
 
 var User = require('../models/user');
 
+module.exports.loadOperatorFromSession = function (req, res, next) {
+  User.findOne({ email: req.session.operator }, function (err, user) {
+    if (err) {
+      console.log(err);
+      req.session.operator = undefined;
+      return res.send(500, 'Sorry, internal server error.');
+    }
+
+    req.operator = user;
+    next();
+  })
+}
+
+module.exports.loadOperatorByEmail = function (req, res, next) {
+  if (!req.body || !req.body.email) return next();
+
+  User.findOne({ email: req.body.email }, function (err, user) {
+    if (err)
+      return res.send(500, 'Sorry, internal server error.');
+
+    req.operator = user;
+    next();
+  })
+}
+
 module.exports.authenticate = function (req, res, next) {
-  if (!req.session.operatorId) {
+  if (!req.session.operator) {
     req.session.returnTo = req.url;
     return res.redirect('/signin');
   }
 
-  User.findOne({ _id: req.session.operatorId }, function (err, user) {
+  User.findOne({ email: req.session.operator }, function (err, user) {
     if (err)
       return res.send(500, 'Sorry, internal server error.');
 
-    if (!user)
+    if (!user) {
+      req.session.operator = undefined;
       return res.redirect('/signin');
+    }
 
     res.locals.operator = req.operator = user;
     next();

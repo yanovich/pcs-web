@@ -29,11 +29,11 @@ describe('Session routes', function() {
 
     it("should render signin html if missing user", function(done) {
       var id = "507f1f77bcf86cd799439011";
-      var req = { session: { operatorId: id } },
+      var req = { session: { operator: id } },
       res = { render: function(path, options) {
         expect(path).to.eql("sessions/new");
         expect(options).to.eql({title:'Sign in'});
-        expect(req.session.operatorId).to.be.an('undefined');
+        expect(req.session.operator).to.be.an('undefined');
         done();
       }};
 
@@ -42,11 +42,11 @@ describe('Session routes', function() {
 
     it("should render signin html if bad user", function(done) {
       var id = "bad";
-      var req = { session: { operatorId: id } },
+      var req = { session: { operator: id } },
       res = { render: function(path, options) {
         expect(path).to.eql("sessions/new");
         expect(options).to.eql({title:'Sign in'});
-        expect(req.session.operatorId).to.be.an('undefined');
+        expect(req.session.operator).to.be.an('undefined');
         done();
       }};
 
@@ -54,7 +54,7 @@ describe('Session routes', function() {
     });
 
     it("should redirect to / if good user", function(done) {
-      var req = { session: { operatorId: operator._id } },
+      var req = { session: { operator: operator.email } },
       res = { redirect: function(path) {
         expect(path).to.eql("/");
         done();
@@ -125,7 +125,7 @@ describe('Session routes', function() {
         locals: {},
         redirect: function(path) {
           expect(path).to.be("/");
-          expect(req.session.operatorId).to.eql(operator._id);
+          expect(req.session.operator).to.eql(operator.email);
           done();
         }
       };
@@ -166,11 +166,11 @@ describe('Session routes', function() {
 
   describe("#destroy", function() {
     it("should clear session", function(done) {
-      var req = { session: { operatorId: operator._id }, };
+      var req = { session: { operator: operator.email }, };
       var res = {
         locals: {},
         redirect: function(path) {
-          expect(req.session.operatorId).to.be.an('undefined');
+          expect(req.session.operator).to.be.an('undefined');
           expect(path).to.eql("/signin");
           done();
         }

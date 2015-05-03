@@ -72,7 +72,7 @@ describe('User routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: operator._id } };
+        req = { session: { operator: operator.email } };
       });
 
       it("should return 404 if no user", function(done) {
@@ -131,7 +131,7 @@ describe('User routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: operator._id } };
+        req = { session: { operator: operator.email } };
       });
 
       it("should deny non-admins", function(done) {
@@ -269,7 +269,7 @@ describe('User routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: admin._id } };
+        req = { session: { operator: admin.email } };
       });
 
       it("should modify own name", function(done) {
@@ -400,7 +400,7 @@ describe('User routes', function() {
     });
 
     it("should deny access to non-admin users", function(done) {
-      var req = { session: { operatorId: operator._id } },
+      var req = { session: { operator: operator.email } },
       res = {
         locals: {},
         send: function(code) {
@@ -415,7 +415,7 @@ describe('User routes', function() {
       var req, res;
 
       beforeEach(function() {
-        req = { session: { operatorId: admin._id } };
+        req = { session: { operator: admin.email } };
         req.query = {};
         res = {
           locals: {},
@@ -507,7 +507,7 @@ describe('User routes', function() {
     });
 
     it("should deny access to non-admin users", function(done) {
-      var req = { session: { operatorId: operator._id } },
+      var req = { session: { operator: operator.email } },
       res = {
         locals: {},
         send: function(code) {
@@ -522,7 +522,7 @@ describe('User routes', function() {
       var req, res;
 
       beforeEach(function() {
-        req = { session: { operatorId: admin._id } };
+        req = { session: { operator: admin.email } };
         res = {
           locals: {},
         };

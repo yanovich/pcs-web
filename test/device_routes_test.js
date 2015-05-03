@@ -74,7 +74,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: operator._id } };
+        req = { session: { operator: operator.email } };
       });
 
       it("should return 404 if no device", function(done) {
@@ -119,7 +119,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: operator._id } };
+        req = { session: { operator: operator.email } };
       });
 
       it("should deny non-admins", function(done) {
@@ -138,7 +138,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: admin._id } };
+        req = { session: { operator: admin.email } };
       });
 
       it("should fail", function(done) {
@@ -172,7 +172,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: operator._id } };
+        req = { session: { operator: operator.email } };
         req.query = {};
         res = {
           locals: {},
@@ -267,7 +267,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: operator._id } };
+        req = { session: { operator: operator.email } };
       });
 
       it("should deny non-admins", function(done) {
@@ -286,7 +286,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operatorId: admin._id } };
+        req = { session: { operator: admin.email } };
         res = {
           locals: {},
         };

@@ -21,11 +21,10 @@ describe('Authentication helper', function() {
       Routes.authenticate(req, res, null);
     });
 
-    it("should return 500 code if user is not found", function(done) {
-      var req = { session: { operatorId: 2220 } },
-          res = { send: function(code, msg) {
-            expect(code).to.eql(500);
-            expect(msg).to.eql('Sorry, internal server error.');
+    it("should reload if user is not found", function(done) {
+      var req = { session: { operator: 2220 } },
+          res = { redirect: function(url) {
+            expect(url).to.eql('/signin');
             done();
           }};
 
@@ -41,7 +40,7 @@ describe('Authentication helper', function() {
         confirmation: 'password',
       };
       (new User(userAttrs)).save(function(err, user) {
-        var req = { session: { operatorId: user._id } },
+        var req = { session: { operator: user.email } },
             res = { locals: { } },
             next = function() {
               expect(res.locals.operator.toJSON()).to.eql(user.toJSON());
