@@ -42,9 +42,9 @@ describe('State routes', function () {
 
   describe("#index", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.index, req, res);

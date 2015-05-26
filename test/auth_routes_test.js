@@ -11,24 +11,48 @@ var User = require('../models/user');
 
 describe('Authentication helper', function() {
   describe("#authenticate", function() {
-    it("should redirect to signin if session is not inited", function(done) {
-      var req = { session: {}, url: "someurl" },
-          res = { redirect: function(url) {
-            expect(url).to.eql("/signin");
-            done();
-          }};
+    describe("when request for not html page", function() {
+      it("should send 401 if session is not inited", function(done) {
+        var req = { session: {}, url: "someurl", headers: {accept: 'application/json'} },
+            res = { send: function(code) {
+              expect(code).to.eql(401);
+              done();
+            }};
 
-      Routes.authenticate(req, res, null);
+        Routes.authenticate(req, res, null);
+      });
+
+      it("should send 401 if user is not found", function(done) {
+        var req = { session: { operator: 2220 }, headers: {accept: 'application/json'} },
+            res = { send: function(code) {
+              expect(code).to.eql(401);
+              done();
+            }};
+
+        Routes.authenticate(req, res, null);
+      });
     });
 
-    it("should reload if user is not found", function(done) {
-      var req = { session: { operator: 2220 } },
-          res = { redirect: function(url) {
-            expect(url).to.eql('/signin');
-            done();
-          }};
+    describe("when request for html page", function() {
+      it("should redirect to signin if session is not inited", function(done) {
+        var req = { session: {}, url: "someurl", headers: {accept: 'application/html'} },
+            res = { redirect: function(url) {
+              expect(url).to.eql("/signin");
+              done();
+            }};
 
-      Routes.authenticate(req, res, null);
+        Routes.authenticate(req, res, null);
+      });
+
+      it("should reload if user is not found", function(done) {
+        var req = { session: { operator: 2220 }, headers: {accept: 'application/html'} },
+            res = { redirect: function(url) {
+              expect(url).to.eql('/signin');
+              done();
+            }};
+
+        Routes.authenticate(req, res, null);
+      });
     });
 
     it("should assign operator", function(done) {

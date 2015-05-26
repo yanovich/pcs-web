@@ -9,7 +9,7 @@ angular.module('pcs', [
   'pcs.directives',
   'pcs.controllers'
 ]).
-config(['$routeProvider', function($routeProvider) {
+config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
   $routeProvider.when('/devices/new', {templateUrl: 'partials/device.html', controller: 'NewDeviceCtrl'});
   $routeProvider.when('/devices/:deviceId', {templateUrl: 'partials/device.html', controller: 'DeviceCtrl'});
   $routeProvider.when('/devices', {templateUrl: 'partials/devices.html', controller: 'DevicesCtrl'});
@@ -22,4 +22,20 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/:userId', {templateUrl: 'partials/user.html', controller: 'UserCtrl'});
   $routeProvider.when('/users', {templateUrl: 'partials/users.html', controller: 'UsersCtrl'});
   $routeProvider.otherwise({redirectTo: '/sites'});
+
+  $httpProvider.interceptors.push(['$rootScope', '$q', '$window', function($rootScope, $q, $window) {
+    return {
+      responseError: function(rejection) {
+        switch (rejection.status) {
+          case 401: {
+            var returnTo = $window.location.pathname + $window.location.hash + $window.location.search;
+            $window.location.href = '/signin?returnTo=' + window.escape(returnTo);
+          }
+          break;
+        }
+        // otherwise, default behaviour
+        return $q.reject(rejection);
+      }
+    };
+  }]);
 }]);

@@ -40,7 +40,7 @@ describe('Device routes', function() {
 
   describe("#load", function() {
     it("should find by id and assign device to req", function(done) {
-      var req = { },
+      var req = { headers: {} },
       id = device._id;
 
       Routes.load(req, {}, function() {
@@ -62,9 +62,9 @@ describe('Device routes', function() {
 
   describe("#show", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.show, req, res);
@@ -74,7 +74,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operator: operator.email } };
+        req = { session: { operator: operator.email }, headers: {} };
       });
 
       it("should return 404 if no device", function(done) {
@@ -107,9 +107,9 @@ describe('Device routes', function() {
 
   describe("#update", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.update, req, res);
@@ -119,7 +119,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operator: operator.email } };
+        req = { session: { operator: operator.email }, headers: {} };
       });
 
       it("should deny non-admins", function(done) {
@@ -138,7 +138,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operator: admin.email } };
+        req = { session: { operator: admin.email }, headers: {} };
       });
 
       it("should fail", function(done) {
@@ -160,9 +160,9 @@ describe('Device routes', function() {
 
   describe("#index", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.index, req, res);
@@ -172,7 +172,7 @@ describe('Device routes', function() {
       var req;
 
       beforeEach(function() {
-        req = { session: { operator: operator.email } };
+        req = { session: { operator: operator.email }, headers: {} };
         req.query = {};
         res = {
           locals: {},
@@ -255,9 +255,9 @@ describe('Device routes', function() {
 
   describe("#create", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.create, req, res);
