@@ -95,7 +95,7 @@ describe('Authentication', function () {
   describe('friendly redirect', function () {
     beforeEach(function (done) {
       browser
-      .visit('/users/' + user._id)
+      .visit('/signin?' + require('querystring').stringify({returnTo: '/#/users/' + user._id}))
       .then(function () {
         browser
         .fill(t('user.email'), user.email)
@@ -106,7 +106,7 @@ describe('Authentication', function () {
     })
 
     it('should redirect to profile after sign in', function () {
-      expect(browser.location.pathname).to.be('/users/' + user._id);
+      expect(browser.location.hash).to.be('#/users/' + user._id);
     })
   })
 

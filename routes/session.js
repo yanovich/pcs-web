@@ -11,7 +11,8 @@ var auth = require('./_auth');
 function sessionNew(req, res) {
   function renderNew () {
     res.render('sessions/new', {
-      title: 'Sign in'
+      title: 'Sign in',
+      returnTo: req.query.returnTo
     });
   }
   if (!req.session.operator)
@@ -44,10 +45,8 @@ function createSession(req, res) {
     if (!valid)
       return signinFail();
     req.session.operator = req.operator.email;
-    if (req.session.returnTo) {
-      var redirect = req.session.returnTo;
-      req.session.returnTo = undefined;
-      res.redirect(redirect);
+    if (req.body.returnTo) {
+      res.redirect(req.body.returnTo);
     } else {
       res.redirect('/');
     }

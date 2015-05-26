@@ -22,6 +22,8 @@ block content
             label(for='password').help-block
               = t('mongoose.'+e('password').type)
         input(name='_csrf', value=csrf, type='hidden')
+        if returnTo
+          input(name='returnTo', value=returnTo, type='hidden')
         input(type='submit',name='submit',value=t('session.sign_in')).btn.btn-lg.btn-primary.btn-block
         a.btn.btn-link(href='/signup')= t('session.sign_up')
 

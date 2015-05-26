@@ -41,9 +41,15 @@ module.exports.loadOperatorByEmail = function (req, res, next) {
 }
 
 module.exports.authenticate = function (req, res, next) {
+  function goSignin() {
+    if (req.url === '/' || (req.headers.accept && req.headers.accept.indexOf('html') !== -1)) {
+      return res.redirect('/signin');
+    } else {
+      return res.send(401, 'Unauthorized');
+    }
+  }
   if (!req.session.operator) {
-    req.session.returnTo = req.url;
-    return res.redirect('/signin');
+    return goSignin();
   }
 
   if (req.root && req.session.operator == req.root.email) {
@@ -56,8 +62,7 @@ module.exports.authenticate = function (req, res, next) {
       return res.send(500, 'Sorry, internal server error.');
 
     if (!user) {
-      req.session.operator = undefined;
-      return res.redirect('/signin');
+      return goSignin();
     }
 
     res.locals.operator = req.operator = user;

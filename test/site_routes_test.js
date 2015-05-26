@@ -62,9 +62,9 @@ describe('Site routes', function() {
 
   describe("#show", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.show, req, res);
@@ -107,9 +107,9 @@ describe('Site routes', function() {
 
   describe("#update", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.update, req, res);
@@ -160,9 +160,9 @@ describe('Site routes', function() {
 
   describe("#index", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.index, req, res);
@@ -254,9 +254,9 @@ describe('Site routes', function() {
 
   describe("#create", function() {
     it("should deny access to non-signed-in users", function(done) {
-      var req = { session: {} },
-      res = { redirect: function(url) {
-        expect(url).to.eql("/signin");
+      var req = { session: {}, headers: {} },
+      res = { send: function(code) {
+        expect(code).to.eql(401);
         done();
       }};
       router(Routes.index, req, res);

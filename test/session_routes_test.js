@@ -20,19 +20,19 @@ describe('Session routes', function() {
 
   describe("#new", function() {
     it("should render signin html if no session", function() {
-      var req = { session: {} },
+      var req = { session: {}, query: {} },
           res = { render: sinon.spy() };
 
       Routes.new(req, res);
-      expect(res.render).was.calledWith("sessions/new", {title: 'Sign in'});
+      expect(res.render).was.calledWith("sessions/new", {title: 'Sign in', returnTo: undefined});
     });
 
     it("should render signin html if missing user", function(done) {
       var id = "507f1f77bcf86cd799439011";
-      var req = { session: { operator: id } },
+      var req = { session: { operator: id }, query: {returnTo: "/asd/asd"}},
       res = { render: function(path, options) {
         expect(path).to.eql("sessions/new");
-        expect(options).to.eql({title:'Sign in'});
+        expect(options).to.eql({title:'Sign in', returnTo: '/asd/asd'});
         expect(req.session.operator).to.be.an('undefined');
         done();
       }};
@@ -42,10 +42,10 @@ describe('Session routes', function() {
 
     it("should render signin html if bad user", function(done) {
       var id = "bad";
-      var req = { session: { operator: id } },
+      var req = { session: { operator: id }, query: {} },
       res = { render: function(path, options) {
         expect(path).to.eql("sessions/new");
-        expect(options).to.eql({title:'Sign in'});
+        expect(options).to.eql({title:'Sign in', returnTo: undefined});
         expect(req.session.operator).to.be.an('undefined');
         done();
       }};
@@ -134,22 +134,38 @@ describe('Session routes', function() {
     });
 
     describe("friendly redirect", function() {
-      it("should save request location", function(done) {
-        var req = { session: {}, url: 'some_url' },
+      it("should return 401 if not html accept", function(done) {
+        var req = { session: {}, url: 'some_url', headers: {} },
         res = {
-          redirect: function(path) {
-            expect(req.session.returnTo).to.eql('some_url');
+          send: function(code) {
+            expect(code).to.eql(401);
             done();
           }
         };
 
         Auth.authenticate(req, res, null);
       });
+      it("should redirect to root path if get html page", function(done) {
+        var req = {
+          body: { email: operator.email, password: 'password' },
+          session: {},
+          headers: { accept: 'application/html' }
+        };
+        var res = {
+          locals: {},
+          redirect: function(path) {
+            expect(path).to.be('/');
+            done();
+          }
+        };
+
+        router(Routes.create, req, res);
+      });
 
       it("should redirect to saved location on signin", function(done) {
         var req = {
-          body: { email: operator.email, password: 'password' },
-          session: { returnTo: 'some_url' }
+          body: { email: operator.email, password: 'password', returnTo: 'some_url' },
+          session: { }
         };
         var res = {
           locals: {},
