@@ -12,10 +12,13 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="userForm.email.$dirty && userForm.email.$invalid && 'has-error'">
         <label for="email" class="control-label col-sm-3">Эл.почта</label>
         <div class="col-sm-9">
-          <input id="email" name="email" type="text" ng-model="user.email" placeholder="Эл.почта" class="form-control input-sm">
+          <input id="email" name="email" type="text" ng-model="user.email" placeholder="Эл.почта" class="form-control input-sm" required>
+          <div ng-show="userForm.email.$dirty && userForm.email.$invalid">
+            <label class="help-block" for="email" ng-show="userForm.email.$error.required">Это поле обязательно для заполнения</label>
+          </div>
         </div>
       </div>
       <div class="form-group">

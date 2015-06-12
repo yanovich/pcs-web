@@ -244,6 +244,24 @@ describe('User', function(){
             expect(browser.text(maxLength)).to.eql("Это поле содержит больше 50-ти символов");
           });
         });
+
+        describe("for email field", function() {
+          it("should show required error if empty email", function() {
+            var required = 'div label[for="email"][ng-show="userForm.email.$error.required"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(required).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "name@example.com");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(required).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(required).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(required)).display).to.be("");
+            expect(browser.text('div label[for="email"][ng-show="userForm.email.$error.required"]'))
+              .to.eql("Это поле обязательно для заполнения");
+          });
+        });
       });
 
       describe('with valid data', function () {
