@@ -212,20 +212,103 @@ describe('User', function(){
       })
 
       describe('with invalid data', function () {
-        it("should show required error if empty name", function() {
-          var requireMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.required"]';
-          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
-          browser.fill(t('user.name'), "Some name");
-          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
-          browser.query('input[name="email"]').focus();
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
-          browser.fill(t('user.name'), "");
-          expect(browser.queryAll('div.has-error').length).to.eql(1);
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("");
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector)).display).to.be("");
-          expect(browser.text('div label[for="name"][ng-show="userForm.name.$error.required"]'))
+        describe("for name field", function() {
+          it("should show required error if empty name", function() {
+            var requireMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.required"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), "Some name");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="email"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), "");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector)).display).to.be("");
+            expect(browser.text('div label[for="name"][ng-show="userForm.name.$error.required"]'))
             .to.eql("Это поле обязательно для заполнения");
+          });
+
+          it("should show maxlength error if name length riched 50 symbols", function() {
+            var maxlMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.maxlength"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), "Some name");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="email"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), Array(52).join("a"));
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector)).display).to.be("");
+            expect(browser.text(maxlMessageSelector)).to.eql("Это поле содержит больше 50-ти символов");
+          });
+        });
+
+        describe("for email field", function() {
+          it("should show required error if empty email", function() {
+            var requireMessageSelector = 'div label[for="email"][ng-show="userForm.email.$error.required"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "name@some.com");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector)).display).to.be("");
+            expect(browser.text('div label[for="email"][ng-show="userForm.email.$error.required"]'))
+            .to.eql("Это поле обязательно для заполнения");
+          });
+
+          it("should show email error if email length is not valid", function() {
+            var emailMessageSelector = 'div label[for="email"][ng-show="userForm.email.$error.email"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(emailMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "Some@name.com");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(emailMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), Array(52).join("a"));
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(emailMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(emailMessageSelector)).display).to.be("");
+            expect(browser.text(emailMessageSelector)).to.eql("Это поле не верно. Исправьте адрес эл. почты");
+          });
+        });
+
+        describe("for password field", function() {
+          it("should check password length", function() {
+            var minlMessageSelector = 'div label[for="password"][ng-show="userForm.password.$error.minlength"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.password'), "1234567");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.password'), "123");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector)).display).to.be("");
+            expect(browser.text(minlMessageSelector)).to.eql("Пароль должен быть не меньше 6 символов");
+          });
+
+          it("should check confirmation length", function() {
+            var confirmMessageSelector = 'div label[for="confirmation"][ng-show="userForm.confirmation.$error.confirm"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(confirmMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.password'), "1234567");
+            browser.fill(t('user.confirmation'), "1234567");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(confirmMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.confirmation'), "123");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(confirmMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(confirmMessageSelector)).display).to.be("");
+            expect(browser.text(confirmMessageSelector)).to.eql("Подтверждение пароля должно быть идентично паролю");
+          });
         });
       });
 

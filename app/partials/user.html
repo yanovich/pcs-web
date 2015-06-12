@@ -5,16 +5,22 @@
         <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-user"></span></label>
         <label for="name" class="control-label hidden">Полное имя</label>
         <div class="col-sm-9">
-          <input id="name" name="name" type="text" ng-model="user.name" placeholder="Полное имя" class="form-control input-lg" required>
+          <input id="name" name="name" type="text" ng-model="user.name" placeholder="Полное имя" class="form-control input-lg" required
+                 ng-maxlength="50">
           <div ng-show="userForm.name.$dirty && userForm.name.$invalid">
             <label class="help-block" for="name" ng-show="userForm.name.$error.required">Это поле обязательно для заполнения</label>
+            <label class="help-block" for="name" ng-show="userForm.name.$error.maxlength">Это поле содержит больше 50-ти символов</label>
           </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="userForm.email.$dirty && userForm.email.$invalid && 'has-error'">
         <label for="email" class="control-label col-sm-3">Эл.почта</label>
         <div class="col-sm-9">
-          <input id="email" name="email" type="text" ng-model="user.email" placeholder="Эл.почта" class="form-control input-sm">
+          <input id="email" name="email" type="email" ng-model="user.email" placeholder="Эл.почта" class="form-control input-sm" required>
+          <div ng-show="userForm.email.$dirty && userForm.email.$invalid">
+            <label class="help-block" for="email" ng-show="userForm.email.$error.required">Это поле обязательно для заполнения</label>
+            <label class="help-block" for="email" ng-show="userForm.email.$error.email">Это поле не верно. Исправьте адрес эл. почты</label>
+          </div>
         </div>
       </div>
       <div class="form-group">
@@ -23,16 +29,23 @@
           <input id="admin" name="admin" type="checkbox" ng-model="user.admin" ng-disabled="operator._id == user._id" class="form-control input-sm">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="userForm.password.$dirty && userForm.password.$invalid && 'has-error'">
         <label for="password" class="control-label col-sm-3">Пароль</label>
         <div class="col-sm-9">
-          <input id="password" name="password" type="password" ng-model="user.password" placeholder="Пароль" class="form-control input-sm">
+          <input id="password" name="password" type="password" ng-model="user.password" placeholder="Пароль" class="form-control input-sm" ng-minlength="6">
+          <div ng-show="userForm.password.$dirty && userForm.password.$invalid">
+            <label class="help-block" for="password" ng-show="userForm.password.$error.minlength">Пароль должен быть не меньше 6 символов</label>
+          </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="userForm.confirmation.$dirty && userForm.confirmation.$invalid && 'has-error'">
         <label for="confirmation" class="control-label col-sm-3">Подтверждение</label>
         <div class="col-sm-9">
-          <input id="confirmation" name="confirmation" type="password" ng-model="user.confirmation" placeholder="Подтверждение" class="form-control input-sm">
+          <input id="confirmation" name="confirmation" type="password" ng-model="user.confirmation" placeholder="Подтверждение" class="form-control input-sm"
+                 pcs-password-confirm="user.password">
+          <div ng-show="userForm.confirmation.$dirty && userForm.confirmation.$invalid">
+            <label class="help-block" for="confirmation" ng-show="userForm.confirmation.$error.confirm">Подтверждение пароля должно быть идентично паролю</label>
+          </div>
         </div>
       </div>
       <button name="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$pristine" ng-click="save()">{{(user._id) ? 'Изменить' : 'Создать'}}</button>
