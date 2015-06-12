@@ -213,17 +213,17 @@ describe('User', function(){
 
       describe('with invalid data', function () {
         it("should show required error if empty name", function() {
-          var requireMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.required"]';
+          var required = 'div label[for="name"][ng-show="userForm.name.$error.required"]';
           expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+          expect(browser.window.getComputedStyle(browser.query(required).parentNode).display).to.be("none");
           browser.fill(t('user.name'), "Some name");
           expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
           browser.query('input[name="email"]').focus();
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+          expect(browser.window.getComputedStyle(browser.query(required).parentNode).display).to.be("none");
           browser.fill(t('user.name'), "");
           expect(browser.queryAll('div.has-error').length).to.eql(1);
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("");
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector)).display).to.be("");
+          expect(browser.window.getComputedStyle(browser.query(required).parentNode).display).to.be("");
+          expect(browser.window.getComputedStyle(browser.query(required)).display).to.be("");
           expect(browser.text('div label[for="name"][ng-show="userForm.name.$error.required"]'))
             .to.eql("Это поле обязательно для заполнения");
         });
