@@ -38,10 +38,14 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="userForm.confirmation.$dirty && userForm.confirmation.$invalid && 'has-error'">
         <label for="confirmation" class="control-label col-sm-3">Подтверждение</label>
         <div class="col-sm-9">
-          <input id="confirmation" name="confirmation" type="password" ng-model="user.confirmation" placeholder="Подтверждение" class="form-control input-sm">
+          <input id="confirmation" name="confirmation" type="password" ng-model="user.confirmation" placeholder="Подтверждение" class="form-control input-sm"
+                 ng-minlength="6">
+          <div ng-show="userForm.confirmation.$dirty && userForm.confirmation.$invalid">
+            <label class="help-block" for="confirmation" ng-show="userForm.confirmation.$error.minlength">Подтверждение пароля должно быть не меньше 6 символов</label>
+          </div>
         </div>
       </div>
       <button name="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$pristine" ng-click="save()">{{(user._id) ? 'Изменить' : 'Создать'}}</button>

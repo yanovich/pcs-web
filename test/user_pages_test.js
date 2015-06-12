@@ -293,6 +293,21 @@ describe('User', function(){
             expect(browser.window.getComputedStyle(browser.query(minlMessageSelector)).display).to.be("");
             expect(browser.text(minlMessageSelector)).to.eql("Пароль должен быть не меньше 6 символов");
           });
+
+          it("should check confirmation length", function() {
+            var minlMessageSelector = 'div label[for="confirmation"][ng-show="userForm.confirmation.$error.minlength"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.confirmation'), "1234567");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.confirmation'), "123");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(minlMessageSelector)).display).to.be("");
+            expect(browser.text(minlMessageSelector)).to.eql("Подтверждение пароля должно быть не меньше 6 символов");
+          });
         });
       });
 
