@@ -212,35 +212,55 @@ describe('User', function(){
       })
 
       describe('with invalid data', function () {
-        it("should show required error if empty name", function() {
-          var requireMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.required"]';
-          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
-          browser.fill(t('user.name'), "Some name");
-          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
-          browser.query('input[name="email"]').focus();
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
-          browser.fill(t('user.name'), "");
-          expect(browser.queryAll('div.has-error').length).to.eql(1);
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("");
-          expect(browser.window.getComputedStyle(browser.query(requireMessageSelector)).display).to.be("");
-          expect(browser.text('div label[for="name"][ng-show="userForm.name.$error.required"]'))
+        describe("for name field", function() {
+          it("should show required error if empty name", function() {
+            var requireMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.required"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), "Some name");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="email"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), "");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector)).display).to.be("");
+            expect(browser.text('div label[for="name"][ng-show="userForm.name.$error.required"]'))
             .to.eql("Это поле обязательно для заполнения");
+          });
+
+          it("should show maxlength error if name length riched 50 symbols", function() {
+            var maxlMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.maxlength"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), "Some name");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="email"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.name'), Array(52).join("a"));
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector)).display).to.be("");
+            expect(browser.text(maxlMessageSelector)).to.eql("Это поле содержит больше 50-ти символов");
+          });
         });
 
-        it("should show maxlength error if name length riched 50 symbols", function() {
-          var maxlMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.maxlength"]';
-          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
-          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
-          browser.fill(t('user.name'), "Some name");
-          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
-          browser.query('input[name="email"]').focus();
-          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
-          browser.fill(t('user.name'), Array(52).join("a"));
-          expect(browser.queryAll('div.has-error').length).to.eql(1);
-          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("");
-          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector)).display).to.be("");
-          expect(browser.text(maxlMessageSelector)).to.eql("Это поле содержит больше 50-ти символов");
+        describe("for email field", function() {
+          it("should show required error if empty email", function() {
+            var requireMessageSelector = 'div label[for="email"][ng-show="userForm.email.$error.required"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "name@some.com");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(requireMessageSelector)).display).to.be("");
+            expect(browser.text('div label[for="email"][ng-show="userForm.email.$error.required"]'))
+            .to.eql("Это поле обязательно для заполнения");
+          });
         });
       });
 
