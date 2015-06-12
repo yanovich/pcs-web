@@ -277,6 +277,23 @@ describe('User', function(){
             expect(browser.text(email)).to.eql("Это поле не верно. Исправьте адрес эл. почты");
           });
         });
+
+        describe("for password field", function() {
+          it("should check password length", function() {
+            var minLength = 'div label[for="password"][ng-show="userForm.password.$error.minlength"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(minLength).parentNode).display).to.be("none");
+            browser.fill(t('user.password'), "1234567");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(minLength).parentNode).display).to.be("none");
+            browser.fill(t('user.password'), "123");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(minLength).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(minLength)).display).to.be("");
+            expect(browser.text(minLength)).to.eql("Пароль должен быть не меньше 6 символов");
+          });
+        });
       });
 
       describe('with valid data', function () {

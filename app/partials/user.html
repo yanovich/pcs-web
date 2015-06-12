@@ -28,10 +28,13 @@
           <input id="admin" name="admin" type="checkbox" ng-model="user.admin" ng-disabled="operator._id == user._id" class="form-control input-sm">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="userForm.password.$dirty && userForm.password.$invalid && 'has-error'">
         <label for="password" class="control-label col-sm-3">Пароль</label>
         <div class="col-sm-9">
-          <input id="password" name="password" type="password" ng-model="user.password" placeholder="Пароль" class="form-control input-sm">
+          <input id="password" name="password" type="password" ng-model="user.password" placeholder="Пароль" class="form-control input-sm" ng-minlength="6">
+          <div ng-show="userForm.password.$dirty && userForm.password.$invalid">
+            <label class="help-block" for="password" ng-show="userForm.password.$error.minlength">Пароль должен быть не меньше 6 символов</label>
+          </div>
         </div>
       </div>
       <div class="form-group">
