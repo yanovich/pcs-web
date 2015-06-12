@@ -227,6 +227,21 @@ describe('User', function(){
           expect(browser.text('div label[for="name"][ng-show="userForm.name.$error.required"]'))
             .to.eql("Это поле обязательно для заполнения");
         });
+
+        it("should show maxlength error if name length riched 50 symbols", function() {
+          var maxlMessageSelector = 'div label[for="name"][ng-show="userForm.name.$error.maxlength"]';
+          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
+          browser.fill(t('user.name'), "Some name");
+          expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+          browser.query('input[name="email"]').focus();
+          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("none");
+          browser.fill(t('user.name'), Array(52).join("a"));
+          expect(browser.queryAll('div.has-error').length).to.eql(1);
+          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector).parentNode).display).to.be("");
+          expect(browser.window.getComputedStyle(browser.query(maxlMessageSelector)).display).to.be("");
+          expect(browser.text(maxlMessageSelector)).to.eql("Это поле содержит больше 50-ти символов");
+        });
       });
 
       describe('with valid data', function () {
