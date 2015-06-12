@@ -293,6 +293,22 @@ describe('User', function(){
             expect(browser.window.getComputedStyle(browser.query(minLength)).display).to.be("");
             expect(browser.text(minLength)).to.eql("Пароль должен быть не меньше 6 символов");
           });
+
+          it("should check confirmation match", function() {
+            var match = 'div label[for="confirmation"][ng-show="userForm.confirmation.$error.match"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(match).parentNode).display).to.be("none");
+            browser.fill(t('user.password'), "1234567");
+            browser.fill(t('user.confirmation'), "1234567");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(match).parentNode).display).to.be("none");
+            browser.fill(t('user.confirmation'), "123");
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(match).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(match)).display).to.be("");
+            expect(browser.text(match)).to.eql("Подтверждение пароля должно быть идентично паролю");
+          });
         });
       });
 
