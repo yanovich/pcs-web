@@ -212,6 +212,7 @@ describe('User', function(){
       })
 
       describe('with invalid data', function () {
+        describe("for name field", function() {
           it("should show required error if empty name", function() {
             var required = 'div label[for="name"][ng-show="userForm.name.$error.required"]';
             expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
@@ -242,6 +243,7 @@ describe('User', function(){
             expect(browser.window.getComputedStyle(browser.query(maxLength)).display).to.be("");
             expect(browser.text(maxLength)).to.eql("Это поле содержит больше 50-ти символов");
           });
+        });
       });
 
       describe('with valid data', function () {
