@@ -261,6 +261,21 @@ describe('User', function(){
             expect(browser.text('div label[for="email"][ng-show="userForm.email.$error.required"]'))
               .to.eql("Это поле обязательно для заполнения");
           });
+
+          it("should show email error if email length is not valid", function() {
+            var email = 'div label[for="email"][ng-show="userForm.email.$error.email"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            expect(browser.window.getComputedStyle(browser.query(email).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), "Some@name.com");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(0);
+            browser.query('input[name="name"]').focus();
+            expect(browser.window.getComputedStyle(browser.query(email).parentNode).display).to.be("none");
+            browser.fill(t('user.email'), Array(52).join("a"));
+            expect(browser.queryAll('div.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(email).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(email)).display).to.be("");
+            expect(browser.text(email)).to.eql("Это поле не верно. Исправьте адрес эл. почты");
+          });
         });
       });
 
