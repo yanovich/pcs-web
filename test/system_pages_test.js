@@ -64,6 +64,21 @@ describe('System', function(){
             expect(browser.text('div label[for="name"][ng-show="systemForm.name.$error.required"]'))
               .to.eql("Это поле обязательно для заполнения");
           });
+
+          it("should show maxlength error if name length riched 50 symbols", function() {
+            var maxLength = 'div label[for="name"][ng-show="systemForm.name.$error.maxlength"]';
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(1);
+            expect(browser.window.getComputedStyle(browser.query(maxLength).parentNode).display).to.be("none");
+            browser.fill('Название', "Some name");
+            expect(browser.queryAll('div.form-group.has-error').length).to.eql(1);
+            browser.query('button').focus();
+            expect(browser.window.getComputedStyle(browser.query(maxLength).parentNode).display).to.be("none");
+            browser.fill('Название', Array(52).join("a"));
+            expect(browser.queryAll('div.has-error').length).to.eql(2);
+            expect(browser.window.getComputedStyle(browser.query(maxLength).parentNode).display).to.be("");
+            expect(browser.window.getComputedStyle(browser.query(maxLength)).display).to.be("");
+            expect(browser.text(maxLength)).to.eql("Это поле содержит больше 50-ти символов");
+          });
         });
       });
     });
