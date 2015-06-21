@@ -5,9 +5,10 @@
         <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-home"></span></label>
         <label for="name" class="control-label hidden">Название</label>
         <div class="col-sm-9">
-          <input id="name" name="name" type="text" ng-model="site.name" placeholder="Название" class="form-control input-lg" required>
+          <input id="name" name="name" type="text" ng-model="site.name" placeholder="Название" class="form-control input-lg" required ng-maxlength="50">
           <div ng-show="siteForm.name.$dirty && siteForm.name.$invalid">
             <label class="help-block" for="name" ng-show="siteForm.name.$error.required">Это поле обязательно для заполнения</label>
+            <label class="help-block" for="name" ng-show="siteForm.name.$error.maxlength">Это поле содержит больше 50-ти символов</label>
           </div>
         </div>
       </div>
