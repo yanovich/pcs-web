@@ -1,11 +1,14 @@
 <div class="row tp-user">
   <form name="systemForm" accept-charset="UTF-8" class="form-horizontal">
     <div class="col-lg-5" ng-if="operator.admin">
-      <div class="form-group">
+      <div class="form-group" ng-class="systemForm.name.$dirty && systemForm.name.$invalid && 'has-error'">
         <label class="tp-photo control-label col-sm-3"><span class="glyphicon glyphicon-cog"></span></label>
         <label for="name" class="control-label hidden">Название</label>
         <div class="col-sm-9">
-          <input id="name" name="name" type="text" ng-model="system.name" placeholder="Название" class="form-control input-lg">
+          <input id="name" name="name" type="text" ng-model="system.name" placeholder="Название" class="form-control input-lg" required>
+          <div ng-show="systemForm.name.$dirty && systemForm.name.$invalid">
+            <label class="help-block" for="name" ng-show="systemForm.name.$error.required">Это поле обязательно для заполнения</label>
+          </div>
         </div>
       </div>
       <div class="form-group">
