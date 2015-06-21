@@ -54,7 +54,7 @@ describe('Registration', function () {
           expect(browser.queryAll('div.form-group.has-error').length).to.be(4);
           expect(browser.text('label.help-block:nth-of-type(1)')).to.be(t('mongoose.required'));
           expect(browser.text('label.help-block:nth-of-type(2)')).to.be(t('mongoose.required'));
-          expect(browser.text('label.help-block:nth-of-type(3)')).to.be(t('mongoose.short', {count: 6}));
+          expect(browser.text('label.help-block:nth-of-type(3)')).to.be(t('mongoose.required'));
           expect(browser.text('label.help-block:nth-of-type(4)')).to.be(t('mongoose.mismatch'));
         })
       .then(done, done);

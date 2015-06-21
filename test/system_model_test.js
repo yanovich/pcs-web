@@ -64,7 +64,7 @@ describe('System', function() {
 
   it('should be valid', function (done) {
     system.validate(function (err) {
-      expect(err).to.be.an('undefined');
+      expect(err).to.be(null);
       done();
     });
   });

@@ -25,7 +25,7 @@ describe('Site', function () {
 
   it('should be valid', function (done) {
     site.validate(function (err) {
-      expect(err).to.be.an('undefined');
+      expect(err).to.be(null);
       done();
     });
   });

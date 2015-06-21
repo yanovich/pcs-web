@@ -21,16 +21,16 @@ var Validations = function () {
   this.password = function (opts) {
     return function (value) {
       if (this.isNew && (!this._password || this._password.trim() === ''))
-        this.invalidate('password',  { path: 'password', type: 'required' });
+        this.invalidate('password',  { path: 'password', kind: 'required' });
 
       if (this._password || this._confirmation) {
         if (this._password !== this._confirmation)
-          this.invalidate('confirmation', { path: 'confirmation', type: 'mismatch' });
+          this.invalidate('confirmation', { path: 'confirmation', kind: 'mismatch' });
 
         if (opts['length'])
           if (opts['length']['min'])
             if (this._password.length < opts['length']['min'])
-              this.invalidate('password', { path: 'password', type: 'short', count: opts['length']['min'] });
+              this.invalidate('password', { path: 'password', kind: 'short', count: opts['length']['min'] });
       }
     };
   };
