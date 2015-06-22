@@ -550,7 +550,7 @@ describe('User routes', function() {
         router(Routes.create, req, res);
       });
 
-      it("should fail when name is already taken", function(done) {
+      it("should report validation error when email is already taken", function(done) {
         req.body = {
           name: 'created user',
           email: user.email,
@@ -558,14 +558,51 @@ describe('User routes', function() {
           confirmation: '12345678',
         }
         res.json = function(code, err) {
-          expect(code).to.be(500);
+          expect(code).to.be(422);
           expect(err).not.to.be.an('undefined');
+          expect(err.length).to.eql(1);
+          expect(err[0].path).to.eql("email");
+          expect(err[0].type).to.eql("Duplicate value");
           done();
         };
         router(Routes.create, req, res);
       });
 
-      it("should report validation errors");
+      it("should report validation error when email is invalid", function(done) {
+        req.body = {
+          name: 'created user',
+          email: "user@email",
+          password: '12345678',
+          confirmation: '12345678',
+        }
+        res.json = function(code, err) {
+          expect(code).to.be(422);
+          expect(err).not.to.be.an('undefined');
+          expect(err.length).to.eql(1);
+          expect(err[0].path).to.eql("email");
+          expect(err[0].type).to.eql("regexp");
+          done();
+        };
+        router(Routes.create, req, res);
+      });
+
+      it("should report validation error when name is invalid", function(done) {
+        req.body = {
+          name: Array(52).join('c'),
+          email: "user@email.com",
+          password: '12345678',
+          confirmation: '12345678',
+        }
+        res.json = function(code, err) {
+          expect(code).to.be(422);
+          expect(err).not.to.be.an('undefined');
+          expect(err.length).to.eql(1);
+          expect(err[0].path).to.eql("name");
+          expect(err[0].type).to.eql("long");
+          done();
+        };
+        router(Routes.create, req, res);
+      });
     });
   });
 });

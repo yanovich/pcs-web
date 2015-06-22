@@ -19,6 +19,7 @@
     "jade": "*",
     "method-override": "1.0.0",
     "mongoose": "4.0.3",
+    "mongoose-beautiful-unique-validation": "0.2.0",
     "morgan": "1.0.0",
     "winston": "^0.7.3"
   },

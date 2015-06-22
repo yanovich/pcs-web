@@ -18,6 +18,19 @@ module.exports.load = function (req, res, next, id) {
   })
 }
 
+function prepareValidationErrors(errors) {
+  var errContainer = [];
+  for (key in errors) {
+    if (errors.hasOwnProperty(key)) {
+      errContainer.push({
+        path: key,
+        type: errors[key].type || errors[key].kind
+      });
+    }
+  }
+  return errContainer;
+}
+
 function requireAdminOrSelf(req, res, next) {
   if (!req.user)
     return res.send(404);
@@ -119,9 +132,9 @@ function createUser(req, res) {
       });
       if (req.operator.admin)
         req.user.admin = !!req.body['admin'];
-      req.user.save(function (err) {
+      req.user.trySave(function (err) {
         if (err) {
-          return res.json(500, err);
+          return res.json(422, prepareValidationErrors(err.errors));
         }
         res.json(req.user);
       });

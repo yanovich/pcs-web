@@ -11,8 +11,10 @@ var Validations = function () {
       var valid = true;
 
       if (opts['max'])
-        if (!value || value.length > opts['max'])
+        if (!value || value.length > opts['max']) {
           valid = false;
+          this.invalidate('name', { path: 'name', kind: 'long', count: opts['max'] });
+        }
 
       return valid;
     };

@@ -15,7 +15,8 @@ var user_schema = new mongoose.Schema({
     required: true,
     validate: {
       validator: validates.length({ max: 50 }),
-      msg: 'name is too long' },
+      msg: 'name is too long',
+      kind: 'long'},
     trim: true },
   email: {
     type: String,
@@ -75,6 +76,8 @@ user_schema.pre('save', function (next) {
 });
 
 user_schema.index({ name: 1 });
+
+user_schema.plugin(require('mongoose-beautiful-unique-validation'));
 
 var User = mongoose.model('User', user_schema);
 
