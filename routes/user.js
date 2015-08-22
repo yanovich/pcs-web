@@ -168,5 +168,3 @@ module.exports.index = [ auth.authenticate,
                          indexUsers];
 
 module.exports.create = [ createUser];
-
-// vim:ts=2 sts=2 sw=2 et:

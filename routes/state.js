@@ -178,4 +178,3 @@ function indexStates(req, res) {
 
 module.exports.index = [ auth.authenticate,
                          indexStates];
-// vim:ts=2 sts=2 sw=2 et:

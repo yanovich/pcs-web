@@ -24,6 +24,3 @@ device_schema.index({ name: 1 }, { unique: 1 });
 var Device = mongoose.model('Device', device_schema);
 
 module.exports = Device;
-
-// vim:ts=2 sts=2 sw=2 et:
-

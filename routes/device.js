@@ -87,5 +87,3 @@ module.exports.index = [ auth.authenticate,
 module.exports.create = [ auth.authenticate,
                           auth.requireAdmin,
                           createDevice];
-
-// vim:ts=2 sts=2 sw=2 et:

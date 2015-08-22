@@ -539,5 +539,3 @@ table.tp-data td.tp-date {
 .field_with_errors {
   @extend .has-error;
 }
-
-/* vim:set sw=2 sts=2 ts=2 et: */

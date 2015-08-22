@@ -90,5 +90,3 @@ Factory = {
 global.url = 'http://localhost:' + port;
 global.i18n = app.i18n;
 global.Factory = Factory;
-
-// vim:ts=2 sts=2 sw=2 et:

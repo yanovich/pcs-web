@@ -86,5 +86,3 @@ User.createRoot = function (email, name, hash) {
 };
 
 module.exports = User;
-
-// vim:ts=2 sts=2 sw=2 et:

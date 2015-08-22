@@ -242,5 +242,3 @@ angular.module('pcs.controllers', [])
           $scope.page(page, 25, count);
         });
   }]);
-
-// vim:ts=2 sts=2 sw=2 et:

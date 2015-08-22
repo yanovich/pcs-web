@@ -23,6 +23,3 @@ site_schema.index({ name: 1 }, { unique: 1 });
 var Site = mongoose.model('Site', site_schema);
 
 module.exports = Site;
-
-// vim:ts=2 sts=2 sw=2 et:
-

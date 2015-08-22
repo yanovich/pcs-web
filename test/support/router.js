@@ -12,10 +12,8 @@ function router(actions, req, res) {
   actions = actions.slice(0);
   var action = actions.shift();
   action(req, res, function() {
-        router(actions, req, res);
+    router(actions, req, res);
   });
 }
 
 module.exports = router;
-
-// vim:ts=2 sts=2 sw=2 et:

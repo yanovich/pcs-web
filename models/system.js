@@ -38,6 +38,3 @@ system_schema.index({ device: 1, _id: 1 });
 var System = mongoose.model('System', system_schema);
 
 module.exports = System;
-
-// vim:ts=2 sts=2 sw=2 et:
-

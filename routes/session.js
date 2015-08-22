@@ -63,4 +63,3 @@ function destroySession(req, res) {
 
 module.exports.destroy = [auth.authenticate,
                          destroySession];
-// vim:ts=2 sts=2 sw=2 et:

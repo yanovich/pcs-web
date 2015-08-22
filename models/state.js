@@ -22,5 +22,3 @@ state_schema.index({ device: 1, stamp: -1, _id: 1 });
 var State = mongoose.model('State', state_schema);
 
 module.exports = State;
-
-// vim:ts=2 sts=2 sw=2 et:
