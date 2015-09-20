@@ -46,6 +46,7 @@ describe('Registration', function () {
 
     describe('with invalid information', function () {
       it('should decline signup', function (done) {
+        browser.fill('password', '1');
         browser.fill('confirmation', '1234');
         browser
         .pressButton(t('session.sign_up'))

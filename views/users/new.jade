@@ -13,9 +13,9 @@ block content
     .form-group(class=e('email')?'has-error':'')
       input(id='email', name='email', type='text', placeholder=t('user.email')).form-control
     if e('name')
-      label(for='name').help-block= t('mongoose.'+e('name').type, e('name'))
+      label(for='name').help-block= t('mongoose.'+e('name').kind, e('name'))
     if e('email')
-      label(for='email').help-block= t('mongoose.'+e('email').type, e('email'))
+      label(for='email').help-block= t('mongoose.'+e('email').kind, e('email'))
 
     .form-group.margin-bottomless(class=e('password')?'has-error':'')
       input(id='password', name='password', type='password', placeholder=t('user.password')).form-control
