@@ -121,14 +121,15 @@ describe('State routes', function () {
             expect(listeners).to.be.empty;
           });
 
-          it('should abort when bad device', function () {
-            var c;
+          it('should abort when bad device', function (done) {
             res.send = function (code) {
-              c = code;
+              expect(code).to.be(500);
+              setTimeout(function () {
+                expect(listeners).to.be.empty;
+                done();
+              }, 0)
             };
             listeners.data('{ "device": 3 }');
-            expect(c).to.be(500);
-            expect(listeners).to.be.empty;
           });
         });
 
